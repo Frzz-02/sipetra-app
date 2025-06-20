@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('pesanan_details', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('id_pesanan')
+                ->constrained('pesanans')
+                ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data pesanan dihapus
+            
+            $table->foreignId('id_hewan')
+                ->constrained('hewans')
+                ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data penyedia layanan detail dihapus
+                
+            $table->foreignId('id_layanan')
+                ->constrained('layanans')
+                ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data penyedia layanan detail dihapus
+
+            $table->json('data_opsi_layanan');
+            $table->decimal('subtotal_biaya', 10, 2);
         });
     }
 

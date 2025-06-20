@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('id_user')
+                ->constrained('users')
+                ->onDelete('cascade'); // This will delete the order if the user is deleted
+            
+            $table->foreignId('id_penyedia_layanan')
+                ->constrained('penyedia_layanans')
+                ->onDelete('cascade'); // This will delete the order if the service provider is deleted
+
+            $table->dateTime('tanggal_pesan');
+            $table->decimal('total_biaya', 10, 2);
+            $table->enum('status', ['menunggu', 'diproses', 'selesai', 'batal'])
+                ->default('menunggu'); // Status of the order, default is pending
+            
+            // $table->timestamps();
         });
     }
 

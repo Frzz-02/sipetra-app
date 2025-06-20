@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('id_pesanan')
+                ->constrained('pesanans')
+                ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pembayaran jika data user dihapus
+
+            $table->string('metode_pembayaran', 50); 
+            $table->enum('status', ['menunggu', 'lunas', 'gagal']); 
+            $table->string('bukti_bayar'); 
+            $table->timestamps('created_at'); 
         });
     }
 
