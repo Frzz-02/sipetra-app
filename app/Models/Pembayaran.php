@@ -10,7 +10,7 @@ class Pembayaran extends Model
     /** @use HasFactory<\Database\Factories\PembayaranFactory> */
     use HasFactory;
 
-    // jika tabel pembayaran tidak memiliki kolom updated_at, maka bisa kita menonaktifkan timestamp updated_at
-    public $timestamps = true;
-    const UPDATED_AT = NULL; // Disable updated_at timestamp
+    // jika tabel pembayaran tidak memiliki kolom updated_at, maka bisa kita menonaktifkan timestamp karena laravel akan secara otomatis menangani kolom created_at dan updated_at pada tabel
+    public $timestamps = false;
+    // const UPDATED_AT = NULL; // Disable updated_at timestamp
 }

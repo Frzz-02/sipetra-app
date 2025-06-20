@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('metode_pembayaran', 50); 
             $table->enum('status', ['menunggu', 'lunas', 'gagal']); 
             $table->string('bukti_bayar'); 
-            $table->timestamps('created_at'); 
+            $table->timestamp('created_at')->useCurrent(); //pakai timestamp karena kita cuma perlu created_at, tidak perlu updated_at
         });
     }
 
