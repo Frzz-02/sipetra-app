@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 class authcontroller extends Controller
 {
     public function signup()
@@ -44,5 +45,35 @@ class authcontroller extends Controller
 
 
         return redirect("signin")->with('success', 'Registrasi berhasil!');
+    }
+     public function signin(Request $request)
+        {
+            // Validasi
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+
+            // Coba login
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+
+                // Cek role setelah login berhasil
+                $user = Auth::user();
+
+                if ($user->role === 'user') {
+                    return redirect()->route('dashboard_users');
+                } elseif ($user->role === 'penyedia_jasa') {
+                    return redirect()->route('dashboard_penyedia_jasa');
+                } else {
+                    Auth::logout();
+                    return back()->withErrors(['role' => 'Role tidak dikenali.']);
+                }
+            }
+
+            // Jika gagal
+            return back()->withErrors([
+                'email' => 'Email atau password salah.',
+            ]);
     }
 }
