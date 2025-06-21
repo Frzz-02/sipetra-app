@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Penyedia_layanan;
 class authcontroller extends Controller
 {
     public function signup()
@@ -62,7 +63,7 @@ class authcontroller extends Controller
                 $user = Auth::user();
 
                 if ($user->role === 'user') {
-                    return redirect()->route('dashboard_users');
+                    return redirect('dashboard');
                 } elseif ($user->role === 'penyedia_jasa') {
                     return redirect()->route('dashboard_penyedia_jasa');
                 } else {
@@ -75,5 +76,35 @@ class authcontroller extends Controller
             return back()->withErrors([
                 'email' => 'Email atau password salah.',
             ]);
+    }
+    public function registerpenyedia(Request $request)
+    {
+
+        // Validasi data
+        $validated = $request->validate([
+            'email'         => 'required|email|unique:users,email',
+            'password'      => 'required|min:6',
+            'username'      => 'required|string|max:255',
+            'no_telephone'  => 'required|string|max:20',
+        ]);
+
+
+        $user = User::create([
+            'email'         => $validated['email'],
+            'password'      => Hash::make($validated['password']),
+            'username'      => $validated['username'],
+            'no_telephone'  => $validated['no_telephone'],
+            'role'          => 'penyedia_jasa',
+        ]);
+        Penyedia_Layanan::create([
+            'id_user' => $user->id,
+            'nama_toko' => $request->nama_toko,
+            'alamat_toko' => $request->alamat_toko,
+            'deskripsi' => $request->deskripsi
+        ]);
+
+
+
+        return redirect("signin")->with('success', 'Registrasi berhasil!');
     }
 }
