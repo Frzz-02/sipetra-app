@@ -58,7 +58,8 @@
 
       <!-- Form kanan / tengah jika mobile -->
       <div class="col-md-6 d-flex justify-content-center align-items-center p-4">
-        <form class="form-wrapper">
+        <form class="form-wrapper" action="{{route('signin.post')}}" method="POST">
+            @csrf
           <h1 class="font-fredoka text-center text-dark mb-2">Login</h1>
           <p class="text-center text-muted small mb-4">Silahkan isi data akun anda di bawah ini</p>
 
@@ -69,6 +70,7 @@
             </span>
             <input
               type="email"
+              name="email"
               class="form-control border-start-0"
               placeholder="Masukkan Email"
               required
@@ -82,6 +84,7 @@
             </span>
             <input
               type="password"
+              name="password"
               class="form-control border-start-0"
               placeholder="Masukkan Password"
               required
