@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('hewans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data hewan jika data user dihapus
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->string('nama_hewan', 100);
             $table->string('jenis_hewan', 50);
             $table->string('foto_hewan');
+            $table->string('umur')->nullable(); // umur bisa disimpan dalam format "2 tahun", "6 bulan", dll
+            $table->text('deskripsi')->nullable(); // deskripsi tidak wajib
+            $table->string('berat')->nullable(); // berat tidak wajib
             // $table->timestamps();
         });
     }
