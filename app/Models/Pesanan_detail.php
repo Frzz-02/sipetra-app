@@ -9,4 +9,8 @@ class Pesanan_detail extends Model
 {
     /** @use HasFactory<\Database\Factories\PesananDetailFactory> */
     use HasFactory;
+
+    protected $guarded = [
+        'id',
+    ];
 }

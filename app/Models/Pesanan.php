@@ -9,4 +9,9 @@ class Pesanan extends Model
 {
     /** @use HasFactory<\Database\Factories\PesananFactory> */
     use HasFactory;
+
+    protected $guarded = [
+        'id',
+        'status',
+    ];
 }

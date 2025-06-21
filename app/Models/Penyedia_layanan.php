@@ -9,4 +9,10 @@ class Penyedia_layanan extends Model
 {
     /** @use HasFactory<\Database\Factories\PenyediaLayananFactory> */
     use HasFactory;
+
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 }

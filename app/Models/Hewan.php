@@ -9,4 +9,7 @@ class Hewan extends Model
 {
     /** @use HasFactory<\Database\Factories\HewanFactory> */
     use HasFactory;
+    protected $guarded = [
+        'id',
+    ];
 }
