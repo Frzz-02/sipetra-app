@@ -91,6 +91,7 @@
         </form>
 
         <p class="text-center small mt-2">Sudah mempunyai akun ? <a href="#">Login</a></p>
+        <p class="text-center small mt-2">ingin bermitra dengan kami ? <a href="{{route('registrasi_penyedia')}}">klik ini</a></p>
       </div>
 
       <!-- Gambar (Hanya Muncul di md ke atas) -->
