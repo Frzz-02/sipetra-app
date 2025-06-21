@@ -9,17 +9,24 @@ use App\Http\Controllers\tambah_hewan_contloller;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+
+
 Route::get('/signup', [App\Http\Controllers\authcontroller::class, 'signup'])->name('signup');
 Route::get('/signin', [App\Http\Controllers\authcontroller::class, 'login'])->name('signin');
 Route::post('/logout', [App\Http\Controllers\authcontroller::class, 'logout'])->name('logout');
+
 
 Route::post('/register', [App\Http\Controllers\authcontroller::class, 'register'])->name('register');
 Route::post('/signin', [App\Http\Controllers\authcontroller::class, 'signin'])->name('signin.post');
 Route::post('/signup/penyedia', [App\Http\Controllers\authcontroller::class, 'registerpenyedia'])->name('registerpenyedia');
 
+
 route::get('/signupreg', function () {
     return view('penyedia_layanan\regristasi_penyedia');
 })->name('registrasi_penyedia');
+
+
 
 route::get('/layanansaya', function () {
     return view('penyedia_layanan\layanan_saya');
