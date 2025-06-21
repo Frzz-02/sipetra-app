@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('penyedia_layanan_details', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignId('id_penyedia')
             ->constrained('penyedia_layanans')
             ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data penyedia layanan detail jika data penyedia layanan dihapus
-            
-            
+
+
             $table->foreignId('id_layanan')
             ->constrained('layanans')
             ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data penyedia layanan detail jika data layanan dihapus
-            
+            $table->string('tipe');
+
             $table->decimal('harga_dasar', 10, 2);
             // $table->timestamps();
         });

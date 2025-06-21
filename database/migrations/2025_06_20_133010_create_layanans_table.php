@@ -12,10 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('layanans', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
+            $table->string('nama_layanan', 50);
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

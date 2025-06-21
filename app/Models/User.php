@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\PenyediaLayanan;
 
 class User extends Authenticatable
 {
@@ -46,4 +47,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected $table = 'users';
+    public function penyedia()
+{
+    return $this->hasOne(Penyedia_Layanan::class, 'id_user');
+}
+
 }

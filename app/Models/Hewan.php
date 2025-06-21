@@ -12,4 +12,7 @@ class Hewan extends Model
     protected $guarded = [
         'id',
     ];
+
+    protected $table = 'hewans'; // Nama tabel di database
+    public $timestamps = false;
 }
