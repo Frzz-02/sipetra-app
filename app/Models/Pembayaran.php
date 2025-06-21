@@ -16,7 +16,6 @@ class Pembayaran extends Model
 
     protected $guarded = [
         'id',
-        'status',
         'created_at',
     ];
     

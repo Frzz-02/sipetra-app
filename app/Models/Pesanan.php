@@ -12,6 +12,5 @@ class Pesanan extends Model
 
     protected $guarded = [
         'id',
-        'status',
     ];
 }
