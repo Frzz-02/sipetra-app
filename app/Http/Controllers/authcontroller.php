@@ -11,12 +11,12 @@ class authcontroller extends Controller
 {
     public function signup()
     {
-        return view('signup');
+        return view('page.Authentication.signup');
     }
 
     public function login()
     {
-        return view('signin');
+        return view('page.Authentication.signin');
     }
 
     public function logout()
