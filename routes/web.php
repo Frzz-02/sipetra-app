@@ -23,13 +23,13 @@ Route::post('/signup/penyedia', [App\Http\Controllers\authcontroller::class, 're
 
 
 route::get('/signupreg', function () {
-    return view('penyedia_layanan\regristasi_penyedia');
+    return view('page.Authentication.regristasi_penyedia');
 })->name('registrasi_penyedia');
 
 
 
 route::get('/layanansaya', function () {
-    return view('penyedia_layanan\layanan_saya');
+    return view('penyedia_layanan.layanan_saya');
 })->name('layanansaya');
 
 
