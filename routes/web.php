@@ -36,7 +36,7 @@ route::get('/layanansaya', function () {
 
 route::get('/dashboard', [App\Http\Controllers\dashboard_user::class, 'index'])->middleware(middleware: ['auth'])->name('dashboard_users');
 route::get('/dashboardtoko', function () {
-    return view('dashboard_penyedia_jasa');
+    return view('penyedia_layanan.dashboard_penyedia_jasa');
 })->middleware(['auth'])->name('dashboard_penyedia_jasa');
 route::get('/tambahhewan', function () {
     return view('tambah-hewan');
