@@ -11,23 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('layanans', function (Blueprint $table) {
+        Schema::create('ulasan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
-            $table->string('nama_layanan', 50);
-            $table->text('deskripsi')->nullable();
-            $table->decimal('harga_dasar', 10, 2);
+            $table->foreignId('id_penyedia')->constrained('penyedia_layanans')->onDelete('cascade');
+            $table->tinyInteger('rating')->check('rating >= 1 AND rating <= 5');
+            $table->text('komentar')->nullable();
             $table->timestamps();
         });
     }
 
-
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('layanans');
+        Schema::dropIfExists('ulasan');
     }
 };
