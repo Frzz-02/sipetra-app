@@ -138,7 +138,6 @@
             />
           </div>
         </div>
-
         
         
         
@@ -184,26 +183,26 @@
             <button type="submit" class="btn w-100 text-white" style="background-color: #bb9587">
               Login
             </button>
-            
-            
-            
-            
+
+
+
+
 
             <!-- Link register -->
             <p class="text-end mt-3 small text-muted">
               Belum mempunyai akun?
               <a href="{{route('signup')}}" class="text-decoration-none fw-semibold text-primary">Register</a>
             </p>
-            
-            
-            
+
+
+
 
             <!-- Divider -->
             <p class="text-center mt-5 mb-4 small text-muted">Atau login menggunakan</p>
 
-            
-            
-            
+
+
+
 
             <!-- Social login -->
             <div class="d-grid gap-2">
@@ -211,9 +210,9 @@
                   <i class="fab fa-google position-absolute top-50 start-0 ms-3 ms-md-4  translate-middle-y"></i>
                   <span class="d-block text-center w-100">Login dengan<span class="fw-semibold ms-3">Google</span></span>
               </button>
-              
+
               <button type="button" class="btn btn-light border text-muted w-100 position-relative">
-                <i class="fab fa-facebook position-absolute top-50 start-0 ms-3 ms-md-4  translate-middle-y"></i> 
+                <i class="fab fa-facebook position-absolute top-50 start-0 ms-3 ms-md-4  translate-middle-y"></i>
                 <span class="d-block text-center w-100">Login dengan<span class="fw-semibold ms-3">Facebook</span></span>
               </button>
 
@@ -231,9 +230,7 @@
         </div>
       </div>
 
-
       
-
 
       {{-- tampilan form mobile --}}
       <section class="vh-100 gradient-custom d-block d-md-none">
@@ -315,5 +312,4 @@
       
 
 
-      
 @endsection
