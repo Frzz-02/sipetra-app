@@ -138,8 +138,7 @@
             />
           </div>
         </div>
-        
-        
+
         
         
         
@@ -229,8 +228,6 @@
           </form>
         </div>
       </div>
-
-      
 
       {{-- tampilan form mobile --}}
       <section class="vh-100 gradient-custom d-block d-md-none">
