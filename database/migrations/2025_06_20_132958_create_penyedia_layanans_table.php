@@ -9,17 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+   public function up(): void
     {
         Schema::create('penyedia_layanans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')
                 ->constrained('users')
-                ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data penyedia_layanans jika data users dihapus
-                
+                ->onDelete('cascade');
+
             $table->string('nama_toko', 100);
             $table->text('alamat_toko');
             $table->text('deskripsi')->nullable();
+
+            // Gunakan enum untuk membatasi pilihan status
+            $table->enum('status', ['aktif', 'nonaktif', 'ditangguhkan', 'dibekukan', 'ditampilkan'])
+                ->default('aktif');
+
             $table->timestamps();
         });
     }
