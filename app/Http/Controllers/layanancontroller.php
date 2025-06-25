@@ -24,27 +24,6 @@ class LayananController extends Controller
         return view('layanan.create', compact('layananSession'));
     }
 
-    public function addToSession(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|string',
-            'harga' => 'required|numeric|min:0',
-            'opsi' => 'nullable|string',
-        ]);
-
-        $variasi = session()->get('variasi_layanan', []);
-
-        $variasi[] = [
-            'nama' => $request->nama,
-            'harga' => $request->harga,
-            'opsi' => $request->opsi,
-        ];
-
-        session(['variasi_layanan' => $variasi]);
-
-        return back()->with('success', 'Variasi berhasil ditambahkan ke daftar sementara.');
-    }
-
     public function createLayanan()
     {
         $variasi = session()->get('variasi_layanan', []);
