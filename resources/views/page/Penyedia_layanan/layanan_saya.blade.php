@@ -1,100 +1,31 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Layanan Toko Saya</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+@extends('layout.auth')
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">PetService</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </div>
-</nav>
-
+@section('content')
 <div class="container mt-5">
-    <h2 class="mb-4">Layanan Toko Saya</h2>
-
-    <!-- Simulasi alert -->
-    <div class="alert alert-success" role="alert">
-        Layanan berhasil ditambahkan.
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Layanan Saya</h2>
+        <a href="{{ route('layanan.create') }}" class="btn btn-primary">Tambah Layanan</a>
     </div>
 
-    <div class="alert alert-danger" role="alert">
-        Layanan ini sudah ditambahkan.
-    </div>
-
-    <!-- Form Tambah Layanan -->
-    <form method="POST" action="#">
-        <!-- Simulasi token CSRF -->
-        <input type="hidden" name="_token" value="csrf-token-placeholder">
-
-        <div class="mb-3">
-            <label for="id_layanan" class="form-label">Pilih Layanan</label>
-            <select class="form-select" name="id_layanan" id="id_layanan" required>
-                <option value="">-- Pilih Layanan --</option>
-                <option value="1">Penitipan Hewan</option>
-                <option value="2">Grooming</option>
-                <option value="3">Antar Jemput</option>
-                <option value="4">Pembersihan Kandang</option>
-            </select>
+    @if($layananSaya->isEmpty())
+        <div class="alert alert-info">
+            Anda belum memiliki layanan. Silakan tambahkan layanan terlebih dahulu.
         </div>
-        <div class="mb-3">
-            <label for="harga_dasar" class="form-label">tipe</label>
-            <input type="text" class="form-control" name="tipe" id="harga_dasar" min="0" required>
+    @else
+        <div class="row">
+            @foreach($layananSaya as $layanan)
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $layanan->layanan->nama_layanan }}</h5>
+                            <p class="card-text"><strong>Tipe:</strong> {{ $layanan->tipe }}</p>
+                            <p class="card-text"><strong>Harga:</strong> Rp {{ number_format($layanan->harga_dasar) }}</p>
+                            <p class="card-text"><strong>Deskripsi:</strong> {{ $layanan->deskripsi ?? '-' }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        <div class="mb-3">
-            <label for="harga_dasar" class="form-label">Harga Dasar (Rp)</label>
-            <input type="number" class="form-control" name="harga_dasar" id="harga_dasar" min="0" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Tambah Layanan</button>
-    </form>
-
-    <hr class="my-5">
-
-    <!-- Daftar layanan yang sudah ditambahkan -->
-    <h4>Layanan yang Sudah Ditambahkan</h4>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered mt-3">
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Nama Layanan</th>
-                    <th>Harga Dasar (Rp)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Penitipan Hewan</td>
-                    <td>50.000</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Grooming</td>
-                    <td>35.000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Pembersihan Kandang</td>
-                    <td>25.000</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    @endif
 </div>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+@endsection

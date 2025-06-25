@@ -13,5 +13,18 @@ class Layanan extends Model
 
     protected $guarded = [
         'id',
+
     ];
+    protected $fillable = [
+        'id_user',
+        'nama_layanan',
+        'deskripsi',
+        'harga_dasar',
+    ];
+    public $timestamps = true;
+    public function variasi()
+    {
+        return $this->hasMany(Penyedia_layanan_detail::class, 'id_layanan');
+    }
+
 }

@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('layanans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->string('nama_layanan', 50);
             $table->text('deskripsi')->nullable();
+            $table->decimal('harga_dasar', 10, 2);
             $table->timestamps();
         });
     }
+
 
 
     /**

@@ -31,8 +31,6 @@ return new class extends Migration
             // bisa menyimpan data custom, contoh:
             // {"jumlah_kandang":30, "waktu_grooming":"30menit", "jarak_max_km":10}
 
-            $table->boolean('status_aktif')->default(true);
-            $table->timestamps();
         });
     }
 
