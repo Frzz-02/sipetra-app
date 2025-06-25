@@ -10,7 +10,7 @@ class dashboard_user extends Controller
 {
     public function index()
     {
-        return view('dashboard_users');
+        return view('page.User.dashboard_users');
     }
     public function showhewan()
     {
@@ -18,7 +18,7 @@ class dashboard_user extends Controller
 
         $hewan = Hewan::where('id_user', $user->id)->get();
 
-       return view('dashboard_users', compact('hewan'));
+       return view('page.User.dashboard_users', compact('hewan'));
     }
 
 
