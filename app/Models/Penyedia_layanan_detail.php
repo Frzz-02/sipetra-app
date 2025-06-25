@@ -13,4 +13,18 @@ class Penyedia_layanan_detail extends Model
     protected $guarded = [
         'id',
     ];
+    protected $fillable = [
+        'id_penyedia',
+        'id_layanan',
+        'tipe',
+        'harga_dasar',
+        'deskripsi',
+        'opsi',
+    ];
+    public $timestamps = false;
+
+    public function layanan()
+    {
+        return $this->belongsTo(Layanan::class, 'id_layanan');
+    }
 }
