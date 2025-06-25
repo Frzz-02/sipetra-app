@@ -15,19 +15,25 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('id_penyedia')
-            ->constrained('penyedia_layanans')
-            ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data penyedia layanan detail jika data penyedia layanan dihapus
-
+                ->constrained('penyedia_layanans')
+                ->onDelete('cascade');
 
             $table->foreignId('id_layanan')
-            ->constrained('layanans')
-            ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data penyedia layanan detail jika data layanan dihapus
-            $table->string('tipe');
+                ->constrained('layanans')
+                ->onDelete('cascade');
 
+            $table->string('tipe'); // contoh: "bawah", "VIP", "antar jemput area kota"
             $table->decimal('harga_dasar', 10, 2);
-            // $table->timestamps();
+
+            $table->text('deskripsi')->nullable(); // penjelasan layanan/tambahan info
+
+            $table->json('opsi')->nullable();
+            // bisa menyimpan data custom, contoh:
+            // {"jumlah_kandang":30, "waktu_grooming":"30menit", "jarak_max_km":10}
+
         });
     }
+
 
     /**
      * Reverse the migrations.
