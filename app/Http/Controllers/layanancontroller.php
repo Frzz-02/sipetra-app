@@ -6,17 +6,27 @@ use Illuminate\Http\Request;
 use App\Models\Penyedia_layanan_detail;
 use App\Models\Layanan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LayananController extends Controller
 {
     public function index()
     {
-        $layananSaya = Penyedia_layanan_detail::with('layanan')
-            ->where('id_penyedia', Auth::id())
+        // Ambil semua layanan yang dimiliki user
+        $layananUtama = \App\Models\Layanan::with('details') // relasi ke variasi
+            ->where('id_user', Auth::id())
             ->get();
 
-        return view('page.Penyedia_layanan.layanan_saya', compact('layananSaya'));
+        return view('page.Penyedia_layanan.layanan_saya', compact('layananUtama'));
     }
+
+
+    public function show($id)
+    {
+        $layanan = Layanan::with('details')->where('id_user', Auth::id())->findOrFail($id);
+        return view('page.Penyedia_layanan.detail_layanan', compact('layanan'));
+    }
+
 
     public function create()
     {
@@ -36,34 +46,43 @@ class LayananController extends Controller
             'nama_layanan' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
             'harga_dasar' => 'required|numeric|min:0',
-            'variasi' => 'required|array|min:1',
-            'variasi.*.nama' => 'required|string',
-            'variasi.*.harga' => 'required|numeric|min:0',
+            'variasi' => 'nullable|array',
+            'variasi.*.nama' => 'required_with:variasi|string',
+            'variasi.*.harga' => 'required_with:variasi|numeric|min:0',
             'variasi.*.opsi' => 'nullable|string',
+            'variasi.*.deskripsi' => 'nullable|string|max:255',
         ]);
 
-        // Simpan layanan utama
-        $layanan = Layanan::create([
-            'id_user' => Auth::id(), // pastikan ini sesuai field di tabel
-            'nama_layanan' => $request->nama_layanan,
-            'deskripsi' => $request->deskripsi,
-            'harga_dasar' => $request->harga_dasar,
-        ]);
+        DB::beginTransaction();
 
-        // Simpan variasi layanan
-        foreach ($request->variasi as $item) {
-            Penyedia_layanan_detail::create([
-                'id_penyedia' => Auth::id(),
-                'id_layanan' => $layanan->id,
-                'tipe' => $item['nama'],
-                'harga_dasar' => $item['harga'],
-                'deskripsi' => $item['opsi'] ?? null,
+        try {
+            $layanan = Layanan::create([
+                'id_user' => Auth::id(),
+                'nama_layanan' => $request->nama_layanan,
+                'deskripsi' => $request->deskripsi,
+                'harga_dasar' => $request->harga_dasar,
             ]);
+
+            if ($request->filled('variasi')) {
+                foreach ($request->variasi as $item) {
+                    Penyedia_layanan_detail::create([
+                        'id_penyedia' => Auth::id(),
+                        'id_layanan' => $layanan->id,
+                        'tipe' => $item['nama'],
+                        'harga_dasar' => $item['harga'],
+                        'deskripsi' => $item['deskripsi'] ?? null,
+                        'opsi' => $item['opsi'] ?? null,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('layanansaya')->with('success', 'Layanan berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal menyimpan layanan: ' . $e->getMessage());
         }
-
-        return redirect()->route('layanansaya')->with('success', 'Layanan berhasil ditambahkan!');
     }
-
 
     public function resetSession()
     {

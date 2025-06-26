@@ -14,13 +14,18 @@ class Penyedia_layanan extends Model
             'id',
             'created_at',
             'updated_at',
-        ], 
+        ],
     $table = 'penyedia_layanans';
 
 
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
+    }
+
+   public function layanans()
+    {
+        return $this->hasMany(\App\Models\Layanan::class, 'id_user', 'id_user');
     }
 
 }
