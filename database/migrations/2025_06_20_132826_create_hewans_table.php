@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('umur')->nullable(); // umur bisa disimpan dalam format "2 tahun", "6 bulan", dll
             $table->text('deskripsi')->nullable(); // deskripsi tidak wajib
             $table->string('berat')->nullable(); // berat tidak wajib
+            $table->date('tanggal_lahir'); // tanggal lahir
             // $table->timestamps();
         });
     }
