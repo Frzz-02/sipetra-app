@@ -59,10 +59,12 @@
             <p class="mb-0 text-muted small">{{Auth::user()->email}}</p>
           </div>
         </div>
-        <a href="#" class="btn btn-sm btn-outline-secondary d-none d-md-block">
-          <button class="btn btn-sm ">
-            Pesan Layanan
-          </button>
+        <a href="{{ route('cari_layanan') }}" class="btn btn-sm btn-outline-secondary d-none d-md-block">
+            <button class="btn btn-sm">
+                Pesan Layanan
+            </button>
+        </a>
+
         </a>
       </div>
     </div>

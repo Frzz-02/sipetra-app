@@ -48,12 +48,17 @@
                     <input type="number" name="variasi[${count}][harga]" class="form-control" required min="0">
                 </div>
                 <div class="mb-2">
-                    <label>Opsi Tambahan (opsional)</label>
+                    <label>Jumlah</label>
                     <input type="text" name="variasi[${count}][opsi]" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>Deskripsi Variasi</label>
+                    <textarea name="variasi[${count}][deskripsi]" class="form-control" rows="2" placeholder="Opsional..."></textarea>
                 </div>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', html);
     }
 </script>
+
 @endsection

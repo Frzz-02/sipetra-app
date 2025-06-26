@@ -6,6 +6,7 @@ use App\Http\Controllers\dashboard_user;
 use App\Http\Controllers\HewanController;
 use App\Http\Controllers\tambah_hewan_contloller;
 use App\Http\Controllers\layanancontroller;
+use App\Http\Controllers\CariLayananController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,7 +35,7 @@ route::get('/dashboardtoko', function () {
 })->middleware(['auth'])->name('dashboard_penyedia_jasa');
 
 route::get('/tambahhewan', function () {
-    return view('tambah-hewan');
+    return view('page.User.tambah-hewan');
 })->middleware(['auth'])->name('add_hewan');
 
 
@@ -42,6 +43,12 @@ route::get('/dashboard', [App\Http\Controllers\dashboard_user::class, 'showhewan
 Route::post('/hewan/tambah', [tambah_hewan_contloller::class, 'store'])->name('hewan.store')->middleware(['auth']);
 
 Route::get('/layanansaya', [layanancontroller::class, 'index'])->name('layanansaya');
+Route::get('/layanan/{id}/detaillayanan', [LayananController::class, 'show'])->name('layanan.detaillayanan');
 Route::get('/layanan/tambah', [LayananController::class, 'createLayanan'])->name('layanan.create');
 Route::post('/layanan/tambah', [LayananController::class, 'storeLayanan'])->name('layanan.store');
+
+Route::get('/cari-layanan', [CariLayananController::class, 'index'])->name('cari_layanan');
+Route::get('/penyedia/{id}', [CariLayananController::class, 'detail'])->name('penyedia_layanan.detail');
+Route::get('/layanan/{id}/detail_layanan', [CariLayananController::class, 'show'])->name('layanan.detail');
+
 
