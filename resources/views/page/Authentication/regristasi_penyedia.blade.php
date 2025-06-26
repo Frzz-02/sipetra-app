@@ -61,19 +61,42 @@
         <hr class="text-muted">
 
         <!-- Nama Toko -->
-        <div class="mb-3">
+        <div class="mb-4">
           <label class="form-label fw-semibold">Nama Toko <span class="text-danger">*</span></label>
           <input type="text" name="nama_toko" class="form-control form-control-sm" placeholder="Nama toko layanan Anda" required>
         </div>
 
         <!-- Alamat -->
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Alamat <span class="text-danger">*</span></label>
-          <textarea name="alamat_toko" rows="2" class="form-control form-control-sm" placeholder="Alamat lengkap" required></textarea>
+        <div class="mb-2">
+          <div class="row">
+            <label class="fw-bold fw-5 mb-2" for="">Alamat</label>
+            <label class="form-label fw-medium mb-1">Nama Jalan<span class="text-danger">*</span></label>
+          </div>
+          <textarea name="alamat_toko" style="font-size: 90%" rows="2" class="form-control form-control-sm" placeholder="Masukkan nama jalan. Contoh: Jl. Ra. Kartini No.44" required></textarea>
         </div>
 
+
+
+        <div class="row mb-5">
+          <div class="col-12 col-sm-4">
+            <label style="font-size: 10px" class="p-1 fw-semibold" id="addon-wrapping">Kecamatan : </label>
+            <input style="font-size: 12px" name="kecamatan" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
+          </div>
+          
+          <div class="col-12 col-sm-4">
+            <label style="font-size: 10px" class="p-1 fw-semibold" id="addon-wrapping">Kabupaten : </label>
+            <input style="font-size: 12px" name="kabupaten" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
+          </div>
+
+          <div class="col-12 col-sm-4">
+            <label style="font-size: 10px" class="p-1 fw-semibold" id="addon-wrapping col-3">Kota : </label>
+            <input style="font-size: 12px" name="kota" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
+          </div>
+        </div>
+        
+
         <!-- Deskripsi -->
-        <div class="mb-3">
+        <div class="mb-5">
           <label class="form-label fw-semibold">Deskripsi Toko (opsional)</label>
           <textarea name="deskripsi" rows="3" class="form-control form-control-sm" placeholder="Jelaskan layanan atau keunggulan toko Anda"></textarea>
         </div>
