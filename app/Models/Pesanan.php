@@ -13,4 +13,20 @@ class Pesanan extends Model
     protected $guarded = [
         'id',
     ];
+    protected $fillable = [
+    'id_user',
+    'id_penyedia_layanan',
+    'tanggal_pesan',
+    'tanggal_mulai',
+    'tanggal_selesai',
+    'tanggal_titip',
+    'tanggal_ambil',
+    'lokasi_awal',
+    'lokasi_tujuan',
+    'total_biaya',
+    'status',
+    ];
+    protected $table = 'pesanans';
+
+     public $timestamps = false;
 }

@@ -7,6 +7,8 @@ use App\Http\Controllers\HewanController;
 use App\Http\Controllers\tambah_hewan_contloller;
 use App\Http\Controllers\layanancontroller;
 use App\Http\Controllers\CariLayananController;
+use App\Http\Controllers\PemesananController;
+use App\Http\Controllers\PembayaranController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,5 +52,13 @@ Route::post('/layanan/tambah', [LayananController::class, 'storeLayanan'])->name
 Route::get('/cari-layanan', [CariLayananController::class, 'index'])->name('cari_layanan');
 Route::get('/penyedia/{id}', [CariLayananController::class, 'detail'])->name('penyedia_layanan.detail');
 Route::get('/layanan/{id}/detail_layanan', [CariLayananController::class, 'show'])->name('layanan.detail');
+
+Route::get('/pemesanan/{id_layanan}', [PemesananController::class, 'create'])->name('pemesanan.create');
+Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
+
+Route::get('/pembayaran/lanjutkan/{id_layanan}', [PembayaranController::class, 'lanjut'])->name('pembayaran.lanjutkan');
+Route::post('/pembayaran/proses', [PembayaranController::class, 'proses'])->name('pembayaran.proses');
+
+
 
 

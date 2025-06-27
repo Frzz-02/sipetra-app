@@ -13,4 +13,18 @@ class Pesanan_detail extends Model
     protected $guarded = [
         'id',
     ];
+    public $timestamps = false;
+    protected $table = 'pesanan_details';
+
+    protected $fillable = [
+        'id_pesanan',
+        'id_hewan',
+        'id_layanan',
+        'data_opsi_layanan',
+        'subtotal_biaya',
+        'lokasi_awal',
+        'lokasi_tujuan',
+    ];
+
+
 }

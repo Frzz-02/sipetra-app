@@ -19,6 +19,16 @@
             <label>Harga Dasar (Rp)</label>
             <input type="number" name="harga_dasar" class="form-control" required min="0">
         </div>
+        <div class="mb-3">
+            <label>Tipe Layanan</label>
+            <select name="tipe_input" class="form-control" required>
+                <option value="">-- Pilih Tipe --</option>
+                <option value="penitipan">Penitipan</option>
+                <option value="antar jemput">Antar Jemput</option>
+                <option value="lainnya">Lainnya</option>
+            </select>
+        </div>
+
 
         <hr>
         <h5>Variasi Layanan</h5>
