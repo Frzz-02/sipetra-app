@@ -40,7 +40,7 @@
                         name="id_hewan[]"
                         value="{{ $hewan->id }}"
                         id="hewan{{ $hewan->id }}"
-                        required>
+                       >
                     <label class="form-check-label" for="hewan{{ $hewan->id }}">
                         {{ $hewan->nama }} ({{ $hewan->jenis }})
                     </label>

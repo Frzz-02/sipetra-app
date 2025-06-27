@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 Route::get('/signup', [App\Http\Controllers\authcontroller::class, 'signup'])->name('signup');
-Route::get('/signin', [App\Http\Controllers\authcontroller::class, 'login'])->name('signin');
+Route::get('/signin', [App\Http\Controllers\authcontroller::class, 'login'])->name(name: 'signin');
 Route::post('/logout', [App\Http\Controllers\authcontroller::class, 'logout'])->name('logout');
 
 
