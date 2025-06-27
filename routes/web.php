@@ -8,14 +8,14 @@ use App\Http\Controllers\tambah_hewan_contloller;
 use App\Http\Controllers\layanancontroller;
 use App\Http\Controllers\CariLayananController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('home');
 
 
 
 Route::get('/signup', [App\Http\Controllers\authcontroller::class, 'signup'])->name('signup');
-Route::get('/signin', [App\Http\Controllers\authcontroller::class, 'login'])->name('signin');
+Route::get('/', [App\Http\Controllers\authcontroller::class, 'login'])->name('signin');
 Route::post('/logout', [App\Http\Controllers\authcontroller::class, 'logout'])->name('logout');
 
 
