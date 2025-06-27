@@ -1,34 +1,69 @@
 @extends('layout.main')
 
 @push('styles')
-    body {
-      background-color: #eac9be;
-    }
-
-    .header-gradient {
-      background: linear-gradient(to right, #c48f7a, #d9a38a);
-    }
     
-    .profile-card {
-      border-top-left-radius: 40px;
-      border-top-right-radius: 40px;
-      height: auto;
-    }
-    
-    .profile-inner {
-      background-color: white;
-      border-radius: 20px;
-      height: 80%;
-    }
-
-    .search-input::placeholder {
-      font-size: 12px;
-    }
 @endpush
 
 
 
 
+@section('content2')
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-warning px-3 shadow-sm"><i
+              class="fas fa-shopping-cart fa-sm text-warning-50" style="-webkit-text-stroke: 0px rgb(188, 106, 0);"></i><span class="pl-2" style="font-weight: 800; -webkit-text-stroke: 0.1px rgb(188, 106, 0);"> Pesan layanan</span></a>
+    </div>
+
+    
+
+    {{-- Box yang menampung card animal --}}
+    <div class="card shadow mb-4">
+      <div class="card-header py-2 d-flex justify-content-center align-items-center">
+          <h6 class="m-0 font-weight-bold text-primary col">Data hewan kamu</h6>
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm col-auto">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Tambah hewan
+          </a>
+      </div>
+
+      
+      
+      <div class="card-body">
+        <div class="row px-4">
+          
+          @for ($i = 1; $i < 4; $i++)
+            <!-- kartu/ daftar hewan -->
+            <x-animal-card/>
+          @endfor
+          
+        </div>
+        
+        
+          
+      </div>
+  </div>
+
+@endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- konten lama --}}
 @section('content')
 
     <div class="container-fluid p-3 bg-white profile-card mt-2">
