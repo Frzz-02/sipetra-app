@@ -103,13 +103,12 @@
 
         <!-- Umur Hewan -->
         <div class="col-md-6">
-        <label for="umur" class="form-label fw-semibold">Umur Hewan <span class="text-danger">*</span></label>
+        <label for="tanggal_lahir" class="form-label fw-semibold">Tanggal Lahir <span class="text-danger">*</span></label>
         <input
-            type="text"
-            id="umur"
-            name="umur"
+            type="date"
+            id="tanggal_lahir"
+            name="tanggal_lahir"
             class="form-control form-control-sm"
-            placeholder="Contoh: 6 bulan, 2 tahun"
             required
         >
         </div>
