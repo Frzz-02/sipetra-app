@@ -5,43 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
 
-    <!-- Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    
+    
+    <!-- Custom fonts for this template-->
+    <link href="{{ asset('assets/dashboard_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+    
+    
+    
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" /> --}}
+    
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Fredoka+One&family=Open+Sans&display=swap" rel="stylesheet" />
+    
+    
+    <!-- Custom styles for this template-->
+    <link href="{{ asset('assets/dashboard_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/dashboard_assets/css/sb-admin-2.css') }}" rel="stylesheet">
 
+    
+    
     <style>
         @stack('styles')
     </style>
 
   </head>
-  <body>
-    <!-- Header -->
-    <header class="header-gradient px-3 py-3 d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-sm btn-outline-light">
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="d-flex align-items-center gap-2">
-          <div class="rounded-circle bg-light border" style="width: 24px; height: 24px;"></div>
-          <span class="text-white small">Dashboard</span>
+  <body id="page-top">
+    <div id="wrapper">  
+      
+      {{-- component sidebar --}}
+      <x-sidebar_dashboard/>
+
+
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+            {{-- bagiam ini adalah component --}}
+            <x-navbar_dashboard/>  
+
+            <div class="container-fluid">
+              @yield('content2')
+            </div>
         </div>
+
+        
+        
+        
       </div>
-      <nav class="d-none d-sm-flex gap-3 text-white small">
-        <a href="#" class="text-white text-decoration-none">Pusat bantuan</a>
-        <a href="#" class="text-white text-decoration-none">Pilih bahasa</a>
-        <a href="#" class="text-white text-decoration-none">Akun saya</a>
-      </nav>
-    </header>
+    </div>
+
+    
+    
+    
 
     @yield('content') 
 
+    
+    
+    
+    
+    
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('assets/dashboard_assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset('assets/dashboard_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{ asset('assets/dashboard_assets/js/sb-admin-2.min.js') }}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{ asset('assets/dashboard_assets/vendor/chart.js/Chart.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('assets/dashboard_assets/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/js/demo/chart-pie-demo.js') }}"></script>
   </body>
   </html>  
