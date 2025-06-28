@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 Route::get('/signup', [App\Http\Controllers\authcontroller::class, 'signup'])->name('signup');
-Route::get('/signin', [App\Http\Controllers\authcontroller::class, 'login'])->name(name: 'signin');
+Route::get('/signin', [App\Http\Controllers\authcontroller::class, 'login'])->name( 'signin');
 Route::post('/logout', [App\Http\Controllers\authcontroller::class, 'logout'])->name('logout');
 
 
@@ -56,7 +56,7 @@ Route::get('/layanan/{id}/detail_layanan', [CariLayananController::class, 'show'
 Route::get('/pemesanan/{id_layanan}', [PemesananController::class, 'create'])->name('pemesanan.create');
 Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
 
-Route::get('/pembayaran/lanjutkan/{id_layanan}', [PembayaranController::class, 'lanjut'])->name('pembayaran.lanjutkan');
+Route::get('/pembayaran/lanjutkan/{id_pesanan}', [PembayaranController::class, 'lanjut'])->name('pembayaran.lanjutkan');
 Route::post('/pembayaran/proses', [PembayaranController::class, 'proses'])->name('pembayaran.proses');
 
 
