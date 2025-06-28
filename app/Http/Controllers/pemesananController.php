@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hewan;
-use App\Models\Layanan;
-use App\Models\Penyedia_layanan_detail;
-use App\Models\Pesanan;
-use App\Models\Pesanan_detail;
+use App\Models\{Hewan, Layanan, Penyedia_layanan_detail, Pesanan, Pesanan_detail};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Facades\{DB, Auth, Http};
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 class PemesananController extends Controller
 {
     /**
@@ -19,10 +14,8 @@ class PemesananController extends Controller
      */
     public function create($id_layanan)
     {
-        $userId = auth::user()->id;
-
+        $userId = Auth::user()->id;
         $hewans = Hewan::where('id_user', $userId)->get();
-
         $layanan = Layanan::findOrFail($id_layanan);
 
         $layananDetails = Penyedia_layanan_detail::with('layanan')
@@ -31,7 +24,6 @@ class PemesananController extends Controller
 
         return view('page.User.pemesanan', compact('hewans', 'layananDetails', 'layanan'));
     }
-
 
     /**
      * Menyimpan pesanan dan arahkan ke pembayaran.
@@ -44,11 +36,10 @@ class PemesananController extends Controller
             'id_variasi' => 'required|exists:penyedia_layanan_details,id',
         ]);
 
-
         DB::beginTransaction();
 
         try {
-            $user = auth::user()->id;
+            $user = Auth::user()->id;
 
             $variasi = Penyedia_layanan_detail::findOrFail($request->id_variasi);
             $layanan = $variasi->layanan;
@@ -56,12 +47,29 @@ class PemesananController extends Controller
             $opsi = $variasi->opsi ?? json_encode([]);
 
             $jumlahHewan = count($request->id_hewan);
-            $totalBiaya = $harga * $jumlahHewan;
+            $tipe = strtolower($layanan->tipe_input);
+            $totalBiaya = 0;
 
+            if ($tipe === 'penitipan') {
+                $tanggalTitip = Carbon::parse($request->tanggal_titip);
+                $tanggalAmbil = Carbon::parse($request->tanggal_ambil);
+                $jumlahHari = $tanggalTitip->diffInDays($tanggalAmbil) ?: 1;
+                $totalBiaya = $jumlahHari * $jumlahHewan * $harga;
+
+            } elseif ($tipe === 'antar jemput') {
+                  if (!$request->lokasi_awal || !$request->lokasi_tujuan) {
+                        throw new \Exception("Lokasi awal dan tujuan harus diisi.");
+                    }
+                $jarakKm = $this->hitungJarakKm($request->lokasi_awal, $request->lokasi_tujuan);
+                $totalBiaya = $jarakKm * $harga * $jumlahHewan;
+
+            } else {
+                $totalBiaya = $jumlahHewan * $harga;
+            }
 
             $pesanan = Pesanan::create([
                 'id_user' => $user,
-                'id_penyedia_layanan' => $variasi->id_penyedia ,
+                'id_penyedia_layanan' => $variasi->id_penyedia,
                 'tanggal_pesan' => $request->tanggal_pesan ?? now(),
                 'tanggal_titip' => $request->tanggal_titip ?? null,
                 'tanggal_ambil' => $request->tanggal_ambil ?? null,
@@ -89,7 +97,79 @@ class PemesananController extends Controller
                 ->with('success', 'Pesanan berhasil dibuat, lanjutkan ke pembayaran.');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage()); // sementara tampilkan pesan error
+
+            dd([
+                'message' => $e->getMessage(),
+                'trace' => $e->getTrace(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ]);
         }
+
     }
+
+protected function hitungJarakKm($lokasiAwal, $lokasiTujuan)
+{
+    $apiKey = env('ORS_API_KEY');
+
+    // Deteksi apakah input sudah dalam format koordinat
+    if (str_contains($lokasiAwal, ',') && str_contains($lokasiTujuan, ',')) {
+        $awal = explode(',', $lokasiAwal);
+        $tujuan = explode(',', $lokasiTujuan);
+
+        // Format untuk ORS: [long, lat]
+        $coordAwal = [floatval($awal[1]), floatval($awal[0])];
+        $coordTujuan = [floatval($tujuan[1]), floatval($tujuan[0])];
+    } else {
+        // Jika bukan koordinat, gunakan Geocode API
+        $geocodeUrl = 'https://api.openrouteservice.org/geocode/search';
+
+        $responseAwal = Http::withHeaders([
+            'Authorization' => $apiKey
+        ])->get($geocodeUrl, ['text' => $lokasiAwal]);
+
+        $responseTujuan = Http::withHeaders([
+            'Authorization' => $apiKey
+        ])->get($geocodeUrl, ['text' => $lokasiTujuan]);
+
+        $dataAwal = $responseAwal->json();
+        $dataTujuan = $responseTujuan->json();
+
+        if (
+            !isset($dataAwal['features'][0]['geometry']['coordinates']) ||
+            !isset($dataTujuan['features'][0]['geometry']['coordinates'])
+        ) {
+            throw new \Exception("Koordinat tidak ditemukan.");
+        }
+
+        $coordAwal = $dataAwal['features'][0]['geometry']['coordinates'];
+        $coordTujuan = $dataTujuan['features'][0]['geometry']['coordinates'];
+    }
+
+    // Hitung jarak via ORS Directions API
+    $responseJarak = Http::withHeaders([
+        'Authorization' => $apiKey,
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ])->post('https://api.openrouteservice.org/v2/directions/driving-car', [
+        'coordinates' => [$coordAwal, $coordTujuan]
+    ]);
+
+    if ($responseJarak->failed()) {
+        throw new \Exception("Gagal menghitung jarak dengan ORS.");
+    }
+
+    $data = $responseJarak->json();
+
+    if (!isset($data['routes'][0]['segments'][0]['distance'])) {
+        throw new \Exception("Data jarak tidak tersedia.");
+    }
+
+    $jarakMeter = $data['routes'][0]['segments'][0]['distance'];
+
+
+    return round($jarakMeter / 1000, 2); // hasil KM
+}
+
+
 }

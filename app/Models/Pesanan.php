@@ -29,4 +29,13 @@ class Pesanan extends Model
     protected $table = 'pesanans';
 
      public $timestamps = false;
+     public function details()
+    {
+        return $this->hasMany(Pesanan_detail::class, 'id_pesanan');
+    }
+    public function penyediaLayanan()
+    {
+        return $this->belongsTo(Penyedia_layanan::class, 'id_penyedia_layanan');
+    }
+
 }

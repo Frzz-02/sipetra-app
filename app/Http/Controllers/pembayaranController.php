@@ -10,17 +10,18 @@ use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
-    public function lanjut($id_layanan)
+    public function lanjut($id_pesanan)
     {
-        $layanan = Layanan::findOrFail($id_layanan);
-        $pesanan = Pesanan::where('id_user', auth::user()->id)
-            ->where('id_penyedia_layanan', $layanan->id_user)
-            ->latest()
-            ->first();
+        $pesanan = Pesanan::with([
+            'details.hewan', // Ambil data hewan
+            'details.layanan', // Ambil layanan dari detail
+            'penyediaLayanan', // jika ingin info toko
+        ])->findOrFail($id_pesanan);
 
-        $detail = Pesanan_detail::where('id_pesanan', $pesanan->id)->first();
+        // Ambil layanan dari salah satu detail (karena semua sama id_layanan-nya)
+        $layanan = optional($pesanan->details->first())->layanan;
 
-        return view('pembayaran.lanjut', compact('layanan', 'pesanan', 'detail'));
+        return view('page.User.pembayaran', compact('pesanan', 'layanan'));
     }
 
     public function proses(Request $request)

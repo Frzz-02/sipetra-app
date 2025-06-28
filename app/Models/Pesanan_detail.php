@@ -25,6 +25,14 @@ class Pesanan_detail extends Model
         'lokasi_awal',
         'lokasi_tujuan',
     ];
+    public function hewan() {
+        return $this->belongsTo(Hewan::class, 'id_hewan');
+    }
+
+    public function layanan() {
+        return $this->belongsTo(Layanan::class, 'id_layanan');
+    }
+
 
 
 }

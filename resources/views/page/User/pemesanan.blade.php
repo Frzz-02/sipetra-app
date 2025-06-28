@@ -1,6 +1,10 @@
 @extends('layout.auth')
 
 @section('content')
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <div class="container">
     <h3>Form Pemesanan Layanan</h3>
 
@@ -58,15 +62,24 @@
             <input type="datetime-local" name="tanggal_ambil" id="tanggal_ambil" class="form-control">
         </div>
 
-        <!-- Lokasi Antar Jemput -->
+
+       <!-- Lokasi Antar Jemput -->
+        <!-- Lokasi Awal -->
         <div class="mb-3 tipe-antar-jemput d-none">
-            <label for="lokasi_awal" class="form-label">Lokasi Awal</label>
-            <input type="text" name="lokasi_awal" id="lokasi_awal" class="form-control">
+            <label>Lokasi Awal</label>
+            <input type="text" name="lokasi_awal" id="lokasi_awal" class="form-control" readonly>
+            <div id="map_awal" style="height: 200px;"></div>
         </div>
+
+        <!-- Lokasi Tujuan -->
         <div class="mb-3 tipe-antar-jemput d-none">
-            <label for="lokasi_tujuan" class="form-label">Lokasi Tujuan</label>
-            <input type="text" name="lokasi_tujuan" id="lokasi_tujuan" class="form-control">
+            <label>Lokasi Tujuan</label>
+            <input type="text" name="lokasi_tujuan" id="lokasi_tujuan" class="form-control" readonly>
+            <div id="map_tujuan" style="height: 200px;"></div>
         </div>
+
+
+
 
         <!-- Tanggal Pesan -->
         <div class="mb-3 tipe-lainnya d-none">
@@ -106,6 +119,30 @@
             }
         });
 </script>
+<script>
+    // Map Lokasi Awal
+    const mapAwal = L.map('map_awal').setView([-7.797068, 110.370529], 13); // Pusatkan ke Jogja
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapAwal);
+
+    let markerAwal;
+    mapAwal.on('click', function(e) {
+        if (markerAwal) mapAwal.removeLayer(markerAwal);
+        markerAwal = L.marker(e.latlng).addTo(mapAwal);
+        document.getElementById('lokasi_awal').value = e.latlng.lat + ',' + e.latlng.lng;
+    });
+
+    // Map Lokasi Tujuan
+    const mapTujuan = L.map('map_tujuan').setView([-7.797068, 110.370529], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapTujuan);
+
+    let markerTujuan;
+    mapTujuan.on('click', function(e) {
+        if (markerTujuan) mapTujuan.removeLayer(markerTujuan);
+        markerTujuan = L.marker(e.latlng).addTo(mapTujuan);
+        document.getElementById('lokasi_tujuan').value = e.latlng.lat + ',' + e.latlng.lng;
+    });
+</script>
+
 
 @endsection
 
