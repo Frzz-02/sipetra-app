@@ -20,6 +20,7 @@ class Layanan extends Model
         'nama_layanan',
         'deskripsi',
         'harga_dasar',
+        'tipe_input',
     ];
     public $timestamps = true;
     public function variasi()

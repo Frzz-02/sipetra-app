@@ -46,12 +46,17 @@ class LayananController extends Controller
             'nama_layanan' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
             'harga_dasar' => 'required|numeric|min:0',
+            'tipe_input' => 'required|in:penitipan,antar jemput,lainnya',
             'variasi' => 'nullable|array',
             'variasi.*.nama' => 'required_with:variasi|string',
             'variasi.*.harga' => 'required_with:variasi|numeric|min:0',
             'variasi.*.opsi' => 'nullable|string',
             'variasi.*.deskripsi' => 'nullable|string|max:255',
         ]);
+
+        $id_penyedia = DB::table('penyedia_layanans')
+        ->where('id_user', Auth::id())
+        ->value('id');
 
         DB::beginTransaction();
 
@@ -61,12 +66,14 @@ class LayananController extends Controller
                 'nama_layanan' => $request->nama_layanan,
                 'deskripsi' => $request->deskripsi,
                 'harga_dasar' => $request->harga_dasar,
+                'tipe_input' => $request->tipe_input,
             ]);
 
             if ($request->filled('variasi')) {
+                // Simpan hanya variasi
                 foreach ($request->variasi as $item) {
                     Penyedia_layanan_detail::create([
-                        'id_penyedia' => Auth::id(),
+                        'id_penyedia' => $id_penyedia,
                         'id_layanan' => $layanan->id,
                         'tipe' => $item['nama'],
                         'harga_dasar' => $item['harga'],
@@ -74,14 +81,25 @@ class LayananController extends Controller
                         'opsi' => $item['opsi'] ?? null,
                     ]);
                 }
+            } else {
+                // Tidak ada variasi, simpan layanan utama sebagai 1 variasi default
+                Penyedia_layanan_detail::create([
+                    'id_penyedia' => $id_penyedia,
+                    'id_layanan' => $layanan->id,
+                    'tipe' => $request->nama_layanan,
+                    'harga_dasar' => $request->harga_dasar,
+                    'deskripsi' => $request->deskripsi ?? null,
+                    'opsi' => null,
+                ]);
             }
 
             DB::commit();
             return redirect()->route('layanansaya')->with('success', 'Layanan berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Gagal menyimpan layanan: ' . $e->getMessage());
+            dd($e->getMessage()); // sementara tampilkan pesan error
         }
+
     }
 
     public function resetSession()
