@@ -20,6 +20,15 @@ class dashboard_user extends Controller
 
        return view('page.User.dashboard_users', compact('hewan'));
     }
+    public function riwayat()
+    {
+        $pesanans = \App\Models\Pesanan::with(['details.layanan'])
+            ->where('id_user', auth::user()->id)
+            ->orderByDesc('tanggal_pesan')
+            ->get();
+
+        return view('page.User.riwayat', compact('pesanans'));
+    }
 
 
 }
