@@ -21,7 +21,7 @@
         <i class="fas fa-shopping-cart fa-sm text-warning-50" style="-webkit-text-stroke: 0px rgb(188, 106, 0);"></i><span class="pl-2" style="font-weight: 800; -webkit-text-stroke: 0.1px rgb(188, 106, 0);"> Pesan layanan</span>
       </a>
       
-      <a href="{{ route('cari_layanan') }}" class="col-2 d-sm-none d-inline-block btn btn-sm btn-outline-warning px-3 shadow-sm d-flex align-items-center justify-content-center py-2">
+      <a href="{{ route('cari_layanan') }}" class="col-2 d-sm-none d-inline-block btn btn-sm btn-outline-warning px-3 shadow-sm d-flex align-items-center justify-content-center py-2" data-toggle="tooltip" data-placement="bottom" title="Pesan layanan">
         <i class="fas fa-shopping-cart fa-sm text-warning-50" style="-webkit-text-stroke: 0px rgb(188, 106, 0);"></i>
       </a>
     </div>
@@ -35,7 +35,7 @@
           <a href="{{route('add_hewan')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm col-auto">
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambah hewan
           </a>
-          <a href="#" class="d-sm-none d-inline-block btn btn-sm btn-primary shadow-sm col-auto">
+          <a href="{{route('add_hewan')}}" class="d-sm-none d-inline-block btn btn-sm btn-primary shadow-sm col-auto" data-toggle="tooltip" data-placement="bottom" title="Tambah hewan">
             <i class="fas fa-plus fa-sm text-white-50"></i>
           </a>
       </div>
@@ -49,8 +49,15 @@
           @if ($hewan->count())
 
             @foreach ($hewan as $pet)
+
               <!-- kartu/ daftar hewan -->
-              <x-animal-card :pet="$pet" />
+              <x-animal-card 
+                  :name="$pet->nama_hewan"
+                  :img="$pet->foto_hewan"
+                  :birth="$pet->tanggal_lahir"
+               />
+             {{-- variabel yang diawali ":" mengarah ke parameter konstruktor di file animalCard.php --}}
+             
             @endforeach
 
           @else
