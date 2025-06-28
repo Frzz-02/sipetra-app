@@ -1,22 +1,23 @@
-@props(['pet'])
+{{-- @props(['pet']) --}}
 
-<div class="col-md-6 col-12 mb-4">
-    <div class="card shadow h-100">
-        <div class="card-body">
-            <div class="d-flex align-items-center gap-3">
-                <!-- Foto di kiri -->
-                <div class="me-3">
-                    <img src="{{ asset('storage/' . $pet->image) }}" alt="{{ $pet->nama_hewan }}" width="50" height="50" class="rounded-circle border border-dark">
+
+<div class="col-md-6 col-12 mb-sm-4 mb-2">
+    <div class="card border-left-warning shadow h-100">
+        <div class="card-body p-2">
+            <div class="row no-gutters align-items-center d-flex flex-row-reverse pr-1">
+              
+                <div class="col-xl-10 col-8 col-sm-10 col-md-9 pl-2">
+                    <div class="font-weight-medium text-warning text-outline text-capitalize mb-0 p-0 text-truncate" style="max-width: 100%">
+                        {{ $animal_name }}
+                    </div>
+                    <div class="h5 font-weight-light fs-3 mb-1 text-gray-800">{{ $animal_birth }}</div>
                 </div>
 
-                <!-- Info di kanan -->
-                <div class="ml-4">
-                    <div class="fw-bold text-dark fs-5 text-capitalize mb-1">
-                        {{ $pet->nama_hewan }}
-                    </div>
-                    <div class="text-muted fs-6">
-                        {{ $pet->tanggal_lahir }}
-                    </div>
+                <div class="col">
+                  <div class="d-flex justify-content-center">
+                    <img src="{{ asset('storage/' . $animal_img ) }}" alt="{{ $animal_name }}" class="img-size img-size-max rounded-circle border border-dark border-1">
+                    {{-- width="47" height="47" --}}
+                  </div>
                 </div>
             </div>
         </div>

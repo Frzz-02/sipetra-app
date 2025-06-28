@@ -11,9 +11,14 @@ class animalCard extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public $animal_name, $animal_birth, $animal_img;
+    
+    
+    public function __construct($name, $birth, $img)
     {
-        //
+        $this->animal_name = $name;
+        $this->animal_birth = $birth;
+        $this->animal_img = $img;
     }
 
     /**

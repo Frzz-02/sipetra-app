@@ -10,14 +10,14 @@ use App\Http\Controllers\CariLayananController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
 
-Route::get('/', function () {
+ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
 
 
 Route::get('/signup', [App\Http\Controllers\authcontroller::class, 'signup'])->name('signup');
-Route::get('/signin', [App\Http\Controllers\authcontroller::class, 'login'])->name( 'signin');
+Route::get('/login', [App\Http\Controllers\authcontroller::class, 'login'])->name('signin');
 Route::post('/logout', [App\Http\Controllers\authcontroller::class, 'logout'])->name('logout');
 
 

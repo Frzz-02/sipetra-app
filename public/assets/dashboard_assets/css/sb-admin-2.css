@@ -10010,8 +10010,22 @@ a:focus {
 }
 
 .fs-3{
-  font-size: small;
+  font-size: x-small;
 }
+
+.fs-header{
+  font-size: x-large;
+  font-weight: bold;
+}
+
+
+@media(min-width: 576px){
+  .fs-3{
+    font-size: small;
+  }
+}
+
+
 .fs-5{
   font-size: x-large;
 }
