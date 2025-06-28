@@ -162,7 +162,7 @@
   <header>
     <h1>SIPETRA</h1>
     <p>Platform modern dan terpercaya untuk layanan grooming, penitipan, antar jemput, dan pembersihan kandang hewan peliharaan Anda.</p>
-    <a href="{{ route('signup') }}" class="btn">Gabung Sekarang</a>
+    <a href="{{ route('signin') }}" class="btn">Gabung Sekarang</a>
   </header>
 
   <section>

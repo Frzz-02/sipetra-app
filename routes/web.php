@@ -9,6 +9,7 @@ use App\Http\Controllers\layanancontroller;
 use App\Http\Controllers\CariLayananController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\MidtransController;
 
  Route::get('/', function () {
     return view('welcome');
@@ -58,6 +59,9 @@ Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesana
 
 Route::get('/pembayaran/lanjutkan/{id_pesanan}', [PembayaranController::class, 'lanjut'])->name('pembayaran.lanjutkan');
 Route::post('/pembayaran/proses', [PembayaranController::class, 'proses'])->name('pembayaran.proses');
+
+Route::get('/midtrans/bayar/{id_pesanan}', [MidtransController::class, 'getSnapToken'])->name('midtrans.bayar');
+
 
 
 
