@@ -5,52 +5,54 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<div class="container">
-    <h3>Form Pemesanan Layanan</h3>
+<div class="container py-4">
+    <h3 class="mb-4 fw-bold" style="color:#bb9587;">Form Pemesanan Layanan</h3>
 
     <form action="{{ route('pemesanan.store') }}" method="POST">
         @csrf
 
         <!-- Pilih Variasi Layanan -->
-        <div class="mb-3">
-            <label class="form-label">Pilih Tipe/Variasi Layanan</label><br>
-                @foreach ($layananDetails as $index => $detail)
-                    <div class="form-check">
-                        <input
-                            type="radio"
-                            name="id_variasi"
-                            id="variasi{{ $detail->id }}"
-                            value="{{ $detail->id }}"
-                            class="form-check-input tipe-input-radio"
-                            data-tipe="{{ strtolower($detail->layanan->tipe_input) }}"
-                            {{ $index === 0 ? 'checked' : '' }} {{-- << Tambahkan ini --}}
-                            required>
-                        <label for="variasi{{ $detail->id }}" class="form-check-label">
-                            {{ $detail->layanan->nama_layanan }} - {{ $detail->tipe }}
-                            (Rp{{ number_format($detail->harga_dasar, 0) }})
-                        </label>
-                    </div>
-                @endforeach
-        </div>
-
-        <!-- Pilih Hewan -->
-        <div class="mb-3">
-            <label class="form-label">Pilih Hewan Anda</label><br>
-            @foreach ($hewans as $hewan)
-                <div class="form-check">
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="id_hewan[]"
-                        value="{{ $hewan->id }}"
-                        id="hewan{{ $hewan->id }}"
-                       >
-                    <label class="form-check-label" for="hewan{{ $hewan->id }}">
-                        {{ $hewan->nama }} ({{ $hewan->jenis }})
-                    </label>
-                </div>
+        <div class="mb-4">
+            <label class="form-label fw-semibold">Pilih Tipe/Variasi Layanan</label>
+            @foreach ($layananDetails as $index => $detail)
+            <div class="form-check mb-2">
+                <input
+                    type="radio"
+                    name="id_variasi"
+                    id="variasi{{ $detail->id }}"
+                    value="{{ $detail->id }}"
+                    class="form-check-input tipe-input-radio"
+                    data-tipe="{{ strtolower($detail->layanan->tipe_input) }}"
+                    {{ $index === 0 ? 'checked' : '' }}
+                    required>
+                <label for="variasi{{ $detail->id }}" class="form-check-label">
+                    {{ $detail->layanan->nama_layanan }} - {{ $detail->tipe }} (Rp{{ number_format($detail->harga_dasar, 0) }})
+                </label>
+            </div>
             @endforeach
         </div>
+
+       <!-- Pilih Hewan -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">Pilih Hewan Anda</label>
+            <div class="row">
+                @foreach ($hewans as $hewan)
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <input type="checkbox" name="id_hewan[]" id="hewan{{ $hewan->id }}" value="{{ $hewan->id }}" class="d-none hewan-checkbox">
+                    <label for="hewan{{ $hewan->id }}" class="card h-100 shadow-sm hewan-card p-3 text-start">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ asset('storage/' . $hewan->foto) }}" alt="{{ $hewan->nama }}" class="rounded-circle me-3" style="width: 48px; height: 48px; object-fit: cover;">
+                            <div>
+                                <strong>{{ $hewan->nama }}</strong><br>
+                                <small class="text-muted">{{ $hewan->jenis }}</small>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
 
         <!-- Tanggal Titip & Ambil -->
         <div class="mb-3 tipe-penitipan d-none">
@@ -62,24 +64,18 @@
             <input type="datetime-local" name="tanggal_ambil" id="tanggal_ambil" class="form-control">
         </div>
 
-
-       <!-- Lokasi Antar Jemput -->
-        <!-- Lokasi Awal -->
+        <!-- Lokasi Antar Jemput -->
         <div class="mb-3 tipe-antar-jemput d-none">
             <label>Lokasi Awal</label>
-            <input type="text" name="lokasi_awal" id="lokasi_awal" class="form-control" readonly>
+            <input type="text" name="lokasi_awal" id="lokasi_awal" class="form-control mb-2" readonly>
             <div id="map_awal" style="height: 200px;"></div>
         </div>
 
-        <!-- Lokasi Tujuan -->
         <div class="mb-3 tipe-antar-jemput d-none">
             <label>Lokasi Tujuan</label>
-            <input type="text" name="lokasi_tujuan" id="lokasi_tujuan" class="form-control" readonly>
+            <input type="text" name="lokasi_tujuan" id="lokasi_tujuan" class="form-control mb-2" readonly>
             <div id="map_tujuan" style="height: 200px;"></div>
         </div>
-
-
-
 
         <!-- Tanggal Pesan -->
         <div class="mb-3 tipe-lainnya d-none">
@@ -87,41 +83,44 @@
             <input type="datetime-local" name="tanggal_pesan" id="tanggal_pesan" class="form-control">
         </div>
 
-        <button type="submit" class="btn btn-primary">Pesan Sekarang</button>
+        <button type="submit" class="btn" style="background-color:#bb9587; color:white;">
+            <i class="fas fa-paper-plane me-1"></i> Pesan Sekarang
+        </button>
     </form>
 </div>
 
+{{-- Script Pilihan Variasi --}}
 <script>
-        const radios = document.querySelectorAll('.tipe-input-radio');
+    const radios = document.querySelectorAll('.tipe-input-radio');
 
-        function handleTipe(tipe) {
-            document.querySelectorAll('.tipe-penitipan, .tipe-antar-jemput, .tipe-lainnya').forEach(el => {
-                el.classList.add('d-none');
-            });
-
-            if (tipe === 'penitipan') {
-                document.querySelectorAll('.tipe-penitipan').forEach(el => el.classList.remove('d-none'));
-            } else if (tipe === 'antar jemput') {
-                document.querySelectorAll('.tipe-antar-jemput').forEach(el => el.classList.remove('d-none'));
-            } else {
-                document.querySelectorAll('.tipe-lainnya').forEach(el => el.classList.remove('d-none'));
-            }
-        }
-
-        radios.forEach(radio => {
-            radio.addEventListener('change', function () {
-                handleTipe(this.dataset.tipe);
-            });
-
-            // Cek saat halaman pertama kali dimuat
-            if (radio.checked) {
-                handleTipe(radio.dataset.tipe);
-            }
+    function handleTipe(tipe) {
+        document.querySelectorAll('.tipe-penitipan, .tipe-antar-jemput, .tipe-lainnya').forEach(el => {
+            el.classList.add('d-none');
         });
+
+        if (tipe === 'penitipan') {
+            document.querySelectorAll('.tipe-penitipan').forEach(el => el.classList.remove('d-none'));
+        } else if (tipe === 'antar jemput') {
+            document.querySelectorAll('.tipe-antar-jemput').forEach(el => el.classList.remove('d-none'));
+        } else {
+            document.querySelectorAll('.tipe-lainnya').forEach(el => el.classList.remove('d-none'));
+        }
+    }
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', function () {
+            handleTipe(this.dataset.tipe);
+        });
+
+        if (radio.checked) {
+            handleTipe(radio.dataset.tipe);
+        }
+    });
 </script>
+
+{{-- Script Maps --}}
 <script>
-    // Map Lokasi Awal
-    const mapAwal = L.map('map_awal').setView([-7.797068, 110.370529], 13); // Pusatkan ke Jogja
+    const mapAwal = L.map('map_awal').setView([-7.797068, 110.370529], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapAwal);
 
     let markerAwal;
@@ -131,7 +130,6 @@
         document.getElementById('lokasi_awal').value = e.latlng.lat + ',' + e.latlng.lng;
     });
 
-    // Map Lokasi Tujuan
     const mapTujuan = L.map('map_tujuan').setView([-7.797068, 110.370529], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapTujuan);
 
@@ -142,8 +140,46 @@
         document.getElementById('lokasi_tujuan').value = e.latlng.lat + ',' + e.latlng.lng;
     });
 </script>
+<script>
+    const inputTitip = document.getElementById('tanggal_titip');
+    const inputAmbil = document.getElementById('tanggal_ambil');
 
+    function validateTanggalAmbil() {
+        const titip = new Date(inputTitip.value);
+        const ambil = new Date(inputAmbil.value);
+
+        if (ambil < titip) {
+            inputAmbil.setCustomValidity("Tanggal ambil tidak boleh lebih awal dari tanggal titip.");
+        } else {
+            inputAmbil.setCustomValidity(""); // valid
+        }
+    }
+
+    inputTitip.addEventListener('change', validateTanggalAmbil);
+    inputAmbil.addEventListener('change', validateTanggalAmbil);
+</script>
+
+
+{{-- Style tambahan --}}
+@push('styles')
+<style>
+    .hewan-card:hover {
+        background-color: #f7f1ef;
+        border-color: #bb9587;
+    }
+</style>
+<style>
+    .hewan-card {
+        cursor: pointer;
+        transition: border 0.3s, background-color 0.3s;
+        border: 2px solid transparent;
+    }
+
+    .hewan-checkbox:checked + .hewan-card {
+        border-color: #bb9587;
+        background-color: #fef5f3;
+    }
+</style>
+@endpush
 
 @endsection
-
-
