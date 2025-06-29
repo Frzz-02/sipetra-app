@@ -63,6 +63,8 @@ Route::get('/pembayaran/lanjutkan/{id_pesanan}', [PembayaranController::class, '
 Route::post('/pembayaran/proses', [PembayaranController::class, 'proses'])->name('pembayaran.proses');
 
 Route::get('/midtrans/bayar/{id_pesanan}', [MidtransController::class, 'getSnapToken'])->name('midtrans.bayar');
+Route::get('/penyedia', [CariLayananController::class, 'search'])->name('search.penyedia');
+
 
 
 

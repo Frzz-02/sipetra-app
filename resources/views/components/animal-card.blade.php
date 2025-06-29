@@ -5,10 +5,10 @@
 
                 {{-- Gambar di kiri --}}
                 <div class="col-auto d-flex justify-content-center">
-                    <img src="{{ asset('storage/' . $animal_img ) }}"
-                         alt="{{ $animal_name }}"
-                         class="rounded-circle border border-dark"
-                         style="width: 48px; height: 48px; object-fit: cover;">
+                     <img src="{{ asset('assets/hewan/' . $animal_img) }}"
+                        alt="{{ $animal_img }}"
+                        class="rounded-circle border border-dark"
+                        style="width: 48px; height: 48px; object-fit: cover;">
                 </div>
 
                 {{-- Nama dan Tanggal Lahir di kanan --}}

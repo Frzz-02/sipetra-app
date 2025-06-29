@@ -20,7 +20,13 @@ class tambah_hewan_contloller extends Controller
             'foto' => 'required|image|max:2048',
         ]);
 
-        $fotoPath = $request->file('foto')->store('hewan', 'public');
+      if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/hewan'), $filename);
+        }
+
+
 
         // Hitung umur dari tanggal lahir
         $tanggalLahir = Carbon::parse($request->tanggal_lahir);
@@ -34,9 +40,9 @@ class tambah_hewan_contloller extends Controller
             'umur' => $umur,
             'berat' => $request->berat,
             'deskripsi' => $request->deskripsi,
-            'foto_hewan' => $fotoPath,
+            'foto_hewan' => $filename,
         ]);
 
-        return redirect("dashboard")->with('success', 'Data hewan berhasil disimpan.');
+        return redirect("dashboard")->with(key: 'success');
     }
 }

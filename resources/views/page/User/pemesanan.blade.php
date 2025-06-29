@@ -57,8 +57,8 @@
                     <input type="checkbox" name="id_hewan[]" id="hewan{{ $hewan->id }}" value="{{ $hewan->id }}" class="d-none hewan-checkbox">
                     <label for="hewan{{ $hewan->id }}" class="card h-100 shadow-sm hewan-card p-3 text-start">
                         <div class="d-flex align-items-center">
-                            <img src="{{ asset('storage/' . $hewan->foto) }}"
-                                alt="{{ $hewan->nama }}"
+                            <img src="{{ asset('assets/hewan/' . $hewan->foto_hewan) }}"
+                                alt="{{ $hewan->foto_hewan }}"
                                 class="rounded-circle me-3 border border-dark mr-2"
                                 style="width: 48px; height: 48px; object-fit: cover;">
                             <div>

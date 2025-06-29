@@ -3,7 +3,7 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard_hewan') }}">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-paw text-white"></i>
+             <img src="{{ asset('assets/image/sipetra.png') }}" alt="Logo SiPETRA" style="height: 40px; width: auto;">
         </div>
         <div class="sidebar-brand-text mx-3">SiPETRA</div>
     </a>

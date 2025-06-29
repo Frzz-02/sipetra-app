@@ -64,7 +64,7 @@
       }
 
       .img-cat {
-        top: 28%; 
+        top: 28%;
         left: 20%;
       }
       .img-computer {
@@ -86,16 +86,16 @@
       .l-judul{
         font-size: 28pt;
       }
-      
+
       .l-subjudul{
         font-size: 15pt;
       }
-      
+
       @media(max-width: 810px){
         .l-judul{
           font-size: 23pt;
         }
-        
+
         .l-subjudul{
           font-size: 13pt;
         }
@@ -116,7 +116,7 @@
       <div class="container-fluid min-vh-100 d-md-flex d-none flex-column flex-md-row p-0">
         <!-- Gambar kiri (sembunyi di mobile) -->
         <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center">
-          
+
           <div class="h-100 w-100 position-relative">
             <div class="mt-5 ms-5 pt-3 ps-3">
               <h1 class="text-start font-fredoka fw-light custom-shadow text-white text-dark mb-3 pe-5 l-judul" style="">Selamat Datang di SIPETRA 🐾</h1>
@@ -124,14 +124,14 @@
             </div>
 
             <img
-              src="{{ asset('assets/image/computer.png') }}"  
+              src="{{ asset('assets/image/computer.png') }}"
               alt="Login Illustration"
               class="img-fluid position-absolute custom-size img-cat"
               style="transform: translateY(20%);"
             />
-            
+
             <img
-              src="{{ asset('assets/image/catAndBook.png') }}"  
+              src="{{ asset('assets/image/catAndBook.png') }}"
               alt="Login Illustration"
               class="img-fluid position-absolute custom-size z-n1 img-computer"
               style="transform: translateY(20%);"
@@ -139,12 +139,12 @@
           </div>
         </div>
 
-        
-        
-        
-        
+
+
+
+
         <!-- Form kanan desktop -->
-        <div class="shadow bg-dark col-md-6 col-12 container my-5 my-md-0 mx-5 mx-md-0 border border-1 bg-white border-dark rounded-start-5 d-flex justify-content-center align-items-center  p-4">
+        <div class="shadow bg-dark col-md-6 col-12 container my-5 my-md-0 mx-5 mx-md-0 border  bg-white border-dark rounded-start-5 d-flex justify-content-center align-items-center  p-4">
           <form class="form-wrapper" action="{{route('signin.post')}}" method="POST">
               @csrf
             <h1 class="font-fredoka text-center text-dark mb-2 fw-bold">Login</h1>
@@ -234,7 +234,7 @@
         <div class="container py-5 h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div class="card text-dark shadow border border-1 border-dark rounded rounded-5" style="border-radius: 1rem;">
+              <div class="card text-dark shadow border border-dark rounded rounded-5" style="border-radius: 1rem;">
                 <div class="card-body p-3 text-center">
 
                   {{-- start form --}}
@@ -243,47 +243,47 @@
                     <div class="mb-md-5 mt-md-4 pb-3">
                       <h1 class="fw-bold mb-2 font-fredoka">Login</h2>
                       <p class="text-dark-50 text-muted mb-5">Silahkan isi data akun anda di bawah ini</p>
-                      
-        
+
+
                       <div class="form-outline form-white mb-4 text-start">
                         <label class="form-label text-muted" for="typeEmailX">Email</label>
                         <input type="email" id="typeEmailX" name="email" class="email-mobile form-control form-control-lg" />
                       </div>
-                      
-        
+
+
                       <div class="form-outline form-white mb-3 text-start">
                         <label class="form-label text-muted " for="typePasswordX">Password</label>
                         <input type="password" id="typePasswordX" name="password" class="password-mobile form-control form-control-lg" />
                       </div>
 
-        
+
                       <p class="small mb-5 pb-lg-2 text-end">Belum mempunyai akun ? <a class="text-dark-50 text-end" href="{{ route('signup') }}">Register</a></p>
-        
+
                       <button class="btn btn-outline-dark btn-lg px-5 mt-3" type="submit">Login</button>
                     </form>
                     {{-- end form --}}
 
-                    
-                    
-      
+
+
+
                     <div class="d-flex justify-content-center text-center mt-4 pt-1">
                       <a href="#!" class="text-dark"><i class="fab fa-facebook-f fa-lg"></i></a>
                       <a href="#!" class="text-dark"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
                       <a href="#!" class="text-dark"><i class="fab fa-google fa-lg"></i></a>
                     </div>
-      
+
                   </div>
-      
-                  
-      
+
+
+
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      
-      
+
+
 
 
       <script>
@@ -306,7 +306,7 @@
         });
 
       </script>
-      
+
 
 
 @endsection

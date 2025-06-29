@@ -28,5 +28,25 @@ class CariLayananController extends Controller
 
         return view('page.User.detail_layanan', compact('layanan'));
     }
+    public function search(Request $request)
+    {
+        $query = Penyedia_Layanan::query();
+
+        if ($request->filled('q')) {
+            $search = $request->q;
+            $query->where(function ($q1) use ($search) {
+                $q1->where('nama_toko', 'like', "%{$search}%")
+                    ->orWhere('alamat_toko', 'like', "%{$search}%");
+            })
+            ->orWhereHas('layanans', function ($q2) use ($search) {
+                $q2->where('nama_layanan', 'like', "%{$search}%");
+            });
+        }
+
+        $penyedia = $query->latest()->get();
+
+        return view('page.User.cari_layanan', compact('penyedia'));
+    }
+
 
 }
