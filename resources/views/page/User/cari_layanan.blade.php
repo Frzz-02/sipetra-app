@@ -1,6 +1,6 @@
-@extends('layout.auth')
+@extends('layout.main')
 
-@section('content')
+@section('content2')
 <div class="container">
     <h4 class="mb-3">Cari Penyedia Layanan</h4>
 

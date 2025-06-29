@@ -1,24 +1,26 @@
-{{-- @props(['pet']) --}}
-
-
 <div class="col-md-6 col-12 mb-sm-4 mb-2">
     <div class="card border-left-warning shadow h-100">
         <div class="card-body p-2">
-            <div class="row no-gutters align-items-center d-flex flex-row-reverse pr-1">
-              
-                <div class="col-xl-10 col-8 col-sm-10 col-md-9 pl-2">
-                    <div class="font-weight-medium text-warning text-outline text-capitalize mb-0 p-0 text-truncate" style="max-width: 100%">
-                        {{ $animal_name }}
-                    </div>
-                    <div class="h5 font-weight-light fs-3 mb-1 text-gray-800">{{ $animal_birth }}</div>
+            <div class="row align-items-center">
+
+                {{-- Gambar di kiri --}}
+                <div class="col-auto d-flex justify-content-center">
+                    <img src="{{ asset('storage/' . $animal_img ) }}"
+                         alt="{{ $animal_name }}"
+                         class="rounded-circle border border-dark"
+                         style="width: 48px; height: 48px; object-fit: cover;">
                 </div>
 
-                <div class="col">
-                  <div class="d-flex justify-content-center">
-                    <img src="{{ asset('storage/' . $animal_img ) }}" alt="{{ $animal_name }}" class="img-size img-size-max rounded-circle border border-dark border-1">
-                    {{-- width="47" height="47" --}}
-                  </div>
+                {{-- Nama dan Tanggal Lahir di kanan --}}
+                <div class="col pl-2">
+                    <div class="font-weight-medium text-warning text-outline text-capitalize mb-1 text-truncate" style="max-width: 100%;">
+                        {{ $animal_name }}
+                    </div>
+                    <div class="h6 font-weight-light text-gray-800 mb-0">
+                        {{ $animal_birth }}
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
