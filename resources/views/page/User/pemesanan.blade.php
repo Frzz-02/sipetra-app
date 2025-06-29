@@ -5,7 +5,18 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<div class="container py-4">
+<div class="container py-4" style="
+    max-height: calc(100vh - 100px);
+    overflow-y: scroll;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE 10+ */
+">
+    <style>
+        .container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+    </style>
+
     <h3 class="mb-4 fw-bold" style="color:#bb9587;">Form Pemesanan Layanan</h3>
 
     <form action="{{ route('pemesanan.store') }}" method="POST">
@@ -14,25 +25,30 @@
         <!-- Pilih Variasi Layanan -->
         <div class="mb-4">
             <label class="form-label fw-semibold">Pilih Tipe/Variasi Layanan</label>
-            @foreach ($layananDetails as $index => $detail)
-            <div class="form-check mb-2">
-                <input
-                    type="radio"
-                    name="id_variasi"
-                    id="variasi{{ $detail->id }}"
-                    value="{{ $detail->id }}"
-                    class="form-check-input tipe-input-radio"
-                    data-tipe="{{ strtolower($detail->layanan->tipe_input) }}"
-                    {{ $index === 0 ? 'checked' : '' }}
-                    required>
-                <label for="variasi{{ $detail->id }}" class="form-check-label">
-                    {{ $detail->layanan->nama_layanan }} - {{ $detail->tipe }} (Rp{{ number_format($detail->harga_dasar, 0) }})
-                </label>
+            <div class="row">
+                @foreach ($layananDetails as $index => $detail)
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <input
+                        type="checkbox"
+                        name="id_variasi[]"
+                        id="variasi{{ $detail->id }}"
+                        value="{{ $detail->id }}"
+                        class="d-none variasi-checkbox"
+                         data-tipe="{{ strtolower($detail->layanan->tipe_input) }}"
+                         {{ $index === 0 ? 'checked' : '' }}>
+                    <label for="variasi{{ $detail->id }}" class="card h-100 shadow-sm hewan-card p-3 text-start">
+                        <div>
+                            <strong>{{ $detail->tipe }}</strong><br>
+                            <small class="text-muted">{{ $detail->deskripsi }}</small><br>
+                            <span class="text-primary">Rp{{ number_format($detail->harga_dasar, 0) }}</span>
+                        </div>
+                    </label>
+                </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
 
-       <!-- Pilih Hewan -->
+        <!-- Pilih Hewan -->
         <div class="mb-4">
             <label class="form-label fw-semibold">Pilih Hewan Anda</label>
             <div class="row">
@@ -41,10 +57,13 @@
                     <input type="checkbox" name="id_hewan[]" id="hewan{{ $hewan->id }}" value="{{ $hewan->id }}" class="d-none hewan-checkbox">
                     <label for="hewan{{ $hewan->id }}" class="card h-100 shadow-sm hewan-card p-3 text-start">
                         <div class="d-flex align-items-center">
-                            <img src="{{ asset('storage/' . $hewan->foto) }}" alt="{{ $hewan->nama }}" class="rounded-circle me-3" style="width: 48px; height: 48px; object-fit: cover;">
+                            <img src="{{ asset('storage/' . $hewan->foto) }}"
+                                alt="{{ $hewan->nama }}"
+                                class="rounded-circle me-3 border border-dark mr-2"
+                                style="width: 48px; height: 48px; object-fit: cover;">
                             <div>
-                                <strong>{{ $hewan->nama }}</strong><br>
-                                <small class="text-muted">{{ $hewan->jenis }}</small>
+                                <strong>{{ $hewan->nama_hewan }}</strong><br>
+                                <small class="text-muted">{{ $hewan->jenis_hewan }}</small>
                             </div>
                         </div>
                     </label>
@@ -52,7 +71,6 @@
                 @endforeach
             </div>
         </div>
-
 
         <!-- Tanggal Titip & Ambil -->
         <div class="mb-3 tipe-penitipan d-none">
@@ -91,7 +109,7 @@
 
 {{-- Script Pilihan Variasi --}}
 <script>
-    const radios = document.querySelectorAll('.tipe-input-radio');
+    const checkboxes = document.querySelectorAll('.variasi-checkbox');
 
     function handleTipe(tipe) {
         document.querySelectorAll('.tipe-penitipan, .tipe-antar-jemput, .tipe-lainnya').forEach(el => {
@@ -107,13 +125,15 @@
         }
     }
 
-    radios.forEach(radio => {
-        radio.addEventListener('change', function () {
-            handleTipe(this.dataset.tipe);
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                handleTipe(this.dataset.tipe);
+            }
         });
 
-        if (radio.checked) {
-            handleTipe(radio.dataset.tipe);
+        if (checkbox.checked) {
+            handleTipe(checkbox.dataset.tipe);
         }
     });
 </script>
@@ -151,14 +171,13 @@
         if (ambil < titip) {
             inputAmbil.setCustomValidity("Tanggal ambil tidak boleh lebih awal dari tanggal titip.");
         } else {
-            inputAmbil.setCustomValidity(""); // valid
+            inputAmbil.setCustomValidity("");
         }
     }
 
     inputTitip.addEventListener('change', validateTanggalAmbil);
     inputAmbil.addEventListener('change', validateTanggalAmbil);
 </script>
-
 
 {{-- Style tambahan --}}
 @push('styles')
@@ -175,7 +194,8 @@
         border: 2px solid transparent;
     }
 
-    .hewan-checkbox:checked + .hewan-card {
+    .hewan-checkbox:checked + .hewan-card,
+    .variasi-checkbox:checked + .hewan-card {
         border-color: #bb9587;
         background-color: #fef5f3;
     }

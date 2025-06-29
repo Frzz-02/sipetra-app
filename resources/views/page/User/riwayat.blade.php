@@ -1,7 +1,18 @@
 @extends('layout.main')
 
 @section('content2')
-<div class="container mt-4">
+<div class="container py-4" style="
+    max-height: calc(100vh - 100px);
+    overflow-y: scroll;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE 10+ */
+">
+    <style>
+        .container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+    </style>
+
     <h3>Riwayat Pesanan</h3>
 
     @if($pesanans->isEmpty())
@@ -29,11 +40,13 @@
                         </td>
                         <td>{{ date('d-m-Y', strtotime($pesanan->tanggal_pesan)) }}</td>
                         <td>
-                            <span class="badge
-                                @if($pesanan->status == 'selesai') bg-success
-                                @elseif($pesanan->status == 'diproses') bg-warning
-                                @elseif($pesanan->status == 'batal') bg-danger
-                                @else bg-secondary @endif">
+                           <span class="badge
+                                @if($pesanan->status == 'selesai') bg-success text-white
+                                @elseif($pesanan->status == 'diproses') bg-warning text-dark
+                                @elseif($pesanan->status == 'batal') bg-danger text-white
+                                @elseif($pesanan->status == 'menunggu') bg-secondary text-white
+                                @else bg-light text-dark
+                            @endif">
                                 {{ ucfirst($pesanan->status) }}
                             </span>
                         </td>

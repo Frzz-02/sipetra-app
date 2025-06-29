@@ -1,7 +1,18 @@
 @extends('layout.main')
 
 @section('content2')
-<div class="container">
+<div class="container py-4" style="
+    max-height: calc(100vh - 100px);
+    overflow-y: scroll;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE 10+ */
+">
+    <style>
+        .container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+    </style>
+
     <h4 class="mb-4 font-weight-bold text-primary text-center text-md-left">Cari Penyedia Layanan</h4>
 
     {{-- Form Pencarian --}}

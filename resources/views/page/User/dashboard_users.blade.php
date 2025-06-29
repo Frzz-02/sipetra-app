@@ -13,6 +13,17 @@
 
 
 @section('content2')
+<div class="container py-4" style="
+    max-height: calc(100vh - 100px);
+    overflow-y: scroll;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE 10+ */
+">
+    <style>
+        .container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+    </style>
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4 row ">
       <h1 class="col h3 mb-0 text-gray-800 fs-header">Dashboard</h1>
@@ -20,7 +31,7 @@
       <a href="{{ route('cari_layanan') }}" class="col-3 d-none d-sm-inline-block btn btn-sm btn-outline-warning px-3 shadow-sm">
         <i class="fas fa-shopping-cart fa-sm text-warning-50" style="-webkit-text-stroke: 0px rgb(188, 106, 0);"></i><span class="pl-2" style="font-weight: 800; -webkit-text-stroke: 0.1px rgb(188, 106, 0);"> Pesan layanan</span>
       </a>
-      
+
       <a href="{{ route('cari_layanan') }}" class="col-2 d-sm-none d-inline-block btn btn-sm btn-outline-warning px-3 shadow-sm d-flex align-items-center justify-content-center py-2" data-toggle="tooltip" data-placement="bottom" title="Pesan layanan">
         <i class="fas fa-shopping-cart fa-sm text-warning-50" style="-webkit-text-stroke: 0px rgb(188, 106, 0);"></i>
       </a>
@@ -41,29 +52,29 @@
       </div>
 
 
-      
-    
+
+
       <div class="card-body px-2 pt-3">
         <div class="row px-sm-4 px-0">
-          
+
           @if ($hewan->count())
 
             @foreach ($hewan as $pet)
 
               <!-- kartu/ daftar hewan -->
-              <x-animal-card 
+              <x-animal-card
                   :name="$pet->nama_hewan"
                   :img="$pet->foto_hewan"
                   :birth="$pet->tanggal_lahir"
                />
              {{-- variabel yang diawali ":" mengarah ke parameter konstruktor di file animalCard.php --}}
-             
+
             @endforeach
 
           @else
             <p class="text-muted text-center w-100 p-5">Data tidak ada</p>
           @endif
-          
+
         </div>
 
 
