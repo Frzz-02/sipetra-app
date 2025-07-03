@@ -29,8 +29,8 @@ return new class extends Migration
             $table->string('lokasi_awal')->nullable();
             $table->string('lokasi_tujuan')->nullable();
             $table->decimal('total_biaya', 10, 2);
-            $table->enum('status', ['menunggu', 'diproses', 'selesai', 'batal'])
-                ->default('menunggu'); // Status of the order, default is pending
+            $table->enum('status', ['menunggu pembayaran', 'menunggu diproses', 'diproses', 'selesai', 'batal'])
+                ->default('menunggu pembayaran'); // Status of the order, default is pending
 
             $table->timestamps();
         });
