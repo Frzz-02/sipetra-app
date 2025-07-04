@@ -10,6 +10,7 @@ use App\Http\Controllers\CariLayananController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\ulasanController;
 
  Route::get('/', function () {
     return view('welcome');
@@ -64,6 +65,13 @@ Route::post('/pembayaran/proses', [PembayaranController::class, 'proses'])->name
 
 Route::get('/midtrans/bayar/{id_pesanan}', [MidtransController::class, 'getSnapToken'])->name('midtrans.bayar');
 Route::get('/penyedia', [CariLayananController::class, 'search'])->name('search.penyedia');
+Route::get('/midtrans/callback', [MidtransController::class, 'callback']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/ulasan/{id_penyedia}', [ulasanController::class, 'create'])->name('ulasan.create');
+    Route::post('/ulasan', [ulasanController::class, 'store'])->name('ulasan.store');
+});
+
 
 
 
