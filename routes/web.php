@@ -72,6 +72,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/ulasan', [ulasanController::class, 'store'])->name('ulasan.store');
 });
 
+Route::post('/pesanan/update-status/{id}', [PembayaranController::class, 'updateStatus'])
+    ->name('pesanan.updateStatus');
+
+Route::get('/dfafsafsa', [MidtransController::class, 'fsfsafsa']) ->name('pesanan.detail');
 
 
 

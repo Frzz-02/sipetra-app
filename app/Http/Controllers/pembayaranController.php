@@ -40,4 +40,13 @@ class PembayaranController extends Controller
 
         return redirect()->route('home')->with('success', 'Pembayaran berhasil diproses.');
     }
+    public function updateStatus(Request $request, $id)
+    {
+        $pesanan = Pesanan::findOrFail($id);
+        $pesanan->status = 'menunggu diproses';
+        $pesanan->save();
+
+        return response()->json(['message' => 'Status diperbarui ke diproses.']);
+    }
+
 }

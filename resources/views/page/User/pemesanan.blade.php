@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<div class="container py-4" style="
+<div class=" py-4" style="
     max-height: calc(100vh - 100px);
     overflow-y: scroll;
     scrollbar-width: none;      /* Firefox */
@@ -29,8 +29,8 @@
                 @foreach ($layananDetails as $index => $detail)
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
                     <input
-                        type="checkbox"
-                        name="id_variasi[]"
+                        type="radio"
+                        name="id_variasi"
                         id="variasi{{ $detail->id }}"
                         value="{{ $detail->id }}"
                         class="d-none variasi-checkbox"
@@ -53,7 +53,7 @@
             <label class="form-label fw-semibold">Pilih Hewan Anda</label>
             <div class="row">
                 @foreach ($hewans as $hewan)
-                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                <div class="col-6 col-sm-6 col-md-4 mb-3">
                     <input type="checkbox" name="id_hewan[]" id="hewan{{ $hewan->id }}" value="{{ $hewan->id }}" class="d-none hewan-checkbox">
                     <label for="hewan{{ $hewan->id }}" class="card h-100 shadow-sm hewan-card p-3 text-start">
                         <div class="d-flex align-items-center">
@@ -70,6 +70,9 @@
                 </div>
                 @endforeach
             </div>
+             <a href="{{ route('add_hewan', ['redirect' => url()->current()]) }}" class="btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-plus fa-sm text-white-50"></i> Tambah hewan
+            </a>
         </div>
 
         <!-- Tanggal Titip & Ambil -->

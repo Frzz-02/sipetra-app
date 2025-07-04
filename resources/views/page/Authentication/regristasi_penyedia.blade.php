@@ -13,26 +13,13 @@
         }
     @endpush
 
-
-    
-    
-
-
 @section('content')
   <div class="d-flex align-items-center justify-content-center min-vh-100">
 
     <div class="bg-white rounded-4 shadow p-4 p-md-5" style="max-width: 500px; width: 100%;">
       <h2 class="text-center mb-3">Daftar Penyedia Layanan</h2>
       <p class="text-center text-muted small mb-4">Silakan isi data toko dan pemilik di bawah ini</p>
-      
-      
-      
-      
-      
-
       <form action="{{route('registerpenyedia')}}" method="POST" class="small text-muted">
-        
-        
         @csrf
         <!-- Nama Pemilik -->
         <div class="mb-3">
@@ -82,7 +69,6 @@
             <label style="font-size: 10px" class="p-1 fw-semibold" id="addon-wrapping">Kecamatan : </label>
             <input style="font-size: 12px" name="kecamatan" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
           </div>
-          
           <div class="col-12 col-sm-4">
             <label style="font-size: 10px" class="p-1 fw-semibold" id="addon-wrapping">Kabupaten : </label>
             <input style="font-size: 12px" name="kabupaten" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
@@ -93,7 +79,6 @@
             <input style="font-size: 12px" name="kota" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
           </div>
         </div>
-        
 
         <!-- Deskripsi -->
         <div class="mb-5">
@@ -102,8 +87,6 @@
         </div>
 
         <button type="submit" class="btn w-100 text-white fw-semibold" style="background-color: #c9a99a;">Daftar</button>
-        
-        
       </form>
     </div>
   </div>

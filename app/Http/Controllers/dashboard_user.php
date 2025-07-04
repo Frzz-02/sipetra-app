@@ -22,10 +22,10 @@ class dashboard_user extends Controller
     }
     public function riwayat()
     {
-        $pesanans = \App\Models\Pesanan::with(['details.layanan'])
-            ->where('id_user', auth::user()->id)
-            ->orderByDesc('tanggal_pesan')
-            ->get();
+         $pesanans = \App\Models\Pesanan::with(['details.layanan'])
+        ->where('id_user', auth::user()->id)
+        ->orderByDesc('id') // urut dari ID tertinggi (pesanan terbaru)
+        ->get();
 
         return view('page.User.riwayat', compact('pesanans'));
     }

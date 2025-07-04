@@ -43,9 +43,9 @@
     <div class="card shadow mb-4">
       <div class="card-header py-2 d-flex justify-content-center align-items-center">
           <h6 class="m-0 px-sm-2 p-0 font-weight-bold text-primary col" style="font-size: 90%;">Data hewan</h6>
-          <a href="{{route('add_hewan')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm col-auto">
-            <i class="fas fa-plus fa-sm text-white-50"></i> Tambah hewan
-          </a>
+          <a href="{{ route('add_hewan', ['redirect' => url()->current()]) }}" class="btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-plus fa-sm text-white-50"></i> Tambah hewan
+            </a>
           <a href="{{route('add_hewan')}}" class="d-sm-none d-inline-block btn btn-sm btn-primary shadow-sm col-auto" data-toggle="tooltip" data-placement="bottom" title="Tambah hewan">
             <i class="fas fa-plus fa-sm text-white-50"></i>
           </a>

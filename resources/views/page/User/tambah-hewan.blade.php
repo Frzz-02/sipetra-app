@@ -24,6 +24,8 @@
 
       <form class="row g-4 small text-muted" action="{{ route('hewan.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="redirect" value="{{ request('redirect') }}">
+
 
         <div class="col-md-6">
           <label class="form-label fw-semibold">Masukkan Nama Hewan <span class="text-danger">*</span></label>

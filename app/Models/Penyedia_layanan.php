@@ -27,5 +27,10 @@ class Penyedia_layanan extends Model
     {
         return $this->hasMany(\App\Models\Layanan::class, 'id_user', 'id_user');
     }
+    public function ulasan()
+    {
+        return $this->hasMany(\App\Models\Ulasan::class, 'id_penyedia');
+    }
+
 
 }

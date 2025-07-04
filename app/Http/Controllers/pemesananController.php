@@ -78,7 +78,7 @@ class PemesananController extends Controller
                 'lokasi_awal' => $request->lokasi_awal ?? null,
                 'lokasi_tujuan' => $request->lokasi_tujuan ?? null,
                 'total_biaya' => $totalBiaya,
-                'status' => 'menunggu'
+                'status' => 'menunggu pembayaran',
             ]);
 
             foreach ($request->id_hewan as $idHewan) {
@@ -96,15 +96,23 @@ class PemesananController extends Controller
             return redirect()->route('pembayaran.lanjutkan', ['id_pesanan' => $pesanan->id])
                 ->with('success', 'Pesanan berhasil dibuat, lanjutkan ke pembayaran.');
         } catch (\Exception $e) {
-            DB::rollBack();
+    DB::rollBack();
 
-            dd([
-                'message' => $e->getMessage(),
-                'trace' => $e->getTrace(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile()
-            ]);
-        }
+    // Log error untuk debugging ke storage/logs/laravel.log
+    Log::error('Gagal membuat pesanan:', [
+        'message' => $e->getMessage(),
+        'line' => $e->getLine(),
+        'file' => $e->getFile(),
+    ]);
+
+    // Tampilkan informasi error di browser (untuk development)
+    dd([
+        'message' => $e->getMessage(),
+        'trace' => $e->getTrace(),
+        'line' => $e->getLine(),
+        'file' => $e->getFile()
+    ]);
+}
 
     }
 

@@ -65,32 +65,64 @@
 
         midtransBtn.addEventListener('click', function (e) {
             e.preventDefault();
+
             fetch("{{ route('midtrans.bayar', ['id_pesanan' => $pesanan->id]) }}")
-                .then(res => res.json())
+                .then(async res => {
+                    if (!res.ok) {
+                        const text = await res.text();
+                        console.error("Error Response:", text);
+                        alert("Gagal mendapatkan Snap Token: " + res.status);
+                        return;
+                    }
+                    return res.json();
+                })
                 .then(data => {
-                    snap.pay(data.snap_token, {
-                        onSuccess: function(result){
-                            alert("Pembayaran berhasil!");
-                            window.location.href = "/dashboard";
-                        },
-                        onPending: function(result){
-                            alert("Menunggu pembayaran...");
-                            window.location.href = "/dashboard";
-                        },
-                        onError: function(result){
-                            alert("Pembayaran gagal!");
-                            console.log(result);
-                        },
-                        onClose: function(){
-                            alert("Transaksi dibatalkan.");
-                        }
-                    });
+                    if (data && data.snap_token) {
+                        snap.pay(data.snap_token, {
+                            onSuccess: function(result) {
+                                alert("Pembayaran berhasil!");
+
+                                // Kirim ke backend untuk update status
+                                fetch("/pesanan/update-status/" + {{ $pesanan->id }}, {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                        "Content-Type": "application/json"
+                                    }
+                                })
+                                .then(res => res.json())
+                                .then(response => {
+                                    console.log(response.message);
+                                    window.location.href = "/dashboard";
+                                })
+                                .catch(error => {
+                                    console.error("Gagal update status:", error);
+                                    window.location.href = "/dashboard";
+                                });
+                            },
+                            onPending: function(result) {
+                                alert("Menunggu pembayaran...");
+                                window.location.href = "/dashboard";
+                            },
+                            onError: function(result) {
+                                alert("Pembayaran gagal!");
+                                console.error(result);
+                            },
+                            onClose: function() {
+                                alert("Transaksi dibatalkan.");
+                            }
+                        });
+                    } else {
+                        console.error("Respon tidak sesuai:", data);
+                        alert("Gagal mendapatkan Snap Token (token tidak tersedia).");
+                    }
                 })
                 .catch(err => {
-                    alert("Gagal mendapatkan Snap Token");
+                    alert("Gagal mendapatkan Snap Token (fetch error).");
                     console.error(err);
                 });
         });
     });
 </script>
+
 @endsection

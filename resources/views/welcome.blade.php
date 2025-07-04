@@ -212,7 +212,7 @@
   <section>
     <h2>Apa Kata Pengguna SIPETRA?</h2>
     <div class="testimonial-box">
-      <p>"Saya bisa booking layanan penitipan dan grooming langsung dari HP saya tanpa repot. SIPETRA sangat membantu!"</p>
+      <p>"Saya bisa booking layanan penitipan dan grooming hewan saya dengan cepat. SIPETRA sangat membantu!"</p>
       <cite>– Anisa, Surabaya</cite>
     </div>
   </section>

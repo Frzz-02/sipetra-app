@@ -45,7 +45,7 @@ class authcontroller extends Controller
         ]);
 
 
-        return redirect("signin")->with('success', 'Registrasi berhasil!');
+        return redirect("login")->with('success', 'Registrasi berhasil!');
     }
      public function signin(Request $request)
         {
@@ -105,6 +105,6 @@ class authcontroller extends Controller
 
 
 
-        return redirect("signin")->with('success', 'Registrasi berhasil!');
+        return redirect("login")->with('success', 'Registrasi berhasil!');
     }
 }

@@ -30,7 +30,7 @@
         <!-- Info Toko -->
         <div>
             <h2 class="fw-bold mb-2" style="color: #bb9587;">
-                <i class="fas fa-store me-2"></i>{{ $penyedia->nama_toko }}
+                {{ $penyedia->nama_toko }}
             </h2>
             <p class="text-muted mb-1">
                 <i class="fas fa-map-marker-alt me-2"></i> {{ $penyedia->alamat_toko }}

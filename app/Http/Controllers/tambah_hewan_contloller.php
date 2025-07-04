@@ -43,6 +43,6 @@ class tambah_hewan_contloller extends Controller
             'foto_hewan' => $filename,
         ]);
 
-        return redirect("dashboard")->with(key: 'success');
+        return redirect($request->input('redirect', route('dashboard_hewan')));
     }
 }
