@@ -43,6 +43,9 @@ class MidtransController extends Controller
     try {
         $pesanan = Pesanan::findOrFail($id_pesanan);
 
+        $biayaPotongan = $pesanan->total_biaya * 0.1;
+        $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
+
         Config::$serverKey = config('midtrans.serverKey');
         Config::$isProduction = config('midtrans.isProduction');
         Config::$isSanitized = config('midtrans.isSanitized');
@@ -51,7 +54,7 @@ class MidtransController extends Controller
         $params = [
             'transaction_details' => [
                 'order_id' => 'SIPETRA-' . $pesanan->id . '-' . uniqid(),
-                'gross_amount' => $pesanan->total_biaya,
+                'gross_amount' => $biayaTotal,
             ],
             'customer_details' => [
                 'first_name' => Auth::user()->username,

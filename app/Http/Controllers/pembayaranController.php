@@ -18,10 +18,14 @@ class PembayaranController extends Controller
             'penyediaLayanan', // jika ingin info toko
         ])->findOrFail($id_pesanan);
 
+         $biayaPotongan = $pesanan->total_biaya * 0.1;
+
+         $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
+
         // Ambil layanan dari salah satu detail (karena semua sama id_layanan-nya)
         $layanan = optional($pesanan->details->first())->layanan;
 
-        return view('page.User.pembayaran', compact('pesanan', 'layanan'));
+        return view('page.User.pembayaran', compact('pesanan', 'layanan', 'biayaPotongan', 'biayaTotal'));
     }
 
     public function proses(Request $request)

@@ -5,13 +5,6 @@
     <div class="card shadow border-0">
         <div class="card-body">
             <h3 class="mb-4 text-primary">Pembayaran Layanan</h3>
-
-            <div class="mb-3">
-                <strong>Layanan:</strong> {{ $layanan->nama_layanan }}<br>
-                <strong>Deskripsi:</strong> {{ $layanan->deskripsi }}<br>
-                <strong>Total:</strong> Rp {{ number_format($pesanan->total_biaya) }}
-            </div>
-
             <div class="mb-3">
                 <h5 class="text-secondary">Hewan yang Dipesan:</h5>
                 <ul class="list-group">
@@ -22,6 +15,31 @@
                     @endforeach
                 </ul>
             </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                    <strong>Layanan:</strong>
+                    <span>{{ $layanan->nama_layanan }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <strong>Deskripsi:</strong>
+                    <span>{{ $layanan->deskripsi }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <strong>Biaya Layanan:</strong>
+                    <span>Rp {{ number_format($pesanan->total_biaya) }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <strong>Biaya Penanganan:</strong>
+                    <span>Rp {{ number_format($biayaPotongan) }}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between fw-bold text-primary">
+                    <strong>Total Harga:</strong>
+                    <span>Rp {{ number_format($biayaTotal) }}</span>
+                </div>
+            </div>
+
+
 
             <form id="form-pembayaran">
                 @csrf
