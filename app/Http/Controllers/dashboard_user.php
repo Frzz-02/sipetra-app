@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Hewan;
+use App\Models\Pesanan;
 
 class dashboard_user extends Controller
 {
@@ -29,6 +30,19 @@ class dashboard_user extends Controller
 
         return view('page.User.riwayat', compact('pesanans'));
     }
+    public function riwayat_detail($id)
+        {
+            $pesanan = Pesanan::with(['details.layanan', 'details.hewan', 'penyediaLayanan'])
+                ->where('id', $id)
+                ->where('id_user', auth::user()->id)
+                ->firstOrFail();
+
+            $biayaPotongan = $pesanan->total_biaya * 0.1;
+             $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
+
+            return view('page.User.riwayat_detail', compact('pesanan', 'biayaPotongan', 'biayaTotal'));
+        }
+
 
 
 }

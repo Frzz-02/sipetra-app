@@ -69,8 +69,18 @@ class LayananController extends Controller
                 'tipe_input' => $request->tipe_input,
             ]);
 
+            // Simpan layanan utama sebagai 1 entri default di penyedia_layanan_detail
+            Penyedia_layanan_detail::create([
+                'id_penyedia' => $id_penyedia,
+                'id_layanan' => $layanan->id,
+                'tipe' => $request->nama_layanan,
+                'harga_dasar' => $request->harga_dasar,
+                'deskripsi' => $request->deskripsi ?? null,
+                'opsi' => null,
+            ]);
+
+            // Jika ada variasi tambahan, simpan juga
             if ($request->filled('variasi')) {
-                // Simpan hanya variasi
                 foreach ($request->variasi as $item) {
                     Penyedia_layanan_detail::create([
                         'id_penyedia' => $id_penyedia,
@@ -81,25 +91,14 @@ class LayananController extends Controller
                         'opsi' => $item['opsi'] ?? null,
                     ]);
                 }
-            } else {
-                // Tidak ada variasi, simpan layanan utama sebagai 1 variasi default
-                Penyedia_layanan_detail::create([
-                    'id_penyedia' => $id_penyedia,
-                    'id_layanan' => $layanan->id,
-                    'tipe' => $request->nama_layanan,
-                    'harga_dasar' => $request->harga_dasar,
-                    'deskripsi' => $request->deskripsi ?? null,
-                    'opsi' => null,
-                ]);
             }
 
             DB::commit();
             return redirect()->route('layanansaya')->with('success', 'Layanan berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage()); // sementara tampilkan pesan error
+            dd($e->getMessage());
         }
-
     }
 
     public function resetSession()
