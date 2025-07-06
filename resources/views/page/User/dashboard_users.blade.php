@@ -60,17 +60,36 @@
           @if ($hewan->count())
 
             @foreach ($hewan as $pet)
+                <div class="col-md-6 col-12 mb-sm-4 mb-2">
+                    <a href="{{ route('hewan.show', $pet->id) }}" class="text-decoration-none text-dark">
+                        <div class="card border-left-warning shadow h-100 hover-shadow" style="transition: 0.3s; cursor: pointer;">
+                            <div class="card-body p-2">
+                                <div class="row align-items-center">
 
-              <!-- kartu/ daftar hewan -->
-              <x-animal-card
-                  :name="$pet->nama_hewan"
-                  :img="$pet->foto_hewan"
-                  :birth="$pet->tanggal_lahir"
-               />
-             {{-- variabel yang diawali ":" mengarah ke parameter konstruktor di file animalCard.php --}}
+                                    {{-- Gambar di kiri --}}
+                                    <div class="col-auto d-flex justify-content-center">
+                                        <img src="{{ asset('assets/hewan/' . $pet->fotohewan) }}"
+                                            alt="{{ $pet->fotohewan }}"
+                                            class="rounded-circle border border-dark"
+                                            style="width: 48px; height: 48px; object-fit: cover;">
+                                    </div>
 
+                                    {{-- Nama dan Tanggal Lahir di kanan --}}
+                                    <div class="col pl-2">
+                                        <div class="font-weight-medium text-warning text-outline text-capitalize mb-1 text-truncate" style="max-width: 100%;">
+                                            {{ $pet->nama_hewan }}
+                                        </div>
+                                        <div class="h6 font-weight-light text-gray-800 mb-0">
+                                            {{ $pet->tanggal_lahir ? \Carbon\Carbon::parse($pet->tanggal_lahir)->format('d M Y') : '-' }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             @endforeach
-
           @else
             <p class="text-muted text-center w-100 p-5">Data tidak ada</p>
           @endif

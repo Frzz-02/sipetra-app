@@ -33,7 +33,7 @@ route::get('/signupreg', function () {
 })->name('registrasi_penyedia');
 
 
-route::get('/dashboard', [App\Http\Controllers\dashboard_user::class, 'index'])->middleware(middleware: ['auth'])->name('dashboard_users');
+
 route::get('/dashboardtoko', function () {
     return view('page.Penyedia_layanan.dashboard_penyedia_jasa');
 })->middleware(['auth'])->name('dashboard_penyedia_jasa');
@@ -45,6 +45,10 @@ route::get('/tambahhewan', function () {
 
 route::get('/dashboard', [App\Http\Controllers\dashboard_user::class, 'showhewan'])->middleware(middleware: ['auth'])->name('dashboard_hewan');
 Route::post('/hewan/tambah', [tambah_hewan_contloller::class, 'store'])->name('hewan.store')->middleware(['auth']);
+Route::get('/hewan/{id}', [tambah_hewan_contloller::class, 'show'])->name('hewan.show');
+Route::get('/hewan/{id}/edit', [tambah_hewan_contloller::class, 'edit'])->name('hewan.edit');
+Route::put('/hewan/{id}', [tambah_hewan_contloller::class, 'update'])->name('hewan.update');
+Route::delete('/hewan/{id}', [tambah_hewan_contloller::class, 'destroy'])->name('hewan.destroy');
 Route::get('/riwayat-pesanan', [dashboard_user::class, 'riwayat'])->name('riwayat.pesanan');
 
 

@@ -49,7 +49,7 @@
                             <td>
                                 <div class="d-flex flex-column">
                                     <strong>{{ optional($pesanan->details->first()->layanan)->nama_layanan ?? '-' }}</strong>
-                                    <span>{{ date('d-m-Y', strtotime($pesanan->tanggal_pesan)) }}</span>
+                                    <span>{{ \Carbon\Carbon::parse($pesanan->tanggal_pesan)->format('d M Y') }}</span>
                                      <div class="d-inline-block">
                                         <span class="badge mt-1 w-auto d-inline-block
                                             @switch($pesanan->status)

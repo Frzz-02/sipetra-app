@@ -24,4 +24,9 @@ class Hewan extends Model
 
         return Carbon::parse($this->tanggal_lahir)->diffForHumans(null, true);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
 }
