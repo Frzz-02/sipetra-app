@@ -21,8 +21,11 @@ class authcontroller extends Controller
 
     public function logout()
     {
-        // Logic for logging out the user
-        return redirect('/'); // Redirect to home or login page after logout
+        Auth::logout(); // Logout user
+        request()->session()->invalidate(); // Hancurkan session
+        request()->session()->regenerateToken(); // Regenerasi token CSRF
+
+        return redirect('/login')->with('success', 'Anda berhasil logout.');
     }
     public function register(Request $request)
     {

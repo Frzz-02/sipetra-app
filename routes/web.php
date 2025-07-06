@@ -42,6 +42,10 @@ route::get('/tambahhewan', function () {
     return view('page.User.tambah-hewan');
 })->middleware(['auth'])->name('add_hewan');
 
+route::get('/profil', function () {
+    return view('page.User.profil');
+})->middleware(['auth'])->name('profil_user');
+
 
 route::get('/dashboard', [App\Http\Controllers\dashboard_user::class, 'showhewan'])->middleware(middleware: ['auth'])->name('dashboard_hewan');
 Route::post('/hewan/tambah', [tambah_hewan_contloller::class, 'store'])->name('hewan.store')->middleware(['auth']);
