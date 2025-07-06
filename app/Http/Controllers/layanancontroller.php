@@ -100,10 +100,45 @@ class LayananController extends Controller
             dd($e->getMessage());
         }
     }
-
-    public function resetSession()
+    public function destroy($id)
     {
-        session()->forget('variasi_layanan');
-        return redirect()->route('layanan.create')->with('success', 'Daftar variasi dikosongkan.');
+        $layanan = Layanan::findOrFail($id);
+        $layanan->delete();
+
+        return redirect()->route('layanansaya')->with('success', 'Layanan berhasil dihapus.');
     }
+     public function edit($id)
+    {
+        $detail = Penyedia_layanan_detail::findOrFail($id);
+        return view('page.penyedia_layanan.edit_detaillayanan', compact('detail'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'tipe' => 'required|string|max:50',
+            'harga_dasar' => 'required|numeric|min:0',
+            'opsi' => 'nullable|string|max:255',
+            'deskripsi' => 'nullable|string|max:255',
+        ]);
+
+        $detail = Penyedia_layanan_detail::findOrFail($id);
+        $detail->update([
+            'tipe' => $request->tipe,
+            'harga_dasar' => $request->harga_dasar,
+            'opsi' => $request->opsi,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->route('layanansaya')->with('success', 'Variasi layanan berhasil diperbarui.');
+    }
+
+    public function destroyvariasi($id)
+    {
+        $detail = Penyedia_layanan_detail::findOrFail($id);
+        $detail->delete();
+
+        return redirect()->back()->with('success', 'Variasi layanan berhasil dihapus.');
+    }
+
 }

@@ -60,6 +60,11 @@ Route::get('/layanansaya', [layanancontroller::class, 'index'])->name('layanansa
 Route::get('/layanan/{id}/detaillayanan', [LayananController::class, 'show'])->name('layanan.detaillayanan');
 Route::get('/layanan/tambah', [LayananController::class, 'createLayanan'])->name('layanan.create');
 Route::post('/layanan/tambah', [LayananController::class, 'storeLayanan'])->name('layanan.store');
+Route::delete('/layanan/{id}', [LayananController::class, 'destroy'])->name('layanan.destroy');
+Route::get('/layanan/detail/{id}/edit', [LayananController::class, 'edit'])->name('detail_layanan.edit');
+Route::put('/layanan/detail/{id}', [LayananController::class, 'update'])->name('detail_layanan.update');
+Route::delete('/layanan/detail/{id}', [LayananController::class, 'destroyvariasi'])->name('detail_layanan.destroy');
+
 
 Route::get('/cari-layanan', [CariLayananController::class, 'index'])->name('cari_layanan');
 Route::get('/penyedia/{id}', [CariLayananController::class, 'detail'])->name('penyedia_layanan.detail');
