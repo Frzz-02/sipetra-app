@@ -19,9 +19,12 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['user', 'penyedia_jasa']);
             $table->string('no_telephone')->nullable();
+            $table->string('alamat')->nullable(); // ditambahkan
+            $table->string('foto_profil')->nullable(); // ditambahkan
             $table->rememberToken();
             $table->timestamps();
         });
+
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
