@@ -44,6 +44,12 @@
                             <p class="fw-semibold">{{ Auth::user()->no_telephone ?? '-' }}</p>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6 class="text-muted">Alamat</h6>
+                            <p class="fw-semibold">{{ Auth::user()->alamat ?? '-' }}</p>
+                        </div>
+                    </div>
 
 
                     <div class="text-center mt-4">

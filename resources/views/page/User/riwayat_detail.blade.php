@@ -8,8 +8,10 @@
     -ms-overflow-style: none;   /* IE 10+ */
 ">
     <h3 class="mb-4 text-primary">Detail Transaksi</h3>
+
+    {{-- Informasi Umum --}}
     <div class="card shadow border-0 mb-4">
-       <div class="card-body">
+        <div class="card-body">
             <h5 class="mb-3">Informasi Umum</h5>
             <p><strong>No. Pesanan:</strong> {{ $pesanan->id }}</p>
             <p><strong>Tanggal Pesan:</strong> {{ date('d-m-Y H:i', strtotime($pesanan->tanggal_pesan)) }}</p>
@@ -27,7 +29,6 @@
                     {{ ucfirst($pesanan->status) }}
                 </span>
             </p>
-
             <p><strong>Subtotal Layanan:</strong> Rp{{ number_format($pesanan->total_biaya, 0, ',', '.') }}</p>
             <p><strong>Biaya Penanganan:</strong> Rp{{ number_format($biayaPotongan, 0, ',', '.') }}</p>
             <hr>
@@ -35,6 +36,7 @@
         </div>
     </div>
 
+    {{-- Detail Layanan --}}
     <div class="card shadow border-0 mb-4">
         <div class="card-body">
             <h5 class="mb-3">Detail Layanan</h5>
@@ -43,11 +45,6 @@
                 $layanan = optional($pesanan->details->first())->layanan;
                 $hargaPerHewan = optional($pesanan->details->first())->subtotal_biaya;
                 $tipe = strtolower($layanan->tipe_input ?? 'lainnya');
-
-                $jarakKm = null;
-                if ($tipe === 'antar jemput' && $pesanan->lokasi_awal && $pesanan->lokasi_tujuan) {
-                    $jarakKm = rand(1, 20); // Ganti ini dengan perhitungan asli jika ada
-                }
 
                 $jumlahHari = null;
                 if ($tipe === 'penitipan' && $pesanan->tanggal_titip && $pesanan->tanggal_ambil) {
@@ -67,8 +64,14 @@
                 <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jumlahHari }} hari x Rp{{ number_format($hargaPerHewan, 0, ',', '.') }}</p>
 
             @elseif ($tipe === 'antar jemput')
-                <p><strong>Lokasi Awal:</strong> {{ $pesanan->lokasi_awal }}</p>
-                <p><strong>Lokasi Tujuan:</strong> {{ $pesanan->lokasi_tujuan }}</p>
+                <p><strong>Lokasi Awal (Koordinat):</strong> {{ $pesanan->lokasi_awal }}</p>
+                <p><strong>Lokasi Tujuan (Koordinat):</strong> {{ $pesanan->lokasi_tujuan }}</p>
+
+                @if(isset($alamatAwal) && isset($alamatTujuan))
+                    <p><strong>Alamat Awal:</strong><br> {{ $alamatAwal }}</p>
+                    <p><strong>Alamat Tujuan:</strong><br> {{ $alamatTujuan }}</p>
+                @endif
+
                 <p><strong>Estimasi Jarak:</strong> {{ $jarakKm }} km</p>
                 <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jarakKm }} km x Rp{{ number_format($hargaPerHewan, 0, ',', '.') }}</p>
 
@@ -79,6 +82,7 @@
         </div>
     </div>
 
+    {{-- Daftar Hewan --}}
     <div class="card shadow border-0">
         <div class="card-body">
             <h5 class="mb-3">Daftar Hewan</h5>

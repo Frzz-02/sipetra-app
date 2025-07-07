@@ -37,5 +37,9 @@ class Pesanan extends Model
     {
         return $this->belongsTo(Penyedia_layanan::class, 'id_penyedia_layanan');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 
 }

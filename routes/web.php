@@ -11,6 +11,7 @@ use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\ulasanController;
+use App\Http\Controllers\dashboardPenyediaController;
 
  Route::get('/', function () {
     return view('welcome');
@@ -34,9 +35,7 @@ route::get('/signupreg', function () {
 
 
 
-route::get('/dashboardtoko', function () {
-    return view('page.Penyedia_layanan.dashboard_penyedia_jasa');
-})->middleware(['auth'])->name('dashboard_penyedia_jasa');
+Route::get('/dashboardpenyedia', [dashboardPenyediaController::class, 'index'])->name('penyedia.dashboard');
 
 route::get('/tambahhewan', function () {
     return view('page.User.tambah-hewan');

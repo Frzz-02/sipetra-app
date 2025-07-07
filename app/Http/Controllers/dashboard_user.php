@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Hewan;
 use App\Models\Pesanan;
+use GuzzleHttp\Client;
 
 class dashboard_user extends Controller
 {
@@ -31,18 +32,93 @@ class dashboard_user extends Controller
         return view('page.User.riwayat', compact('pesanans'));
     }
     public function riwayat_detail($id)
-        {
-            $pesanan = Pesanan::with(['details.layanan', 'details.hewan', 'penyediaLayanan'])
-                ->where('id', $id)
-                ->where('id_user', auth::user()->id)
-                ->firstOrFail();
+    {
+        $pesanan = Pesanan::with(['details.layanan', 'details.hewan', 'penyediaLayanan'])
+            ->where('id', $id)
+            ->where('id_user', auth::user()->id)
+            ->firstOrFail();
 
-            $biayaPotongan = $pesanan->total_biaya * 0.1;
-             $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
+        $biayaPotongan = $pesanan->total_biaya * 0.1;
+        $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
 
-            return view('page.User.riwayat_detail', compact('pesanan', 'biayaPotongan', 'biayaTotal'));
+        $alamatAwal = $this->getAddressFromCoordinates($pesanan->lokasi_awal);
+        $alamatTujuan = $this->getAddressFromCoordinates($pesanan->lokasi_tujuan);
+
+        $jarakKm = null;
+        if ($pesanan->lokasi_awal && $pesanan->lokasi_tujuan) {
+            $jarakKm = $this->calculateDistance($pesanan->lokasi_awal, $pesanan->lokasi_tujuan);
         }
 
+        return view('page.User.riwayat_detail', compact('pesanan', 'biayaPotongan', 'biayaTotal', 'alamatAwal', 'alamatTujuan', 'jarakKm'));
+    }
+
+    private function getAddressFromCoordinates($coordinates)
+    {
+        if (!$coordinates || !str_contains($coordinates, ',')) {
+            return 'Koordinat tidak valid';
+        }
+
+        [$lat, $lon] = explode(',', $coordinates);
+
+        if (!is_numeric($lat) || !is_numeric($lon)) {
+            return 'Koordinat tidak valid';
+        }
+
+        try {
+            $client = new Client();
+            $response = $client->get('https://nominatim.openstreetmap.org/reverse', [
+                'query' => [
+                    'lat' => $lat,
+                    'lon' => $lon,
+                    'format' => 'json'
+                ],
+                'headers' => [
+                    'User-Agent' => 'SipetraApp/1.0'
+                ]
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+            return $data['display_name'] ?? 'Alamat tidak ditemukan';
+        } catch (\Exception $e) {
+            return 'Alamat tidak ditemukan';
+        }
+    }
+
+
+    private function calculateDistance($coord1, $coord2)
+    {
+        if (!str_contains($coord1, ',') || !str_contains($coord2, ',')) {
+            return 0; // atau null, tergantung kebutuhan
+        }
+
+        [$lat1, $lon1] = explode(',', $coord1);
+        [$lat2, $lon2] = explode(',', $coord2);
+
+        if (!is_numeric($lat1) || !is_numeric($lon1) || !is_numeric($lat2) || !is_numeric($lon2)) {
+            return 0;
+        }
+
+        // selanjutnya tetap seperti sebelumnya...
+        $earthRadius = 6371;
+
+        $lat1 = deg2rad((float)$lat1);
+        $lon1 = deg2rad((float)$lon1);
+        $lat2 = deg2rad((float)$lat2);
+        $lon2 = deg2rad((float)$lon2);
+
+        $deltaLat = $lat2 - $lat1;
+        $deltaLon = $lon2 - $lon1;
+
+        $a = sin($deltaLat / 2) ** 2 + cos($lat1) * cos($lat2) * sin($deltaLon / 2) ** 2;
+        $c = 2 * asin(sqrt($a));
+
+        return round($earthRadius * $c, 2);
+    }
 
 
 }
+
+
+
+
+

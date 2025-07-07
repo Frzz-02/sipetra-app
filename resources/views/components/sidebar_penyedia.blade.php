@@ -12,8 +12,8 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Dashboard -->
-    <li class="nav-item {{ Request::routeIs('dashboard_hewan') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('dashboard_hewan') }}">
+    <li class="nav-item {{ Request::routeIs('penyedia.dashboard') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('penyedia.dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>

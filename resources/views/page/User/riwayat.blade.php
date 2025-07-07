@@ -48,7 +48,9 @@
                         <tr class="clickable-row" onclick="window.location='{{ $link }}'">
                             <td>
                                 <div class="d-flex flex-column">
-                                    <strong>{{ optional($pesanan->details->first()->layanan)->nama_layanan ?? '-' }}</strong>
+                                    <strong>
+                                        {{ $pesanan->details->first()?->layanan->nama_layanan ?? '-' }}
+                                    </strong>
                                     <span>{{ \Carbon\Carbon::parse($pesanan->tanggal_pesan)->format('d M Y') }}</span>
                                      <div class="d-inline-block">
                                         <span class="badge mt-1 w-auto d-inline-block

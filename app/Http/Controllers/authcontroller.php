@@ -29,27 +29,28 @@ class authcontroller extends Controller
     }
     public function register(Request $request)
     {
-
         // Validasi data
         $validated = $request->validate([
             'email'         => 'required|email|unique:users,email',
             'password'      => 'required|min:6',
             'username'      => 'required|string|max:255',
             'no_telephone'  => 'required|string|max:20',
+            'alamat'        => 'nullable|string|max:255',
         ]);
 
-
+        // Simpan user
         User::create([
             'email'         => $validated['email'],
             'password'      => Hash::make($validated['password']),
             'username'      => $validated['username'],
             'no_telephone'  => $validated['no_telephone'],
+            'alamat'        => $validated['alamat'] ?? null,
             'role'          => 'user',
         ]);
 
-
         return redirect("login")->with('success', 'Registrasi berhasil!');
     }
+
      public function signin(Request $request)
         {
             // Validasi
@@ -68,7 +69,7 @@ class authcontroller extends Controller
                 if ($user->role === 'user') {
                     return redirect('dashboard');
                 } elseif ($user->role === 'penyedia_jasa') {
-                    return redirect()->route('dashboard_penyedia_jasa');
+                    return redirect()->route('penyedia.dashboard');
                 } else {
                     Auth::logout();
                     return back()->withErrors(['role' => 'Role tidak dikenali.']);
