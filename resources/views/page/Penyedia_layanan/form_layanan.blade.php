@@ -83,6 +83,7 @@
                     <option value="">-- Pilih Tipe --</option>
                     <option value="penitipan">Penitipan</option>
                     <option value="antar jemput">Antar Jemput</option>
+                    <option value="lokasi kandang">lokasi kandang</option>
                     <option value="lainnya">Lainnya</option>
                 </select>
             </div>
