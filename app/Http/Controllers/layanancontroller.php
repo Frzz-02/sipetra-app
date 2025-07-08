@@ -46,7 +46,7 @@ class LayananController extends Controller
             'nama_layanan' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
             'harga_dasar' => 'required|numeric|min:0',
-            'tipe_input' => 'required|in:penitipan,antar jemput,lainnya',
+            'tipe_input' => 'required|in:penitipan,antar jemput,lokasi kandang,lainnya',
             'variasi' => 'nullable|array',
             'variasi.*.nama' => 'required_with:variasi|string',
             'variasi.*.harga' => 'required_with:variasi|numeric|min:0',

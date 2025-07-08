@@ -10,34 +10,6 @@ use Illuminate\Support\Facades\Log;
 
 class MidtransController extends Controller
 {
-    public function bayar($id_pesanan)
-    {
-        $pesanan = Pesanan::with(['details.hewan', 'details.layanan'])->findOrFail($id_pesanan);
-
-        // Konfigurasi Midtrans
-        Config::$serverKey = config('midtrans.serverKey');
-        Config::$isProduction = config('midtrans.isProduction');
-        Config::$isSanitized = config('midtrans.isSanitized');
-        Config::$is3ds = config('midtrans.is3ds');
-
-        // Buat parameter transaksi
-        $params = [
-            'transaction_details' => [
-                'order_id' => 'SIPETRA-' . $pesanan->id,
-                'gross_amount' => $pesanan->total_biaya,
-            ],
-            'customer_details' => [
-                'first_name' => auth::user()->username,
-                'email' => auth::user()->email,
-                'phone' => Auth::user()->no_telephone,
-            ],
-        ];
-
-        // Buat Snap Token
-        $snapToken = Snap::getSnapToken($params);
-
-        return view('page.User.midtrans_bayar', compact('pesanan', 'snapToken'));
-    }
     public function getSnapToken($id_pesanan)
     {
     try {

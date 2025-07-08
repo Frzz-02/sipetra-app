@@ -10,10 +10,15 @@
                 <ul class="list-group">
                     @foreach ($pesanan->details as $detail)
                         <li class="list-group-item">
-                            {{ $detail->hewan->nama_hewan }} - {{ $detail->hewan->jenis_hewan }}
+                            @if ($detail->hewan)
+                                {{ $detail->hewan->nama_hewan }} - {{ $detail->hewan->jenis_hewan }}
+                            @else
+                                Tidak ada hewan
+                            @endif
                         </li>
                     @endforeach
                 </ul>
+
             </div>
             <div class="mb-3">
                 <div class="d-flex justify-content-between">
@@ -44,28 +49,6 @@
             <form id="form-pembayaran">
                 @csrf
                 <input type="hidden" name="id_pesanan" value="{{ $pesanan->id }}">
-
-                @if(Str::contains(strtolower($layanan->nama_layanan), 'antar jemput'))
-                    <div class="mb-3">
-                        <label class="form-label">Lokasi Awal</label>
-                        <input type="text" name="lokasi_awal" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Lokasi Tujuan</label>
-                        <input type="text" name="lokasi_tujuan" class="form-control" required>
-                    </div>
-                @elseif(Str::contains(strtolower($layanan->nama_layanan), 'pembersihan kandang'))
-                    <div class="mb-3">
-                        <label class="form-label">Lokasi Kandang</label>
-                        <input type="text" name="lokasi_kandang" class="form-control" required>
-                    </div>
-                @else
-                    <div class="mb-3">
-                        <label class="form-label">Detail Layanan</label>
-                        <textarea class="form-control" readonly>{{ $layanan->deskripsi }}</textarea>
-                    </div>
-                @endif
-
                 <div class="d-grid">
                     <button type="button" class="btn btn-success" id="midtrans-button">
                         Bayar Sekarang via Midtrans

@@ -49,8 +49,39 @@ class dashboard_user extends Controller
             $jarakKm = $this->calculateDistance($pesanan->lokasi_awal, $pesanan->lokasi_tujuan);
         }
 
-        return view('page.User.riwayat_detail', compact('pesanan', 'biayaPotongan', 'biayaTotal', 'alamatAwal', 'alamatTujuan', 'jarakKm'));
+        // Tambahan: persiapan data layanan
+        $detailPertama = $pesanan->details->first();
+        $layanan = optional($detailPertama)->layanan;
+        $hargaPerItem = optional($detailPertama)->subtotal_biaya;
+        $tipe = strtolower($layanan->tipe_input ?? 'lainnya');
+
+        $jumlahKandang =$pesanan->jumlah_kandang ?? null;
+        $luasKandang = $pesanan->luas_kandang ?? null;
+
+        $jumlahHewan = $pesanan->details->count();
+        $jumlahHari = null;
+        if ($tipe === 'penitipan' && $pesanan->tanggal_titip && $pesanan->tanggal_ambil) {
+            $jumlahHari = \Carbon\Carbon::parse($pesanan->tanggal_titip)
+                ->diffInDays(\Carbon\Carbon::parse($pesanan->tanggal_ambil)) ?: 1;
+        }
+
+        return view('page.User.riwayat_detail', compact(
+            'pesanan',
+            'biayaPotongan',
+            'biayaTotal',
+            'alamatAwal',
+            'alamatTujuan',
+            'jarakKm',
+            'layanan',
+            'hargaPerItem',
+            'tipe',
+            'jumlahHewan',
+            'jumlahHari',
+            'jumlahKandang',
+            'luasKandang'
+        ));
     }
+
 
     private function getAddressFromCoordinates($coordinates)
     {

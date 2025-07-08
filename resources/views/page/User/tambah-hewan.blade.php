@@ -47,15 +47,22 @@
           <input type="text" name="berat" class="form-control form-control-sm" placeholder="Contoh: 5 Kg, 12.5 Kg" required>
         </div>
 
-        <div class="col-md-12">
-          <label class="form-label fw-semibold">Deskripsi <span class="text-danger">*</span></label>
-          <textarea class="form-control form-control-sm" name="deskripsi" rows="3" placeholder="Tulis deskripsi singkat tentang hewan, seperti perilaku, kebutuhan khusus, atau riwayat kesehatannya" maxlength="200" required></textarea>
+         <div class="col-md-6">
+          <label class="form-label fw-semibold">Jenis Kelamin <span class="text-danger">*</span></label>
+          <select name="jenis_kelamin" class="form-control" required>
+                <option value="betina">Betina</option>
+                <option value="jantan">Jantan</option>
+         </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">foto hewan <span class="text-danger">*</span></label>
+          <input class="form-control form-control-sm" type="file" name="foto" required>
         </div>
 
         <div class="col-md-12">
-          <label class="form-label fw-semibold">Upload Foto <span class="text-danger">*</span></label>
-          <p class="small text-muted">Mohon unggah bukti kondisi fisik hewan saat ini</p>
-          <input class="form-control form-control-sm" type="file" name="foto" required>
+          <label class="form-label fw-semibold">Deskripsi <span class="text-danger">*</span></label>
+          <textarea class="form-control form-control-sm" name="deskripsi" rows="3" placeholder="Tulis deskripsi singkat tentang hewan, seperti perilaku, kebutuhan khusus, atau riwayat kesehatannya" maxlength="200" required></textarea>
         </div>
 
         <div class="col-12 text-end mt-3">

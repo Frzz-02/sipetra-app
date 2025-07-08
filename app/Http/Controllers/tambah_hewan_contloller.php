@@ -17,6 +17,7 @@ class tambah_hewan_contloller extends Controller
             'jenis' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
             'berat' => 'required|string|max:20',
+            'jenis_kelamin' => 'required|in:betina,jantan',
             'deskripsi' => 'required|string|max:200',
             'foto' => 'required|image|max:2048',
         ]);
@@ -40,6 +41,7 @@ class tambah_hewan_contloller extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'umur' => $umur,
             'berat' => $request->berat,
+            'jenis_kelamin' => $request->jenis_kelamin,
             'deskripsi' => $request->deskripsi,
             'foto_hewan' => $filename,
         ]);
@@ -64,8 +66,9 @@ class tambah_hewan_contloller extends Controller
             'nama_hewan' => 'required|string|max:100',
             'jenis_hewan' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
-            'umur' => 'nullable|string',
-            'berat' => 'nullable|string',
+            'umur' => 'required|string',
+            'berat' => 'required|string',
+            'Jenis_kelamin' => 'required',
             'deskripsi' => 'nullable|string',
             'foto_hewan' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -77,6 +80,7 @@ class tambah_hewan_contloller extends Controller
         $hewan->tanggal_lahir = $request->tanggal_lahir;
         $hewan->umur = $request->umur;
         $hewan->berat = $request->berat;
+        $hewan->jenis_kelamin = $request->Jenis_kelamin;
         $hewan->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('foto_hewan')) {

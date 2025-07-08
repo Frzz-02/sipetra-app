@@ -78,7 +78,7 @@
 
 
             <div class="mb-3">
-                <label>Tipe Layanan</label>
+                <label>Tipe Input Layanan</label>
                 <select name="tipe_input" class="form-control" required>
                     <option value="">-- Pilih Tipe --</option>
                     <option value="penitipan">Penitipan</option>

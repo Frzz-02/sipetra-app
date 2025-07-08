@@ -49,7 +49,7 @@
         </div>
 
         <!-- Pilih Hewan -->
-        <div class="mb-4">
+        <div class="mb-4 pilih-hewan">
             <label class="form-label fw-semibold">Pilih Hewan Anda</label>
             <div class="row">
                 @foreach ($hewans as $hewan)
@@ -98,6 +98,27 @@
             <div id="map_tujuan" style="height: 200px;"></div>
         </div>
 
+        <!-- pembersihan kandang -->
+        <div class="mb-3 pembersihan_kandang d-none">
+            <label>Jumlah Kandang</label>
+            <input type="text" name="jumlah_kandang" id="jumlah_kandang" class="form-control mb-2" >
+        </div>
+
+        <div class="mb-3 pembersihan_kandang d-none">
+            <label>Luas kandang</label>
+            <input type="text" name="luas_kandang" id="luas_kandang" class="form-control mb-2" >
+        </div>
+
+        <div class="mb-3 pembersihan_kandang d-none">
+            <label>Lokasi kandang</label>
+            <input type="text" name="lokasi_kandang" id="lokasi_kandang" class="form-control mb-2" >
+        </div>
+
+        <div class="mb-3 pembersihan_kandang d-none">
+            <label for="tanggal_pesan" class="form-label">Tanggal Pesan</label>
+            <input type="datetime-local" name="tanggal_pesan" id="tanggal_pesan" class="form-control">
+        </div>
+
         <!-- Tanggal Pesan -->
         <div class="mb-3 tipe-lainnya d-none">
             <label for="tanggal_pesan" class="form-label">Tanggal Pesan</label>
@@ -115,7 +136,7 @@
     const checkboxes = document.querySelectorAll('.variasi-checkbox');
 
     function handleTipe(tipe) {
-        document.querySelectorAll('.tipe-penitipan, .tipe-antar-jemput, .tipe-lainnya').forEach(el => {
+        document.querySelectorAll('.tipe-penitipan, .tipe-antar-jemput, .tipe-lainnya, .pembersihan_kandang').forEach(el => {
             el.classList.add('d-none');
         });
 
@@ -123,6 +144,13 @@
             document.querySelectorAll('.tipe-penitipan').forEach(el => el.classList.remove('d-none'));
         } else if (tipe === 'antar jemput') {
             document.querySelectorAll('.tipe-antar-jemput').forEach(el => el.classList.remove('d-none'));
+        } else if (tipe === 'lokasi kandang') {
+            document.querySelectorAll('.pembersihan_kandang').forEach(el => el.classList.remove('d-none'));
+            if (tipe === 'lokasi kandang') {
+                document.querySelector('.pilih-hewan')?.classList.add('d-none');
+            } else {
+                document.querySelector('.pilih-hewan')?.classList.remove('d-none');
+            }
         } else {
             document.querySelectorAll('.tipe-lainnya').forEach(el => el.classList.remove('d-none'));
         }

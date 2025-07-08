@@ -31,7 +31,7 @@ class PemesananController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_hewan' => 'required|array|min:1',
+            'id_hewan' => 'array',
             'id_hewan.*' => 'exists:hewans,id',
             'id_variasi' => 'required|exists:penyedia_layanan_details,id',
         ]);
@@ -40,13 +40,14 @@ class PemesananController extends Controller
 
         try {
             $user = Auth::user()->id;
+            $idHewanDefault = Hewan::where('id_user', $user)->value('id');
 
             $variasi = Penyedia_layanan_detail::findOrFail($request->id_variasi);
             $layanan = $variasi->layanan;
             $harga = $variasi->harga_dasar;
             $opsi = $variasi->opsi ?? json_encode([]);
 
-            $jumlahHewan = count($request->id_hewan);
+            $jumlahHewan = $request->has('id_hewan') ? count($request->id_hewan) : 1;
             $tipe = strtolower($layanan->tipe_input);
             $totalBiaya = 0;
 
@@ -57,11 +58,24 @@ class PemesananController extends Controller
                 $totalBiaya = $jumlahHari * $jumlahHewan * $harga;
 
             } elseif ($tipe === 'antar jemput') {
-                  if (!$request->lokasi_awal || !$request->lokasi_tujuan) {
-                        throw new \Exception("Lokasi awal dan tujuan harus diisi.");
-                    }
+                if (!$request->lokasi_awal || !$request->lokasi_tujuan) {
+                    throw new \Exception("Lokasi awal dan tujuan harus diisi.");
+                }
+
                 $jarakKm = $this->hitungJarakKm($request->lokasi_awal, $request->lokasi_tujuan);
                 $totalBiaya = $jarakKm * $harga * $jumlahHewan;
+
+            } elseif ($tipe === 'lokasi kandang') {
+                $jumlahKandang = $request->jumlah_kandang ?? 1;
+                $luasKandang = $request->luas_kandang ?? 0;
+
+                if ($jumlahKandang > 0) {
+                    $totalBiaya = $jumlahKandang * $harga;
+                } elseif ($luasKandang > 0) {
+                    $totalBiaya = $luasKandang * $harga;
+                } else {
+                    throw new \Exception("Jumlah atau luas kandang harus diisi.");
+                }
 
             } else {
                 $totalBiaya = $jumlahHewan * $harga;
@@ -73,48 +87,60 @@ class PemesananController extends Controller
                 'tanggal_pesan' => now(),
                 'tanggal_titip' => $request->tanggal_titip ?? null,
                 'tanggal_ambil' => $request->tanggal_ambil ?? null,
-                'tanggal_mulai' => $request->tanggal_pesan ??  $request->tanggal_titip,
+                'tanggal_mulai' => $request->tanggal_pesan ?? $request->tanggal_titip,
                 'tanggal_selesai' => $request->tanggal_ambil ?? null,
                 'lokasi_awal' => $request->lokasi_awal ?? null,
                 'lokasi_tujuan' => $request->lokasi_tujuan ?? null,
+                'lokasi_kandang' => $request->lokasi_kandang ?? null,
+                'jumlah_kandang' => $request->jumlah_kandang ?? null,
+                'luas_kandang' => $request->luas_kandang ?? null,
                 'total_biaya' => $totalBiaya,
                 'status' => 'menunggu pembayaran',
             ]);
 
-            foreach ($request->id_hewan as $idHewan) {
+            if ($tipe === 'lokasi kandang') {
                 Pesanan_detail::create([
                     'id_pesanan' => $pesanan->id,
-                    'id_hewan' => $idHewan,
+                    'id_hewan' => null,
                     'id_layanan' => $variasi->id_layanan,
                     'data_opsi_layanan' => $opsi,
                     'subtotal_biaya' => $harga,
                 ]);
+            } else {
+                foreach ($request->id_hewan as $idHewan) {
+                    Pesanan_detail::create([
+                        'id_pesanan' => $pesanan->id,
+                        'id_hewan' => $idHewan,
+                        'id_layanan' => $variasi->id_layanan,
+                        'data_opsi_layanan' => $opsi,
+                        'subtotal_biaya' => $harga,
+                    ]);
+                }
             }
 
             DB::commit();
 
             return redirect()->route('pembayaran.lanjutkan', ['id_pesanan' => $pesanan->id])
                 ->with('success', 'Pesanan berhasil dibuat, lanjutkan ke pembayaran.');
+
         } catch (\Exception $e) {
-    DB::rollBack();
+            DB::rollBack();
 
-    // Log error untuk debugging ke storage/logs/laravel.log
-    Log::error('Gagal membuat pesanan:', [
-        'message' => $e->getMessage(),
-        'line' => $e->getLine(),
-        'file' => $e->getFile(),
-    ]);
+            Log::error('Gagal membuat pesanan:', [
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
 
-    // Tampilkan informasi error di browser (untuk development)
-    dd([
-        'message' => $e->getMessage(),
-        'trace' => $e->getTrace(),
-        'line' => $e->getLine(),
-        'file' => $e->getFile()
-    ]);
-}
-
+            dd([
+                'message' => $e->getMessage(),
+                'trace' => $e->getTrace(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ]);
+        }
     }
+
 
 protected function hitungJarakKm($lokasiAwal, $lokasiTujuan)
 {

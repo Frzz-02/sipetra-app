@@ -23,6 +23,9 @@ class Pesanan extends Model
     'tanggal_ambil',
     'lokasi_awal',
     'lokasi_tujuan',
+    'lokasi_kandang',
+    'jumlah_kandang',
+    'luas_kandang',
     'total_biaya',
     'status',
     ];
