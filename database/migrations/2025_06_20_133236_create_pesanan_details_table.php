@@ -16,11 +16,12 @@ return new class extends Migration
             $table->foreignId('id_pesanan')
                 ->constrained('pesanans')
                 ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data pesanan dihapus
-            
+
             $table->foreignId('id_hewan')
+                ->nullable()
                 ->constrained('hewans')
                 ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data penyedia layanan detail dihapus
-                
+
             $table->foreignId('id_layanan')
                 ->constrained('layanans')
                 ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data penyedia layanan detail dihapus
