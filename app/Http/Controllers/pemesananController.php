@@ -70,10 +70,10 @@ class PemesananController extends Controller
             $pesanan = Pesanan::create([
                 'id_user' => $user,
                 'id_penyedia_layanan' => $variasi->id_penyedia,
-                'tanggal_pesan' => $request->tanggal_pesan ?? now(),
+                'tanggal_pesan' => now(),
                 'tanggal_titip' => $request->tanggal_titip ?? null,
                 'tanggal_ambil' => $request->tanggal_ambil ?? null,
-                'tanggal_mulai' => $request->tanggal_titip ?? null,
+                'tanggal_mulai' => $request->tanggal_pesan ??  $request->tanggal_titip,
                 'tanggal_selesai' => $request->tanggal_ambil ?? null,
                 'lokasi_awal' => $request->lokasi_awal ?? null,
                 'lokasi_tujuan' => $request->lokasi_tujuan ?? null,

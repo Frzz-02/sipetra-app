@@ -20,8 +20,11 @@ return new class extends Migration
             $table->string('nama_toko', 100);
             $table->text('alamat_toko');
             $table->text('deskripsi')->nullable();
-
-            // Gunakan enum untuk membatasi pilihan status
+            $table->string('color_heading')->nullable();
+            $table->string('color_font_judul')->nullable();
+            $table->string('color_font')->nullable();
+            $table->string('color_button')->nullable();
+            $table->string('logo_toko')->nullable();
             $table->enum('status', ['aktif', 'nonaktif', 'ditangguhkan', 'dibekukan', 'ditampilkan'])
                 ->default('aktif');
 

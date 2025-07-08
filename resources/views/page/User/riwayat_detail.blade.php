@@ -64,9 +64,6 @@
                 <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jumlahHari }} hari x Rp{{ number_format($hargaPerHewan, 0, ',', '.') }}</p>
 
             @elseif ($tipe === 'antar jemput')
-                <p><strong>Lokasi Awal (Koordinat):</strong> {{ $pesanan->lokasi_awal }}</p>
-                <p><strong>Lokasi Tujuan (Koordinat):</strong> {{ $pesanan->lokasi_tujuan }}</p>
-
                 @if(isset($alamatAwal) && isset($alamatTujuan))
                     <p><strong>Alamat Awal:</strong><br> {{ $alamatAwal }}</p>
                     <p><strong>Alamat Tujuan:</strong><br> {{ $alamatTujuan }}</p>

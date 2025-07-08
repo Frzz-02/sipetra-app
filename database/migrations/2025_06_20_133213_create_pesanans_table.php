@@ -28,6 +28,7 @@ return new class extends Migration
             $table->dateTime('tanggal_ambil')->nullable();
             $table->string('lokasi_awal')->nullable();
             $table->string('lokasi_tujuan')->nullable();
+            $table->string('lokasi_kandang')->nullable();
             $table->decimal('total_biaya', 10, 2);
             $table->enum('status', ['menunggu pembayaran', 'menunggu diproses', 'diproses', 'selesai', 'batal'])
                 ->default('menunggu pembayaran'); // Status of the order, default is pending

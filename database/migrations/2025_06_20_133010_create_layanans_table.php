@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_layanan', 50);
             $table->text('deskripsi')->nullable();
             $table->decimal('harga_dasar', 10, 2);
-            $table->enum('tipe_input', ['penitipan','antar jemput','lainnya' ])
+            $table->enum('tipe_input', ['penitipan','antar jemput','lokasi kandang','lainnya' ])
                 ->default('lainnya'); // Tipe layanan, default adalah "bawah"
             $table->timestamps();
         });
