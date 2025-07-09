@@ -47,7 +47,6 @@
                 <thead>
                     <tr>
                         <th>Nama User</th>
-                        <th>Status</th>
                         <th>Total Biaya</th>
                         <th>Aksi</th>
                     </tr>
@@ -55,11 +54,10 @@
                 <tbody>
                     @forelse($pesanan_terbaru as $pesanan)
                         <tr>
-                            <td>{{ $pesanan->user->username ?? 'User' }}</td>
-                            <td><span class="badge bg-info text-dark">{{ ucfirst($pesanan->status) }}</span></td>
+                            <td>{{ $pesanan->user->username ?? 'User' }}<br><span class="badge bg-info text-dark">{{ ucfirst($pesanan->status) }}</td>
                             <td>Rp {{ number_format($pesanan->total_biaya, 0, ',', '.') }}</td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-primary">Detail</a>
+                                <a href="{{route('penyedia.pesanan.detail', $pesanan->id)}}" class="btn btn-sm btn-primary">Detail</a>
                             </td>
                         </tr>
                     @empty

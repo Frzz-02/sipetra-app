@@ -12,6 +12,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\ulasanController;
 use App\Http\Controllers\dashboardPenyediaController;
+use App\Http\Controllers\detailPesanan_penyediaJasa;
 
  Route::get('/', function () {
     return view('welcome');
@@ -63,6 +64,8 @@ Route::delete('/layanan/{id}', [LayananController::class, 'destroy'])->name('lay
 Route::get('/layanan/detail/{id}/edit', [LayananController::class, 'edit'])->name('detail_layanan.edit');
 Route::put('/layanan/detail/{id}', [LayananController::class, 'update'])->name('detail_layanan.update');
 Route::delete('/layanan/detail/{id}', [LayananController::class, 'destroyvariasi'])->name('detail_layanan.destroy');
+Route::get('/penyedia/pesanan/{id}', [detailPesanan_penyediaJasa::class, 'show'])->name('penyedia.pesanan.detail');
+
 
 
 Route::get('/cari-layanan', [CariLayananController::class, 'index'])->name('cari_layanan');
