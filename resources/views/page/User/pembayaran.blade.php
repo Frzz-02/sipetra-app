@@ -23,12 +23,38 @@
             <div class="mb-3">
                 <div class="d-flex justify-content-between">
                     <strong>Layanan:</strong>
-                    <span>{{ $layanan->nama_layanan }}</span>
+                    <span>{{ optional($pesanan->details->first()?->layanan_detail)->nama_variasi ?? '-' }}
+                    </span>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <strong>Deskripsi:</strong>
-                    <span>{{ $layanan->deskripsi }}</span>
+                    <strong>harga layanan:</strong>
+                    <span>Rp{{ number_format(optional($pesanan->details->first()?->layanan_detail)->harga_dasar ?? '-') }}
+                    </span>
                 </div>
+                 @if($tipe === 'penitipan')
+                  <div class="d-flex justify-content-between">
+                    <strong>jumlah hari:</strong>
+                    <span>{{$pesanan->jumlah_hari ?? '-'}}</span>
+                    </div>
+                    @elseif($tipe === 'antar jemput')
+                    <div class="d-flex justify-content-between">
+                    <strong>Estimasi Jarak:</strong>
+                    <span>{{ $pesanan->total_jarak ?? '-' }} km</span>
+                    </div>
+                    @elseif($tipe === 'lokasi kandang')
+                    <div class="d-flex justify-content-between">
+                    <strong>Jumlah Kandang:</strong>
+                    <span>{{ $pesanan->luas_kandang ?? '-' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <strong>Jumlah Kandang:</strong>
+                    <span>{{ $pesanan->jumlah_kandang ?? '-' }}</span>
+                     </div>
+                    @else
+                    @endif
+
+
+
                 <div class="d-flex justify-content-between">
                     <strong>Biaya Layanan:</strong>
                     <span>Rp {{ number_format($pesanan->total_biaya) }}</span>

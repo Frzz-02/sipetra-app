@@ -16,9 +16,10 @@ return new class extends Migration
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->string('nama_layanan', 50);
             $table->text('deskripsi')->nullable();
-            $table->decimal('harga_dasar', 10, 2);
             $table->enum('tipe_input', ['penitipan','antar jemput','lokasi kandang','lainnya' ])
-                ->default('lainnya'); // Tipe layanan, default adalah "bawah"
+                ->default('lainnya');
+            $table->enum('status', ['arsipkan','tampilkan', ])
+                ->default('tampilkan');
             $table->timestamps();
         });
     }

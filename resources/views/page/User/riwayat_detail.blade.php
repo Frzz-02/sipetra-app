@@ -27,7 +27,7 @@
                     }
                 }}">
                     {{ ucfirst($pesanan->status) }}
-                </span>
+                </span><a href="{{route('penyedia.proses.detail', $pesanan->id)}}">Proses</a>
             </p>
             <p><strong>Subtotal Layanan:</strong> Rp{{ number_format($pesanan->total_biaya, 0, ',', '.') }}</p>
             <p><strong>Biaya Penanganan:</strong> Rp{{ number_format($biayaPotongan, 0, ',', '.') }}</p>
@@ -40,9 +40,8 @@
     <div class="card shadow border-0 mb-4">
      <div class="card-body">
             <h5 class="mb-3">Detail Layanan</h5>
-
-            <p><strong>Jenis Layanan:</strong> {{ ucfirst($tipe) }}</p>
-
+            <p><strong>Nama Layanan:</strong> {{ optional($pesanan->details->first()?->layanan_detail)->nama_variasi ?? '-' }}</p>
+            <p><strong>lokasi kandang:</strong> {{ $lokasiKandang }}</p>
             {{-- Tampilkan harga dan jumlah sesuai tipe --}}
             @if ($tipe === 'lokasi kandang')
                 @if ($jumlahKandang)
@@ -62,21 +61,22 @@
 
             {{-- Detail berdasarkan tipe layanan --}}
             @if ($tipe === 'penitipan')
-                <p><strong>Tanggal Titip:</strong> {{ date('d-m-Y', strtotime($pesanan->tanggal_titip)) }}</p>
-                <p><strong>Tanggal Ambil:</strong> {{ date('d-m-Y', strtotime($pesanan->tanggal_ambil)) }}</p>
-                <p><strong>Lama Penitipan:</strong> {{ $jumlahHari }} hari</p>
-                <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jumlahHari }} hari x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
+                <p><strong>Tanggal Titip:</strong> {{ date('d M Y', strtotime($tanggal_titip)) }}</p>
+                <p><strong>Tanggal Ambil:</strong> {{ date('d M Y', strtotime($tanggal_ambil)) }}</p>
+                <p><strong>Lama Penitipan:</strong> {{ $jumlah_hari }} hari</p>
+                <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jumlah_hari }} hari x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
 
             @elseif ($tipe === 'antar jemput')
                 @if(isset($alamatAwal) && isset($alamatTujuan))
                     <p><strong>Alamat Awal:</strong><br> {{ $alamatAwal }}</p>
                     <p><strong>Alamat Tujuan:</strong><br> {{ $alamatTujuan }}</p>
                 @endif
-                <p><strong>Estimasi Jarak:</strong> {{ $jarakKm }} km</p>
-                <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jarakKm }} km x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
+                <p><strong>Estimasi Jarak:</strong> {{ $total_jarak }} km</p>
+                <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $total_jarak }} km x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
 
             @elseif ($tipe === 'lokasi kandang')
                 <p><strong>Tanggal Layanan:</strong> {{ date('d-m-Y', strtotime($pesanan->tanggal_pesan)) }}</p>
+                <p><strong>lokasi kandang:</strong> {{ $lokasiKandang}}</p>
                 @if ($jumlahKandang)
                     <p><strong>Perhitungan:</strong> {{ $jumlahKandang }} kandang x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
                 @elseif ($luasKandang)

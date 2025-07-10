@@ -13,62 +13,74 @@ class detailPesanan_penyediaJasa extends Controller
 {
     public function show($id)
     {
-        $pesanan = Pesanan::with(['user', 'details.layanan', 'details.hewan'])->findOrFail($id);
+        $pesanan = Pesanan::with([
+            'user',
+            'details.layanan',
+            'details.layanan_detail',
+            'details.hewan',
+        ])->findOrFail($id);
 
-        $user = $pesanan->user;
-        $layanan = optional($pesanan->details->first())->layanan;
-        $tipe = strtolower($layanan->tipe_input ?? 'lainnya');
+          $sedangProses = \App\Models\Sedang_proses::with([
+            'petugas.karyawan',
+            'status_proses',
+            'pesanan'
+        ])->where('id_pesanan', $id)->first();
 
+        $user =$pesanan->user;
+        $layanan = optional($pesanan->details->first())->layanan_detail;
+        $tipe = strtolower(optional($pesanan->details->first()?->layanan_detail?->layanan)->tipe_input ?? 'lainnya');
+        $hargaPerItem = optional($layanan)->harga_dasar ?? 0;
+        $biayaTotal = $pesanan->total_biaya;
         $jumlahHewan = $pesanan->details->count();
-        $hargaPerItem = optional($pesanan->details->first())->subtotal_biaya;
-
-        $opsi = json_decode(optional($pesanan->details->first())->data_opsi_layanan, true);
-        $jumlahKandang = $opsi['jumlah_kandang'] ?? null;
-        $luasKandang = $opsi['luas_kandang'] ?? null;
-
-        $jumlahHari = null;
-        if ($tipe === 'penitipan' && $pesanan->tanggal_titip && $pesanan->tanggal_ambil) {
-            $jumlahHari = Carbon::parse($pesanan->tanggal_titip)->diffInDays(Carbon::parse($pesanan->tanggal_ambil)) ?: 1;
-        }
-
-        $biayaPotongan = $pesanan->total_biaya * 0.1;
-        $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
-
-        // Format tanggal
-        $pesanan->formatted_tanggal_pesan = Carbon::parse($pesanan->tanggal_pesan)->format('d-m-Y H:i');
-        $pesanan->formatted_tanggal_titip = $pesanan->tanggal_titip ? Carbon::parse($pesanan->tanggal_titip)->format('d-m-Y') : null;
-        $pesanan->formatted_tanggal_ambil = $pesanan->tanggal_ambil ? Carbon::parse($pesanan->tanggal_ambil)->format('d-m-Y') : null;
-        $pesanan->formatted_tanggal_mulai = $pesanan->tanggal_mulai ? Carbon::parse($pesanan->tanggal_mulai)->format('d-m-Y') : null;
-
-        $badgeColor = match ($pesanan->status) {
-            'menunggu pembayaran' => 'secondary',
-            'menunggu diproses' => 'warning text-dark',
-            'diproses' => 'info',
-            'selesai' => 'success',
-            'batal' => 'danger',
-            default => 'light text-dark'
-        };
-
+        $lokasiKandang = $pesanan->lokasi_kandang ?? null;
+        //penitipan hewan
+        $tanggal_titip = $pesanan->tanggal_titip ?? null;
+        $tanggal_ambil = $pesanan->tanggal_ambil ?? null;
+        $jumlah_hari = $pesanan->jumlah_hari ?? null;
+        //antar jemput
         $alamatAwal = $this->getAddressFromCoordinates($pesanan->lokasi_awal);
         $alamatTujuan = $this->getAddressFromCoordinates($pesanan->lokasi_tujuan);
-
         $lokasiAwal = $this->parseCoordinates($pesanan->lokasi_awal);
         $lokasiTujuan = $this->parseCoordinates($pesanan->lokasi_tujuan);
+        $jarakKm = $pesanan->total_jarak ?? null;
+        //pembersihan kandang
+        $jumlahKandang =$pesanan->jumlah_kandang ?? null;
+        $luasKandang = $pesanan->luas_kandang ?? null;
+        $lokasiKandang = $pesanan->lokasi_kandang ?? null;
+        //lainnya
+        $tanggal_mulai = $pesanan->tanggal_mulai ?? null;
 
-        $jarakKm = null;
-        $ruteGeoJson = null;
+       $ruteGeoJson = null;
         if ($lokasiAwal && $lokasiTujuan) {
             $jarakKm = $this->calculateDistance($lokasiAwal, $lokasiTujuan);
             $ruteGeoJson = $this->getRouteGeoJson($lokasiAwal, $lokasiTujuan);
         }
+    return view('page.Penyedia_layanan.detail_pesanan', compact(
+        'pesanan',
+        'user',
+        'layanan',
+        'tipe',
+        'hargaPerItem',
+        'jumlahHewan',
+        'jumlah_hari',
+        'jumlahKandang',
+        'luasKandang',
+        'biayaTotal',
+        'alamatAwal',
+        'alamatTujuan',
+        'lokasiAwal',
+        'lokasiTujuan',
+        'jarakKm',
+        'ruteGeoJson',
+        'tanggal_titip',
+        'tanggal_ambil',
+        'tanggal_mulai',
+        'lokasiKandang',
+        'sedangProses'
+    ));
 
-        return view('page.Penyedia_layanan.detail_pesanan', compact(
-            'pesanan', 'user', 'tipe', 'jumlahHewan', 'hargaPerItem',
-            'jumlahHari', 'jumlahKandang', 'luasKandang', 'biayaPotongan',
-            'biayaTotal', 'badgeColor', 'alamatAwal', 'alamatTujuan',
-            'lokasiAwal', 'lokasiTujuan', 'jarakKm', 'ruteGeoJson'
-        ));
     }
+
 
     private function getAddressFromCoordinates($coordinates)
     {

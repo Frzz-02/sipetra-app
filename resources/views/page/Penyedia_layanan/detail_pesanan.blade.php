@@ -1,7 +1,12 @@
 @extends('layout.layout_penyedia')
 
 @section('content2')
-<div class="container py-4">
+<div class="container py-4" style="
+    max-height: calc(100vh - 100px);
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+">
     <h3 class="mb-4 text-primary">Detail Pesanan</h3>
 
     {{-- Informasi User Pemesan --}}
@@ -24,27 +29,29 @@
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <h5 class="mb-3">Hewan yang Dipesan</h5>
-            @forelse ($pesanan->details as $detail)
-                <div class="border p-2 mb-3 rounded">
-                    @if($detail->hewan)
-                    <div class="d-flex align-items-center">
-                        <img src="{{ asset('assets/hewan/' . $detail->hewan->foto_hewan) }}" alt="Hewan" class="me-3 rounded" width="80" height="80">
-                        <div>
-                            <p class="mb-0"><strong>{{ $detail->hewan->nama_hewan }}</strong> ({{ $detail->hewan->jenis_hewan }})</p>
-                            <p class="mb-0">Umur: {{ $detail->hewan->umur ?? '-' }}</p>
-                            <p class="mb-0">Berat: {{ $detail->hewan->berat ?? '-' }}</p>
-                            <p class="mb-0">Jenis Kelamin: {{ ucfirst($detail->hewan->jenis_kelamin) }}</p>
-                            <p class="mb-0">Tanggal Lahir: {{ $detail->hewan->tanggal_lahir }}</p>
-                            <p class="mb-0">Deskripsi: {{ $detail->hewan->deskripsi ?? '-' }}</p>
+            <div class="overflow-auto" style="max-height: 400px;">
+                @forelse ($pesanan->details as $detail)
+                    <div class="border p-2 mb-3 rounded">
+                        @if($detail->hewan)
+                        <div class="d-flex align-items-start flex-wrap flex-md-nowrap">
+                            <img src="{{ asset('assets/hewan/' . $detail->hewan->foto_hewan) }}" alt="Hewan" class="me-3 mb-2 rounded" width="80" height="80" loading="lazy">
+                            <div style="min-width: 200px">
+                                <p class="mb-0"><strong>{{ $detail->hewan->nama_hewan }}</strong> ({{ $detail->hewan->jenis_hewan }})</p>
+                                <p class="mb-0">Umur: {{ $detail->hewan->umur ?? '-' }}</p>
+                                <p class="mb-0">Berat: {{ $detail->hewan->berat ?? '-' }}</p>
+                                <p class="mb-0">Jenis Kelamin: {{ ucfirst($detail->hewan->jenis_kelamin) }}</p>
+                                <p class="mb-0">Tanggal Lahir: {{ $detail->hewan->tanggal_lahir }}</p>
+                                <p class="mb-0">Deskripsi: {{ $detail->hewan->deskripsi ?? '-' }}</p>
+                            </div>
                         </div>
+                        @else
+                            <p class="mb-0 text-danger"><strong>Hewan tidak ditemukan</strong></p>
+                        @endif
                     </div>
-                    @else
-                        <p class="mb-0 text-danger"><strong>Hewan tidak ditemukan</strong></p>
-                    @endif
-                </div>
-            @empty
-                <p>Tidak ada hewan.</p>
-            @endforelse
+                @empty
+                    <p>Tidak ada hewan.</p>
+                @endforelse
+            </div>
         </div>
     </div>
 
@@ -58,8 +65,8 @@
             @if ($tipe === 'penitipan')
                 <p><strong>Tanggal Titip:</strong> {{ $pesanan->formatted_tanggal_titip }}</p>
                 <p><strong>Tanggal Ambil:</strong> {{ $pesanan->formatted_tanggal_ambil }}</p>
-                <p><strong>Lama Penitipan:</strong> {{ $jumlahHari }} hari</p>
-                <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jumlahHari }} hari x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
+                <p><strong>Lama Penitipan:</strong> {{ $jumlah_hari }} hari</p>
+                <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jumlah_hari }} hari x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
 
             @elseif ($tipe === 'antar jemput')
                 <p><strong>Alamat Awal:</strong> {{ $alamatAwal }}</p>
@@ -67,6 +74,7 @@
                 <p><strong>Estimasi Jarak:</strong> {{ $jarakKm }} km</p>
                 <p><strong>Perhitungan:</strong> {{ $jumlahHewan }} hewan x {{ $jarakKm }} km x Rp{{ number_format($hargaPerItem, 0, ',', '.') }}</p>
                 <p>GeoJSON: {{ $ruteGeoJson ? 'Ada' : 'Kosong' }}</p>
+
                 {{-- Peta --}}
                 <div class="mt-4">
                     <div id="map" style="height: 300px; width: 100%; border-radius: 10px;"></div>
@@ -90,17 +98,89 @@
             @endif
         </div>
     </div>
+    {{-- Informasi Penugasan --}}
+    @if(isset($sedangProses))
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-3 text-success">Informasi Penugasan</h5>
+
+            <p><strong>Catatan Penugasan:</strong> {{ $sedangProses->catatan ?? '-' }}</p>
+
+            {{-- Petugas yang Menangani --}}
+            <h6 class="mt-3">Petugas yang Menangani:</h6>
+            @forelse ($sedangProses->petugas as $petugas)
+                <p class="mb-1">- {{ $petugas->karyawan->nama ?? 'Tidak ditemukan' }}</p>
+            @empty
+                <p class="text-muted">Belum ada petugas ditugaskan.</p>
+            @endforelse
+
+            {{-- Riwayat Status Proses --}}
+            <h6 class="mt-3">Riwayat Status Proses:</h6>
+            @forelse ($sedangProses->status_proses as $status)
+                <p class="mb-1">
+                    • <strong>{{ ucfirst($status->status) }}</strong>
+                    <span class="text-muted">({{ \Carbon\Carbon::parse($status->waktu)->translatedFormat('d M Y H:i') }})</span>
+                </p>
+            @empty
+                <p class="text-muted">Belum ada status proses.</p>
+            @endforelse
+            <!-- Tombol Tambah Riwayat -->
+           @if($pesanan->status !== 'selesai')
+                <div class="mt-2">
+                    <a href="{{ route('status.tambah.form', $sedangProses->id) }}" class="btn btn-sm btn-outline-primary">
+                        + Tambah Riwayat Status
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
+    @endif
+
 
     {{-- Rincian Pembayaran --}}
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <h5 class="mb-3">Rincian Biaya</h5>
             <p><strong>Subtotal Layanan:</strong> Rp{{ number_format($pesanan->total_biaya, 0, ',', '.') }}</p>
-            <p><strong>Biaya Penanganan:</strong> Rp{{ number_format($biayaPotongan, 0, ',', '.') }}</p>
             <hr>
             <p class="fw-bold text-primary">Total yang Harus Dibayar: Rp{{ number_format($biayaTotal, 0, ',', '.') }}</p>
         </div>
     </div>
+    {{-- Tombol Aksi --}}
+  <div class="position-sticky bottom-0 bg-white py-3 px-3 shadow-lg d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="z-index: 1000;">
+        <a href="{{route('penyedia.dashboard')}}" class="btn btn-outline-secondary w-100 w-md-auto">← Kembali</a>
+
+        @if($pesanan->status !== 'selesai')
+        <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto">
+            @if($pesanan->status === 'diproses')
+                <form action="{{ route('pesanan.selesai', $pesanan->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-success w-100 w-md-auto">
+                        Selesaikan Pesanan
+                    </button>
+                </form>
+            @else
+                <form action="{{ route('pesanan.proses', $pesanan->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-primary w-100 w-md-auto" style="background-color: #003366; border-color: #003366;">
+                        Proses Pesanan
+                    </button>
+                </form>
+            @endif
+
+            <form action="#" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?');">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-danger w-100 w-md-auto">
+                    Batalkan Pesanan
+                </button>
+            </form>
+        </div>
+        @endif
+    </div>
+
+
+
 </div>
 
 @if($tipe === 'antar jemput' && $lokasiAwal && $lokasiTujuan && $ruteGeoJson)
@@ -129,10 +209,8 @@
                 style: { color: 'blue', weight: 4 }
             }).addTo(map);
 
-            // Zoom ke rute
             map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
         });
     </script>
 @endif
-
 @endsection

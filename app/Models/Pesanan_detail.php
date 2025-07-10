@@ -20,10 +20,9 @@ class Pesanan_detail extends Model
         'id_pesanan',
         'id_hewan',
         'id_layanan',
-        'data_opsi_layanan',
+        'id_layanan_detail',
         'subtotal_biaya',
-        'lokasi_awal',
-        'lokasi_tujuan',
+
     ];
     public function hewan() {
         return $this->belongsTo(Hewan::class, 'id_hewan');
@@ -32,6 +31,13 @@ class Pesanan_detail extends Model
     public function layanan() {
         return $this->belongsTo(Layanan::class, 'id_layanan');
     }
+    public function layanan_detail()
+    {
+        return $this->belongsTo(Layanan_detail::class, 'id_layanan_detail');
+    }
+
+
+
 
 
 

@@ -13,6 +13,9 @@ use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\ulasanController;
 use App\Http\Controllers\dashboardPenyediaController;
 use App\Http\Controllers\detailPesanan_penyediaJasa;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\prosesController;
+use App\Http\Controllers\StatusProsesController;
 
  Route::get('/', function () {
     return view('welcome');
@@ -54,6 +57,8 @@ Route::get('/hewan/{id}/edit', [tambah_hewan_contloller::class, 'edit'])->name('
 Route::put('/hewan/{id}', [tambah_hewan_contloller::class, 'update'])->name('hewan.update');
 Route::delete('/hewan/{id}', [tambah_hewan_contloller::class, 'destroy'])->name('hewan.destroy');
 Route::get('/riwayat-pesanan', [dashboard_user::class, 'riwayat'])->name('riwayat.pesanan');
+Route::get('penyedia/proses/{id_pesanan}', [dashboard_user::class, 'detailProsesPesanan'])->name('penyedia.proses.detail');
+
 
 
 Route::get('/layanansaya', [layanancontroller::class, 'index'])->name('layanansaya');
@@ -73,7 +78,7 @@ Route::get('/penyedia/{id}', [CariLayananController::class, 'detail'])->name('pe
 Route::get('/layanan/{id}/detail_layanan', [CariLayananController::class, 'show'])->name('layanan.detail');
 
 Route::get('/pemesanan/{id_layanan}', [PemesananController::class, 'create'])->name('pemesanan.create');
-Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
+Route::post('/pemesanan/{id_layanan}', [PemesananController::class, 'store'])->name('pemesanan.store');
 
 Route::get('/pembayaran/lanjutkan/{id_pesanan}', [PembayaranController::class, 'lanjut'])->name('pembayaran.lanjutkan');
 Route::post('/pembayaran/proses', [PembayaranController::class, 'proses'])->name('pembayaran.proses');
@@ -92,7 +97,22 @@ Route::post('/pesanan/update-status/{id}', [PembayaranController::class, 'update
 
 Route::get('/riwayat/{id}', [dashboard_user::class, 'riwayat_detail'])->name('pesanan.detail');
 
+// Halaman daftar karyawan
+Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
 
+// Form tambah karyawan
+Route::get('/karyawan/tambah', [KaryawanController::class, 'create'])->name('karyawan.create');
+
+// Simpan data karyawan baru
+Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
+
+Route::post('/pesanan/{id}/proses', [prosesController::class, 'prosesPesanan'])->name('pesanan.proses');
+Route::get('/penugasan/{id}', [prosesController::class, 'formPenugasan'])->name('penugasan.form');
+Route::post('/penugasan/{id}/simpan', [prosesController::class, 'simpanPenugasan'])->name('penugasan.simpan');
+
+Route::get('status-proses/{id}/tambah', [StatusProsesController::class, 'formTambah'])->name('status.tambah.form');
+Route::post('status-proses/{id}/simpan', [StatusProsesController::class, 'simpan'])->name('simpan.tambah.form');
+Route::post('/pesanan/{id}/selesai', [prosesController::class, 'selesaikanPesanan'])->name('pesanan.selesai');
 
 
 

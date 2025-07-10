@@ -74,7 +74,7 @@
                             <span class="text-truncate" style="max-width: 100%">{{ $item->nama_toko }} @if($item->ulasan && $item->ulasan->count())
                                     | {{ number_format($item->ulasan->avg('rating'), 1) }} / 5
                                 @else
-                                    | Belum ada rating
+                                    | 0.0 / 5
                                 @endif
                             </span>
                         </h5>

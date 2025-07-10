@@ -19,7 +19,7 @@
 
     <h3 class="mb-4 fw-bold" style="color:#bb9587;">Form Pemesanan Layanan</h3>
 
-    <form action="{{ route('pemesanan.store') }}" method="POST">
+    <form action="{{ route('pemesanan.store', ['id_layanan' => $layanan->id]) }}" method="POST">
         @csrf
 
         <!-- Pilih Variasi Layanan -->
@@ -38,7 +38,7 @@
                          {{ $index === 0 ? 'checked' : '' }}>
                     <label for="variasi{{ $detail->id }}" class="card h-100 shadow-sm hewan-card p-3 text-start">
                         <div>
-                            <strong>{{ $detail->tipe }}</strong><br>
+                            <strong>{{ $detail->nama_variasi }}</strong><br>
                             <small class="text-muted">{{ $detail->deskripsi }}</small><br>
                             <span class="text-primary">Rp{{ number_format($detail->harga_dasar, 0) }}</span>
                         </div>
@@ -111,7 +111,7 @@
 
         <div class="mb-3 pembersihan_kandang d-none">
             <label>Lokasi kandang</label>
-            <input type="text" name="lokasi_kandang" id="lokasi_kandang" class="form-control mb-2" >
+            <input type="text" name="lokasi_kandang" id="lokasi_kandang" class="form-control mb-2">
         </div>
 
         <div class="mb-3 pembersihan_kandang d-none">
@@ -123,6 +123,10 @@
         <div class="mb-3 tipe-lainnya d-none">
             <label for="tanggal_pesan" class="form-label">Tanggal Pesan</label>
             <input type="datetime-local" name="tanggal_pesan" id="tanggal_pesan" class="form-control">
+        </div>
+         <div class="mb-3 tipe-lainnya d-none">
+            <label>Lokasi kandang(opsional)</label>
+            <input type="text" name="lokasi_kandang" id="lokasi_kandang" class="form-control mb-2" >
         </div>
 
         <button type="submit" class="btn" style="background-color:#bb9587; color:white;">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
 use App\Models\Penyedia_layanan;
+use App\Models\layanan_detail;
 
 
 class CariLayananController extends Controller
@@ -24,7 +25,7 @@ class CariLayananController extends Controller
     }
     public function show($id)
     {
-        $layanan = \App\Models\Penyedia_layanan_detail::findOrFail($id);
+        $layanan = layanan_detail::findOrFail($id);
 
         return view('page.User.detail_layanan', compact('layanan'));
     }

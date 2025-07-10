@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\layanan_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Hewan;
 use App\Models\Pesanan;
+use App\Models\Pesanan_detail;
 use GuzzleHttp\Client;
 
 class dashboard_user extends Controller
@@ -24,7 +26,7 @@ class dashboard_user extends Controller
     }
     public function riwayat()
     {
-         $pesanans = \App\Models\Pesanan::with(['details.layanan'])
+         $pesanans = Pesanan::with(['details.layanan'])
         ->where('id_user', auth::user()->id)
         ->orderByDesc('id') // urut dari ID tertinggi (pesanan terbaru)
         ->get();
@@ -33,37 +35,35 @@ class dashboard_user extends Controller
     }
     public function riwayat_detail($id)
     {
-        $pesanan = Pesanan::with(['details.layanan', 'details.hewan', 'penyediaLayanan'])
-            ->where('id', $id)
-            ->where('id_user', auth::user()->id)
-            ->firstOrFail();
+         $pesanan = Pesanan::with([
+            'details.hewan', // Ambil data hewan
+            'details.layanan',
+            'details.layanan_detail', // Ambil layanan dari detail
+            'penyediaLayanan', // jika ingin info toko
+        ])->findOrFail($id);
 
+        $layanan = optional($pesanan->details->first())->layanan_detail;
+        $tipe = strtolower(optional($pesanan->details->first()?->layanan_detail?->layanan)->tipe_input ?? 'lainnya');
+        $hargaPerItem = optional($layanan)->harga_dasar ?? 0;
         $biayaPotongan = $pesanan->total_biaya * 0.1;
         $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
-
+        $jumlahHewan = $pesanan->details->count();
+        $lokasiKandang = $pesanan->lokasi_kandang ?? null;
+        //penitipan hewan
+        $tanggal_titip = $pesanan->tanggal_titip ?? null;
+        $tanggal_ambil = $pesanan->tanggal_ambil ?? null;
+        $jumlah_hari = $pesanan->jumlah_hari ?? null;
+        //antar jemput
         $alamatAwal = $this->getAddressFromCoordinates($pesanan->lokasi_awal);
         $alamatTujuan = $this->getAddressFromCoordinates($pesanan->lokasi_tujuan);
-
-        $jarakKm = null;
-        if ($pesanan->lokasi_awal && $pesanan->lokasi_tujuan) {
-            $jarakKm = $this->calculateDistance($pesanan->lokasi_awal, $pesanan->lokasi_tujuan);
-        }
-
-        // Tambahan: persiapan data layanan
-        $detailPertama = $pesanan->details->first();
-        $layanan = optional($detailPertama)->layanan;
-        $hargaPerItem = optional($detailPertama)->subtotal_biaya;
-        $tipe = strtolower($layanan->tipe_input ?? 'lainnya');
-
+        $total_jarak = $pesanan->total_jarak ?? null;
+        //pembersihan kandang
         $jumlahKandang =$pesanan->jumlah_kandang ?? null;
         $luasKandang = $pesanan->luas_kandang ?? null;
+        $lokasiKandang = $pesanan->lokasi_kandang ?? null;
+        //lainnya
+        $tanggal_mulai = $pesanan->tanggal_mulai ?? null;
 
-        $jumlahHewan = $pesanan->details->count();
-        $jumlahHari = null;
-        if ($tipe === 'penitipan' && $pesanan->tanggal_titip && $pesanan->tanggal_ambil) {
-            $jumlahHari = \Carbon\Carbon::parse($pesanan->tanggal_titip)
-                ->diffInDays(\Carbon\Carbon::parse($pesanan->tanggal_ambil)) ?: 1;
-        }
 
         return view('page.User.riwayat_detail', compact(
             'pesanan',
@@ -71,15 +71,34 @@ class dashboard_user extends Controller
             'biayaTotal',
             'alamatAwal',
             'alamatTujuan',
-            'jarakKm',
+            'total_jarak',
             'layanan',
             'hargaPerItem',
             'tipe',
             'jumlahHewan',
-            'jumlahHari',
             'jumlahKandang',
-            'luasKandang'
+            'luasKandang',
+            'jumlah_hari',
+            'lokasiKandang',
+            'tanggal_titip',
+            'tanggal_ambil',
+            'tanggal_mulai'
         ));
+
+    }
+    public function detailProsesPesanan($id_pesanan)
+    {
+        $sedangProses = \App\Models\Sedang_proses::with([
+            'petugas.karyawan',
+            'status_proses',
+            'pesanan'
+        ])->where('id_pesanan', $id_pesanan)->first();
+
+        if (!$sedangProses) {
+            return back()->with('error', 'Data proses tidak ditemukan.');
+        }
+
+        return view('page.User.detail_proses', compact('sedangProses'));
     }
 
 
@@ -114,38 +133,6 @@ class dashboard_user extends Controller
             return 'Alamat tidak ditemukan';
         }
     }
-
-
-    private function calculateDistance($coord1, $coord2)
-    {
-        if (!str_contains($coord1, ',') || !str_contains($coord2, ',')) {
-            return 0; // atau null, tergantung kebutuhan
-        }
-
-        [$lat1, $lon1] = explode(',', $coord1);
-        [$lat2, $lon2] = explode(',', $coord2);
-
-        if (!is_numeric($lat1) || !is_numeric($lon1) || !is_numeric($lat2) || !is_numeric($lon2)) {
-            return 0;
-        }
-
-        // selanjutnya tetap seperti sebelumnya...
-        $earthRadius = 6371;
-
-        $lat1 = deg2rad((float)$lat1);
-        $lon1 = deg2rad((float)$lon1);
-        $lat2 = deg2rad((float)$lat2);
-        $lon2 = deg2rad((float)$lon2);
-
-        $deltaLat = $lat2 - $lat1;
-        $deltaLon = $lon2 - $lon1;
-
-        $a = sin($deltaLat / 2) ** 2 + cos($lat1) * cos($lat2) * sin($deltaLon / 2) ** 2;
-        $c = 2 * asin(sqrt($a));
-
-        return round($earthRadius * $c, 2);
-    }
-
 
 }
 

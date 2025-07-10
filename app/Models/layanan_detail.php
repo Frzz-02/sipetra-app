@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penyedia_layanan_detail extends Model
+class layanan_detail extends Model
 {
     /** @use HasFactory<\Database\Factories\PenyediaLayananDetailFactory> */
     use HasFactory;
@@ -16,15 +16,18 @@ class Penyedia_layanan_detail extends Model
     protected $fillable = [
         'id_penyedia',
         'id_layanan',
-        'tipe',
+        'nama_variasi',
         'harga_dasar',
         'deskripsi',
-        'opsi',
     ];
     public $timestamps = false;
 
     public function layanan()
     {
         return $this->belongsTo(Layanan::class, 'id_layanan');
+    }
+    public function pesananDetails()
+    {
+        return $this->hasMany(Pesanan_detail::class, 'id_layanan', 'id');
     }
 }

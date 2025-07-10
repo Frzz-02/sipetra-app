@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Penyedia_layanan_detail;
+use App\Models\layanan_detail;
 use App\Models\Layanan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,30 +65,28 @@ class LayananController extends Controller
                 'id_user' => Auth::id(),
                 'nama_layanan' => $request->nama_layanan,
                 'deskripsi' => $request->deskripsi,
-                'harga_dasar' => $request->harga_dasar,
                 'tipe_input' => $request->tipe_input,
             ]);
 
             // Simpan layanan utama sebagai 1 entri default di penyedia_layanan_detail
-            Penyedia_layanan_detail::create([
+            layanan_detail::create([
                 'id_penyedia' => $id_penyedia,
                 'id_layanan' => $layanan->id,
-                'tipe' => $request->nama_layanan,
+                'nama_variasi' => $request->nama_layanan,
                 'harga_dasar' => $request->harga_dasar,
                 'deskripsi' => $request->deskripsi ?? null,
-                'opsi' => null,
+
             ]);
 
             // Jika ada variasi tambahan, simpan juga
             if ($request->filled('variasi')) {
                 foreach ($request->variasi as $item) {
-                    Penyedia_layanan_detail::create([
+                    layanan_detail::create([
                         'id_penyedia' => $id_penyedia,
                         'id_layanan' => $layanan->id,
-                        'tipe' => $item['nama'],
+                        'nama_variasi' => $item['nama'],
                         'harga_dasar' => $item['harga'],
                         'deskripsi' => $item['deskripsi'] ?? null,
-                        'opsi' => $item['opsi'] ?? null,
                     ]);
                 }
             }
@@ -109,7 +107,7 @@ class LayananController extends Controller
     }
      public function edit($id)
     {
-        $detail = Penyedia_layanan_detail::findOrFail($id);
+        $detail = layanan_detail::findOrFail($id);
         return view('page.penyedia_layanan.edit_detaillayanan', compact('detail'));
     }
 
@@ -122,7 +120,7 @@ class LayananController extends Controller
             'deskripsi' => 'nullable|string|max:255',
         ]);
 
-        $detail = Penyedia_layanan_detail::findOrFail($id);
+        $detail = layanan_detail::findOrFail($id);
         $detail->update([
             'tipe' => $request->tipe,
             'harga_dasar' => $request->harga_dasar,
@@ -135,7 +133,7 @@ class LayananController extends Controller
 
     public function destroyvariasi($id)
     {
-        $detail = Penyedia_layanan_detail::findOrFail($id);
+        $detail = layanan_detail::findOrFail($id);
         $detail->delete();
 
         return redirect()->back()->with('success', 'Variasi layanan berhasil dihapus.');
