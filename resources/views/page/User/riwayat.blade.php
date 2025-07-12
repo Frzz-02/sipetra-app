@@ -49,7 +49,7 @@
                             <td>
                                 <div class="d-flex flex-column">
                                     <strong>
-                                        {{ $pesanan->details->first()?->layanan->nama_layanan ?? '-' }}
+                                          {{ $pesanan->layanan->nama_layanan ?? '-' }}
                                     </strong>
                                     <span>{{ \Carbon\Carbon::parse($pesanan->tanggal_pesan)->format('d M Y') }}</span>
                                      <div class="d-inline-block">

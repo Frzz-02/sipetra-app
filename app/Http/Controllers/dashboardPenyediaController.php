@@ -21,7 +21,10 @@ class DashboardPenyediaController extends Controller
         $jumlah_layanan = Layanan::where('id_user', $userId)->count();
 
         // Data pesanan berdasarkan id_penyedia_layanan
-        $jumlah_pesanan = Pesanan::where('id_penyedia_layanan', $penyediaId)->count();
+        $jumlah_pesanan = Pesanan::where('id_penyedia_layanan', $penyediaId)
+        ->whereNotIn('status', ['menunggu pembayaran', 'batal'])
+        ->count();
+
 
         // Total pendapatan dari pesanan yang selesai
         $total_pendapatan = Pesanan::where('id_penyedia_layanan', $penyediaId)
@@ -32,8 +35,8 @@ class DashboardPenyediaController extends Controller
         $pesanan_terbaru = Pesanan::with('user')
             ->where('id_penyedia_layanan', $penyediaId)
             ->whereNotIn('status', ['menunggu pembayaran', 'batal'])
-            ->orderByDesc('created_at')
-            ->take(5)
+            ->orderByDesc('id')
+            ->take(10)
             ->get();
 
         return view('page.Penyedia_layanan.dashboard_penyedia_jasa', compact(

@@ -16,15 +16,14 @@ return new class extends Migration
             $table->foreignId('id_user')
                 ->constrained('users')
                 ->onDelete('cascade');
-
-            $table->string('nama_toko', 100);
+            $table->string('nama_toko', 40);
             $table->text('alamat_toko');
             $table->text('deskripsi')->nullable();
-            $table->string('color_heading')->nullable();
-            $table->string('color_font_judul')->nullable();
-            $table->string('color_font')->nullable();
-            $table->string('color_button')->nullable();
-            $table->string('logo_toko')->nullable();
+            $table->string('color_heading',10)->nullable();
+            $table->string('color_font_judul',10)->nullable();
+            $table->string('color_font',15)->nullable();
+            $table->string('color_button', 15)->nullable();
+            $table->string('logo_toko',50)->nullable();
             $table->enum('status', ['aktif', 'nonaktif', 'ditangguhkan', 'dibekukan', 'ditampilkan'])
                 ->default('aktif');
 

@@ -14,7 +14,8 @@ class PembayaranController extends Controller
     {
         $pesanan = Pesanan::with([
             'details.hewan', // Ambil data hewan
-            'details.layanan', // Ambil layanan dari detail
+            'details.layanan',
+            'details.layanan_detail', // Ambil layanan dari detail
             'penyediaLayanan', // jika ingin info toko
         ])->findOrFail($id_pesanan);
 
@@ -22,10 +23,12 @@ class PembayaranController extends Controller
 
          $biayaTotal = $pesanan->total_biaya + $biayaPotongan;
 
-        // Ambil layanan dari salah satu detail (karena semua sama id_layanan-nya)
-        $layanan = optional($pesanan->details->first())->layanan;
+         $layanan = optional($pesanan->details->first())->layanan_detail;
 
-        return view('page.User.pembayaran', compact('pesanan', 'layanan', 'biayaPotongan', 'biayaTotal'));
+         $tipe = strtolower(optional($pesanan->details->first()?->layanan_detail?->layanan)->tipe_input ?? 'lainnya');
+
+
+        return view('page.User.pembayaran', compact('pesanan', 'layanan', 'tipe', 'biayaPotongan', 'biayaTotal'));
     }
 
     public function proses(Request $request)

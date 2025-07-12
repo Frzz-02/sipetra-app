@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penyedia_layanan_details', function (Blueprint $table) {
+        Schema::create('layanan_details', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('id_penyedia')
@@ -22,14 +22,10 @@ return new class extends Migration
                 ->constrained('layanans')
                 ->onDelete('cascade');
 
-            $table->string('tipe'); // contoh: "bawah", "VIP", "antar jemput area kota"
+            $table->string('nama_variasi'); // contoh: "bawah", "VIP", "antar jemput area kota"
             $table->decimal('harga_dasar', 10, 2);
 
             $table->text('deskripsi')->nullable(); // penjelasan layanan/tambahan info
-
-            $table->json('opsi')->nullable();
-            // bisa menyimpan data custom, contoh:
-            // {"jumlah_kandang":30, "waktu_grooming":"30menit", "jarak_max_km":10}
 
         });
     }
@@ -40,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penyedia_layanan_details');
+        Schema::dropIfExists('layanan_detail');
     }
 };

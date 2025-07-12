@@ -19,17 +19,16 @@ class Layanan extends Model
         'id_user',
         'nama_layanan',
         'deskripsi',
-        'harga_dasar',
         'tipe_input',
     ];
     public $timestamps = true;
     public function variasi()
     {
-        return $this->hasMany(Penyedia_layanan_detail::class, 'id_layanan');
+        return $this->hasMany(layanan_detail::class, 'id_layanan');
     }
      public function details()
     {
-        return $this->hasMany(Penyedia_layanan_detail::class, 'id_layanan');
+        return $this->hasMany(layanan_detail::class, 'id_layanan');
     }
 
 }

@@ -22,11 +22,8 @@ return new class extends Migration
                 ->constrained('hewans')
                 ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data penyedia layanan detail dihapus
 
-            $table->foreignId('id_layanan')
-                ->constrained('layanans')
-                ->onDelete('cascade'); //->onDelete('cascade') ini akan menghapus data pesanan detail jika data penyedia layanan detail dihapus
+            $table->foreignId('id_layanan_detail');
 
-            $table->json('data_opsi_layanan');
             $table->decimal('subtotal_biaya', 10, 2);
         });
     }

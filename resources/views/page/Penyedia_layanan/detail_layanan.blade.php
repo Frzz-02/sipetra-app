@@ -69,7 +69,7 @@
                 <li class="list-group-item">
                     <div class="d-flex flex-column flex-md-row justify-content-between">
                         <div>
-                            <p class="mb-1"><span class="detail-label">Tipe:</span> {{ $detail->tipe }}</p>
+                            <p class="mb-1"><span class="detail-label">Tipe:</span> {{ $detail->nama_variasi }}</p>
                             <p class="mb-1"><span class="detail-label">Harga:</span> Rp {{ number_format($detail->harga_dasar) }}</p>
                             <p class="mb-2"><span class="detail-label">Deskripsi:</span> {{ $detail->deskripsi ?? '-' }}</p>
                         </div>

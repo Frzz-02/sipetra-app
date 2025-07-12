@@ -30,6 +30,13 @@
         </a>
     </li>
 
+     <li class="nav-item {{ Request::routeIs('karyawan.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('karyawan.index') }}">
+            <i class="fas fa-fw fa-user"></i>
+            <span>karyawan</span>
+        </a>
+    </li>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

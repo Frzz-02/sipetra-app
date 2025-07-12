@@ -16,11 +16,15 @@ class Pesanan extends Model
     protected $fillable = [
     'id_user',
     'id_penyedia_layanan',
+    'id_layanan',
+    'tanggal_pesan_dibuat',
     'tanggal_pesan',
     'tanggal_mulai',
     'tanggal_selesai',
     'tanggal_titip',
     'tanggal_ambil',
+    'jumlah_hari',
+    'total_jarak',
     'lokasi_awal',
     'lokasi_tujuan',
     'lokasi_kandang',
@@ -44,5 +48,10 @@ class Pesanan extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+    public function layanan()
+    {
+        return $this->belongsTo(Layanan::class, 'id_layanan');
+    }
+
 
 }
