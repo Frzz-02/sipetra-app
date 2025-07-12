@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: sipetra            # terserah, huruf kecil
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""                 # Dockerfile sudah handle build
+    startCommand: ""   
