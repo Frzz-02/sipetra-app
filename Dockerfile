@@ -105,6 +105,8 @@ redirect_stderr=true
 stdout_logfile=/var/log/scheduler.log
 EOF
 
+COPY .env.example .env
+
 COPY startup.sh /usr/local/bin/startup.sh
 
 RUN chmod +x /usr/local/bin/startup.sh
