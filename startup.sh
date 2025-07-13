@@ -29,6 +29,11 @@ done
 
 echo "✅ Database connection established!"
 
+if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then
+    echo "🔑 Generating application key..."
+    php artisan key:generate --force
+fi
+
 echo "🔄 Running database migrations..."
 php artisan migrate --force --no-interaction
 
