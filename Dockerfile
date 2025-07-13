@@ -22,10 +22,9 @@ RUN composer install --no-dev --optimize-autoloader \
   && php artisan route:cache \
   && php artisan view:cache
 
-RUN curl -fsSL -o /usr/bin/caddy \
-     https://github.com/caddyserver/caddy/releases/download/v2.8.4/caddy_2.8.4_linux_amd64.tar.gz \
-  && chmod +x /usr/bin/caddy
+FROM caddy:latest
 
+COPY --from=0 /srv/app /srv/app
 COPY Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
