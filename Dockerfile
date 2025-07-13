@@ -40,12 +40,12 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
 RUN rm /etc/nginx/sites-available/default
-COPY <<EOF /etc/nginx/sites-available/default
+RUN cat > /etc/nginx/sites-available/default << 'EOF'
 server {
     listen 80;
     server_name _;
     root /var/www/html/public;
-    index index.php;
+    index index.php index.html;
 
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
@@ -57,15 +57,22 @@ server {
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        try_files \$uri \$uri/ /index.php?\$query_string;
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
     location ~ \.php$ {
-        fastcgi_pass 127.0.0.1:9000;
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
         fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME \$realpath_root\$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
         fastcgi_read_timeout 300;
+        fastcgi_connect_timeout 300;
+        fastcgi_send_timeout 300;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
     }
 
     location ~ /\. {
@@ -79,7 +86,11 @@ server {
 }
 EOF
 
-RUN echo "listen = 127.0.0.1:9000" >> /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i 's/listen = 127.0.0.1:9000/listen = \/var\/run\/php\/php8.2-fpm.sock/g' /usr/local/etc/php-fpm.d/www.conf && \
+    echo "listen.owner = www-data" >> /usr/local/etc/php-fpm.d/www.conf && \
+    echo "listen.group = www-data" >> /usr/local/etc/php-fpm.d/www.conf && \
+    echo "listen.mode = 0660" >> /usr/local/etc/php-fpm.d/www.conf && \
+    mkdir -p /var/run/php
 
 COPY <<EOF /usr/local/etc/php/conf.d/laravel.ini
 ; Production PHP configuration
