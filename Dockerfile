@@ -22,11 +22,4 @@ RUN composer install --no-dev --optimize-autoloader \
   && php artisan route:cache \
   && php artisan view:cache
 
-FROM caddy:latest
-
-COPY --from=0 /srv/app /srv/app
 COPY Caddyfile /etc/caddy/Caddyfile
-
-EXPOSE 80
-
-CMD ["sh", "-c", "php-fpm & caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]
