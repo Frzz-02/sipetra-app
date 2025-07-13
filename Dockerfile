@@ -150,11 +150,31 @@ set -e
 
 echo "🚀 Starting Laravel application..."
 
+test_db_connection() {
+    php -r "
+    try {
+        \$pdo = new PDO(
+            'mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_DATABASE'),
+            getenv('DB_USERNAME'),
+            getenv('DB_PASSWORD'),
+            [PDO::ATTR_TIMEOUT => 5]
+        );
+        echo 'Connected successfully';
+        exit(0);
+    } catch (Exception \$e) {
+        echo 'Connection failed: ' . \$e->getMessage();
+        exit(1);
+    }
+    " 2>/dev/null
+}
+
 echo "⏳ Waiting for database connection..."
-until php artisan migrate:status --no-interaction 2>/dev/null; do
-    echo "Database not ready, waiting 2 seconds..."
-    sleep 2
+until test_db_connection; do
+    echo "Database not ready, waiting 3 seconds..."
+    sleep 3
 done
+
+echo "✅ Database connection established!"
 
 echo "🔄 Running database migrations..."
 php artisan migrate --force --no-interaction
