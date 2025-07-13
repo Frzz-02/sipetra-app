@@ -41,6 +41,6 @@ class Penyedia_layanan extends Model
 
     public function fotos()
     {
-        return $this->hasMany(\App\Models\Foto_penyedia::class, 'id_penyedia_layanan');
+        return $this->hasMany(\App\Models\foto_penyedia::class, 'id_penyedia_layanan');
     }
 }
