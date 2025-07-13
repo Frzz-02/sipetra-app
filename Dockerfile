@@ -42,12 +42,6 @@ RUN chown -R www-data:www-data /var/www/html \
 RUN rm /etc/nginx/sites-available/default
 COPY nginx.conf /etc/nginx/sites-available/default
 
-RUN sed -i 's/listen = 127.0.0.1:9000/listen = \/var\/run\/php\/php8.2-fpm.sock/g' /usr/local/etc/php-fpm.d/www.conf && \
-    echo "listen.owner = www-data" >> /usr/local/etc/php-fpm.d/www.conf && \
-    echo "listen.group = www-data" >> /usr/local/etc/php-fpm.d/www.conf && \
-    echo "listen.mode = 0660" >> /usr/local/etc/php-fpm.d/www.conf && \
-    mkdir -p /var/run/php
-
 COPY <<EOF /usr/local/etc/php/conf.d/laravel.ini
 ; Production PHP configuration
 memory_limit = 512M
