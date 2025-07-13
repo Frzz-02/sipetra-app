@@ -75,7 +75,7 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::post('/pesanan/update-status/{id}', [PembayaranController::class, 'updateStatus'])
         ->name('pesanan.updateStatus');
     Route::get('/riwayat/{id}', [dashboard_user::class, 'riwayat_detail'])->name('pesanan.detail');
-    Route::post('/profil/upload-foto', [dashboard_user::class, 'updateFotoProfil'])->name('profil.uploadFoto');
+    Route::post('/profil/upload-foto', [dashboard_user::class, 'updateFotoProfil'])->name('user.profil.uploadFoto');
     Route::post('/profil/update-field', [dashboard_user::class, 'updateField'])->name('profil.updateField');
 });
 
@@ -105,7 +105,7 @@ Route::middleware(['auth', 'penyedia'])->group(function () {
     Route::get('/pesanan/diproses', [menejemenPesananController::class, 'diproses'])->name('pesanantoko.diproses');
     Route::get('/selesai', [menejemenPesananController::class, 'selesai'])->name('pesanantoko.selesai');
     Route::get('/penyedia/profil', [menejemenPesananController::class, 'indexx'])->name('profil.penyedia');
-    Route::post('/penyedia/profil/foto', [menejemenPesananController::class, 'uploadFoto'])->name('profil.uploadFoto');
+    Route::post('/penyedia/profil/foto', [menejemenPesananController::class, 'uploadFoto'])->name('penyedia.profil.uploadFoto');
     Route::post('/penyedia/profil/update', [menejemenPesananController::class, 'updateField'])->name('profil.updateField');
 
     Route::get('/penyedia/{id}/lapor', [laporanController::class, 'create'])->name('laporan.create');
