@@ -37,10 +37,25 @@
     <style>
         @stack('styles')
     </style>
+    <style>
+        @media (max-width: 768px) {
+    #accordionSidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1040;
+        background-color: #bb9587;
+    }
+}
+
+
+        </style>
+
 
   </head>
   <body id="page-top">
-    <div id="wrapper">
+    <div id="wrapper" style="height: 100vh;">
 
       {{-- component sidebar --}}
       <x-sidebar_dashboard/>
@@ -74,20 +89,17 @@
 
 
 
-
-
-
-
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('assets/dashboard_assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/dashboard_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('assets/dashboard_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('assets/dashboard_assets/js/sb-admin-2.min.js') }}"></script>
-
     <!-- Page level plugins -->
     <script src="{{ asset('assets/dashboard_assets/vendor/chart.js/Chart.min.js') }}"></script>
 
@@ -95,5 +107,20 @@
     <script src="{{ asset('assets/dashboard_assets/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/dashboard_assets/js/demo/chart-pie-demo.js') }}"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+   <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById("sidebarToggleTop");
+    const sidebar = document.getElementById("accordionSidebar");
+
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener("click", function () {
+        sidebar.classList.toggle("d-none");
+      });
+    }
+  });
+</script>
+
+</script>
+
   </body>
   </html>

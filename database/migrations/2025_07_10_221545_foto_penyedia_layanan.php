@@ -10,7 +10,7 @@ return new class extends Migration
         Schema::create('foto_penyedia_layanans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_penyedia_layanan');
-            $table->string('foto',50); // path atau nama file foto
+            $table->string('foto'); // path atau nama file foto
             $table->timestamps();
 
             // Foreign key constraint

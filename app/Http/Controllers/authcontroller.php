@@ -104,7 +104,11 @@ class authcontroller extends Controller
             'id_user' => $user->id,
             'nama_toko' => $request->nama_toko,
             'alamat_toko' => $request->alamat_toko,
-            'deskripsi' => $request->deskripsi
+            'deskripsi' => $request->deskripsi,
+            'color_heading' => '#fdf8f6',            // <-- ganti sesuai permintaan
+            'color_font_judul' => '#bb9587',
+            'color_font' => '#000000',
+            'color_button' => '#bb9587',
         ]);
 
 

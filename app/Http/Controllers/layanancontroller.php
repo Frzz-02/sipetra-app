@@ -138,5 +138,15 @@ class LayananController extends Controller
 
         return redirect()->back()->with('success', 'Variasi layanan berhasil dihapus.');
     }
+    public function toggleStatus($id)
+    {
+        $layanan = Layanan::findOrFail($id);
+
+        $layanan->status = $layanan->status === 'tampilkan' ? 'arsipkan' : 'tampilkan';
+        $layanan->save();
+
+        return redirect()->back()->with('success', 'Status layanan berhasil diperbarui.');
+    }
+
 
 }

@@ -24,6 +24,32 @@
     </style>
 
     <h3 class="mb-3">Riwayat Pesanan</h3>
+   <div id="statusFilters" class="d-flex overflow-auto mb-4" style="gap: 0.5rem;">
+        @php
+            $statuses = [
+                'semua' => ['label' => 'Semua', 'class' => 'bg-light text-dark border-secondary'],
+                'menunggu pembayaran' => ['label' => 'Menunggu Pembayaran', 'class' => 'bg-dark text-white border-dark'],
+                'menunggu diproses' => ['label' => 'Menunggu Diproses', 'class' => 'bg-warning text-dark border-warning'],
+                'diproses' => ['label' => 'Diproses', 'class' => 'bg-info text-white border-info'],
+                'selesai' => ['label' => 'Selesai', 'class' => 'bg-success text-white border-success'],
+                'batal' => ['label' => 'Batal', 'class' => 'bg-danger text-white border-danger'],
+            ];
+        @endphp
+
+
+       @foreach ($statuses as $key => $data)
+            <div class="px-3 py-2 rounded-pill filter-item mb-2 {{ $data['class'] }}"
+                data-status="{{ $key }}"
+                style="cursor: pointer; white-space: nowrap; flex: 0 0 auto; border: 2px solid;"
+                >
+                {{ $data['label'] }}
+            </div>
+        @endforeach
+
+
+    </div>
+
+
 
     @if($pesanans->isEmpty())
         <div class="alert alert-info">
@@ -45,7 +71,7 @@
                                 ? route('pembayaran.lanjutkan', $pesanan->id)
                                 : route('pesanan.detail', $pesanan->id); // Ganti jika route detail berbeda
                         @endphp
-                        <tr class="clickable-row" onclick="window.location='{{ $link }}'">
+                      <tr class="clickable-row" data-status="{{ strtolower($pesanan->status) }}" onclick="window.location='{{ $link }}'">
                             <td>
                                 <div class="d-flex flex-column">
                                     <strong>
@@ -76,4 +102,30 @@
         </div>
     @endif
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterItems = document.querySelectorAll(".filter-item");
+        const rows = document.querySelectorAll(".clickable-row");
+
+        filterItems.forEach(item => {
+            item.addEventListener("click", function () {
+                const selected = this.getAttribute("data-status");
+
+                // Highlight aktif
+                filterItems.forEach(i => i.classList.remove("bg-primary", "text-white"));
+                this.classList.add("bg-primary", "text-white");
+
+                rows.forEach(row => {
+                    const rowStatus = row.getAttribute("data-status");
+                    if (selected === "semua" || rowStatus === selected) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 @endsection

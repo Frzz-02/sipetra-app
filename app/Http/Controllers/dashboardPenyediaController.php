@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Layanan;
 use App\Models\Pesanan;
 use App\Models\Penyedia_layanan;
+use App\Models\foto_penyedia;
 
 class DashboardPenyediaController extends Controller
 {
@@ -46,4 +47,105 @@ class DashboardPenyediaController extends Controller
             'pesanan_terbaru'
         ));
     }
+    public function tampilantoko()
+    {
+        $userId = Auth::id(); // Ambil ID user yang sedang login
+
+        // Ambil data penyedia beserta layanan dan foto-foto tambahan
+        $penyedia = \App\Models\Penyedia_layanan::with(['layanans', 'fotos'])
+            ->where('id_user', $userId)
+            ->firstOrFail();
+
+        return view('page.Penyedia_layanan.tampilan_toko', compact('penyedia'));
+    }
+
+
+    public function updateField(Request $request, $id)
+    {
+        $penyedia = Penyedia_layanan::findOrFail($id);
+
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        // Daftar field yang diizinkan untuk inline edit
+        $allowedFields = ['nama_toko', 'alamat_toko', 'deskripsi'];
+
+        if (!in_array($field, $allowedFields)) {
+            return response()->json(['success' => false, 'message' => 'Field tidak valid'], 400);
+        }
+
+        $penyedia->$field = $value;
+        $penyedia->save();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil diperbarui']);
+    }
+    public function inlineUpdate(Request $request, $id)
+    {
+        $penyedia = Penyedia_layanan::findOrFail($id);
+
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        if (!in_array($field, ['nama_toko', 'alamat_toko', 'deskripsi', 'color_heading', 'color_font', 'color_font_judul', 'color_button'])) {
+            return response()->json(['success' => false, 'message' => 'Field tidak diizinkan'], 400);
+        }
+
+        $penyedia->$field = $value;
+        $penyedia->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function uploadFoto(Request $request, $id)
+    {
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            // Simpan file ke folder public/assets/hewan
+            $file->move(public_path('assets/foto_penyedia'), $filename);
+
+            // Path yang disimpan relatif terhadap public/
+            $relativePath = 'assets/foto_penyedia/' . $filename;
+
+            // Simpan ke database
+            Foto_penyedia::create([
+                'id_penyedia_layanan' => $id,
+                'foto' => $relativePath,
+            ]);
+
+            return response()->json(['success' => true, 'path' => $relativePath]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'File tidak ditemukan']);
+    }
+    public function hapusFoto($id)
+    {
+        $foto = Foto_penyedia::findOrFail($id);
+
+        // Hapus file dari sistem
+        if (file_exists(public_path($foto->foto))) {
+            unlink(public_path($foto->foto));
+        }
+
+        $foto->delete();
+
+        return back()->with('success', 'Foto berhasil dihapus.');
+    }
+    public function ulasan()
+    {
+       $userId = Auth::id(); // Ambil ID user yang sedang login
+
+        // Ambil data penyedia beserta layanan, foto-foto tambahan, dan ulasan
+        $penyedia = \App\Models\Penyedia_layanan::with([
+            'layanans',
+            'fotos',
+            'ulasan.user' // ulasan beserta user-nya
+        ])
+        ->where('id_user', $userId)
+        ->firstOrFail();
+        return view('page.Penyedia_layanan.ulasan', compact('penyedia'));
+    }
+
+
 }

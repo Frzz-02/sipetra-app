@@ -20,9 +20,6 @@
             background-color: #bb9587 !important;
         }
 
-        .border-left-bb9587 {
-            border-left: 4px solid #bb9587 !important;
-        }
 
         .btn-bb9587 {
             background-color: #bb9587;
@@ -50,43 +47,67 @@
 <div class="row">
     @forelse($penyedia as $item)
         <div class="col-12 col-sm-6 col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-left-bb9587 p-2" style="cursor: pointer;" onclick="window.location='{{ route('penyedia_layanan.detail', $item->id) }}'">
+            <div class="card h-100 shadow-sm  p-2" style="cursor: pointer; border-left: 4px solid {{ $item->color_button ?? '#bb9587' }}  " onclick="window.location='{{ route('penyedia_layanan.detail', $item->id) }}'">
 
                 <div class="d-flex">
                     {{-- Gambar Toko --}}
                     <div class="me-3" style="flex-shrink: 0;">
-                        @if($item->foto)
+                         @if($item->foto)
                             <img src="{{ asset('storage/' . $item->foto) }}"
-                                 alt="Foto Toko {{ $item->nama_toko }}"
-                                 class="rounded"
-                                 style="width: 80px; height: 80px; object-fit: cover;">
+                                alt="Foto Toko {{ $item->nama_toko }}"
+                                class="rounded"
+                                style="width: 80px; height: 80px; object-fit: cover;">
+                        @elseif($item->fotos->first())
+                            <img src="{{ asset($item->fotos->first()->foto) }}"
+                                alt="Foto Toko {{ $item->nama_toko }}"
+                                class="rounded"
+                                style="width: 80px; height: 80px; object-fit: cover;">
                         @else
-                            <div class="bg-light d-flex align-items-center justify-content-center rounded"
-                                 style="width: 80px; height: 80px;">
-                                <i class="fas fa-image text-muted"></i>
-                            </div>
+                            <img src="{{ asset('img/placeholder.png') }}"
+                                alt="Tidak ada foto"
+                                class="rounded"
+                                style="width: 80px; height: 80px; object-fit: cover;">
                         @endif
+
                     </div>
 
                     {{-- Informasi Toko --}}
                     <div class="flex-grow-1 ml-2">
-                        <h5 class="card-title text-bb9587 mb-2 d-flex align-items-center">
-                            <span class="text-truncate" style="max-width: 100%">{{ $item->nama_toko }} @if($item->ulasan && $item->ulasan->count())
+                        <h5 class=" mb-2 d-flex align-items-center" style="max-width: 100%; color: {{ $item->color_button ?? '#bb9587' }};">
+                           <span style="max-width: 100%; color: {{ $item->color_button ?? '#bb9587' }};">
+                                {{ $item->nama_toko }}
+                                @if($item->ulasan && $item->ulasan->count())
                                     | {{ number_format($item->ulasan->avg('rating'), 1) }} / 5
                                 @else
                                     | 0.0 / 5
                                 @endif
                             </span>
                         </h5>
-                        <p class="card-text text-secondary mb-1">
+                       <span class=" mb-1" style="color: {{ $item->color_font ?? '#000000' }};">
                             <i class="fas fa-map-marker-alt me-1"></i> {{ $item->alamat_toko }}
-                        </p>
+                       </span>
+
                     </div>
                 </div>
                 <div class="my-2 scroll-hide">
-                            @foreach ($item->layanans as $layanan)
-                                <span class="badge bg-bb9587 text-white mb-1">{{ $layanan->nama_layanan }}</span>
-                            @endforeach
+                    @php
+                        function isColorDark($hexColor) {
+                            $hexColor = ltrim($hexColor, '#');
+                            $r = hexdec(substr($hexColor, 0, 2));
+                            $g = hexdec(substr($hexColor, 2, 2));
+                            $b = hexdec(substr($hexColor, 4, 2));
+                            $brightness = ($r * 299 + $g * 587 + $b * 114) / 1000;
+                            return $brightness < 128;
+                        }
+
+                        $bgColor = $item->color_button ?? '#bb9587';
+                        $textColor = isColorDark($bgColor) ? '#ffffff' : '#000000';
+                    @endphp
+                    @foreach ($item->layanans->where('status', 'tampilkan') as $layanan)
+                        <span class="badge mb-1" style="background-color: {{ $bgColor }}; color: {{ $textColor }};">
+                            {{ $layanan->nama_layanan }}
+                        </span>
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -32,8 +32,8 @@
         <i class="fas fa-shopping-cart fa-sm text-warning-50" style="-webkit-text-stroke: 0px rgb(188, 106, 0);"></i><span class="pl-2" style="font-weight: 800; -webkit-text-stroke: 0.1px rgb(188, 106, 0);"> Pesan layanan</span>
       </a>
 
-      <a href="{{ route('cari_layanan') }}" class="col-2 d-sm-none d-inline-block btn btn-sm btn-outline-warning px-3 shadow-sm d-flex align-items-center justify-content-center py-2" data-toggle="tooltip" data-placement="bottom" title="Pesan layanan">
-        <i class="fas fa-shopping-cart fa-sm text-warning-50" style="-webkit-text-stroke: 0px rgb(188, 106, 0);"></i>
+      <a href="{{ route('cari_layanan') }}" class="col-5 d-sm-none d-inline-block btn btn-sm btn-outline-warning px-3 shadow-sm d-flex align-items-center justify-content-center" data-toggle="tooltip" data-placement="bottom" title="Pesan layanan">
+        pesan layanan
       </a>
     </div>
 
@@ -43,7 +43,7 @@
     <div class="card shadow mb-4">
       <div class="card-header py-2 d-flex justify-content-center align-items-center">
           <h6 class="m-0 px-sm-2 p-0 font-weight-bold text-primary col" style="font-size: 90%;">Data hewan</h6>
-          <a href="{{ route('add_hewan', ['redirect' => url()->current()]) }}" class="btn btn-sm btn-primary shadow-sm">
+          <a href="{{ route('add_hewan', ['redirect' => url()->current()]) }}" class="btn btn-sm btn-primary shadow-sm d-none d-sm-inline-block">
                 <i class="fas fa-plus fa-sm text-white-50"></i> Tambah hewan
             </a>
           <a href="{{route('add_hewan')}}" class="d-sm-none d-inline-block btn btn-sm btn-primary shadow-sm col-auto" data-toggle="tooltip" data-placement="bottom" title="Tambah hewan">

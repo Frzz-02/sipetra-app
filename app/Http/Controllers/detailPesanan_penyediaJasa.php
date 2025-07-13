@@ -80,6 +80,26 @@ class detailPesanan_penyediaJasa extends Controller
     ));
 
     }
+    public function batalkan(Request $request, $id)
+    {
+        $request->validate([
+            'catatan_batal' => 'required|string|max:1000',
+        ]);
+
+        $pesanan = Pesanan::findOrFail($id);
+
+        // Hanya izinkan batal jika belum selesai
+        if ($pesanan->status !== 'selesai') {
+            $pesanan->status = 'batal';
+            $pesanan->catatan_batal = $request->catatan_batal;
+            $pesanan->save();
+
+            return redirect()->route('penyedia.pesanan.detail', $id)->with('success', 'Pesanan berhasil dibatalkan.');
+        }
+
+        return back()->with('error', 'Pesanan tidak dapat dibatalkan.');
+    }
+
 
 
     private function getAddressFromCoordinates($coordinates)

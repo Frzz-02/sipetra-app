@@ -86,6 +86,13 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <a href="{{ route('layanan.detaillayanan', $layanan->id) }}" class="btn btn-outline-custom btn-sm rounded-pill px-3">Lihat Detail</a>
+                                <form action="{{ route('layanan.toggleStatus', $layanan->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-outline-custom btn-sm rounded-pill px-3">
+                                        {{ $layanan->status === 'tampilkan' ? 'Arsipkan' : 'Tampilkan' }}
+                                    </button>
+                                </form>
                                 <form action="{{ route('layanan.destroy', $layanan->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus layanan ini?')">
                                     @csrf
                                     @method('DELETE')

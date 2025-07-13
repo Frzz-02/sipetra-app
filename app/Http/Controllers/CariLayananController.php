@@ -13,14 +13,14 @@ class CariLayananController extends Controller
     public function index()
     {
         // Ambil semua penyedia layanan dari DB
-        $penyedia = Penyedia_layanan::all();
+       $penyedia = Penyedia_layanan::with('fotos')->get();
 
         return view('page.User.cari_layanan', compact('penyedia'));
     }
 
     public function detail($id)
     {
-        $penyedia = \App\Models\Penyedia_layanan::with('layanans')->findOrFail($id);
+        $penyedia = Penyedia_layanan::with('layanans')->findOrFail($id);
         return view('page.User.detail_penyedia', compact('penyedia'));
     }
     public function show($id)

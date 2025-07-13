@@ -168,19 +168,38 @@
                 </form>
             @endif
 
-            <form action="#" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?');">
-                @csrf
-                @method('PUT')
-                <button type="submit" class="btn btn-danger w-100 w-md-auto">
-                    Batalkan Pesanan
-                </button>
-            </form>
+            <button type="button" class="btn btn-danger w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#modalBatal">
+                Batalkan Pesanan
+            </button>
         </div>
         @endif
     </div>
 
-
-
+    <!-- Modal Pembatalan -->
+    <div class="modal fade" id="modalBatal" tabindex="-1" aria-labelledby="modalBatalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{{ route('pesanan.batalkan', $pesanan->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalBatalLabel">Batalkan Pesanan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="catatan_batal" class="form-label">Alasan Pembatalan</label>
+                        <textarea name="catatan_batal" id="catatan_batal" class="form-control" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-danger">Konfirmasi Pembatalan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
 </div>
 
 @if($tipe === 'antar jemput' && $lokasiAwal && $lokasiTujuan && $ruteGeoJson)

@@ -41,6 +41,12 @@ class dashboard_user extends Controller
             'details.layanan_detail', // Ambil layanan dari detail
             'penyediaLayanan', // jika ingin info toko
         ])->findOrFail($id);
+        $sedangProses = \App\Models\Sedang_proses::with([
+            'petugas.karyawan',
+            'status_proses',
+            'pesanan'
+        ])->where('id_pesanan', $id)->first();
+
 
         $layanan = optional($pesanan->details->first())->layanan_detail;
         $tipe = strtolower(optional($pesanan->details->first()?->layanan_detail?->layanan)->tipe_input ?? 'lainnya');
@@ -63,6 +69,13 @@ class dashboard_user extends Controller
         $lokasiKandang = $pesanan->lokasi_kandang ?? null;
         //lainnya
         $tanggal_mulai = $pesanan->tanggal_mulai ?? null;
+        $statusProsesTerakhir = '-';
+
+        if ($sedangProses && $sedangProses->status_proses->isNotEmpty()) {
+            $statusProsesTerakhir = $sedangProses->status_proses->last()->status;
+        }
+
+
 
 
         return view('page.User.riwayat_detail', compact(
@@ -82,7 +95,9 @@ class dashboard_user extends Controller
             'lokasiKandang',
             'tanggal_titip',
             'tanggal_ambil',
-            'tanggal_mulai'
+            'tanggal_mulai',
+            'sedangProses',
+            'statusProsesTerakhir'
         ));
 
     }
@@ -132,6 +147,19 @@ class dashboard_user extends Controller
         } catch (\Exception $e) {
             return 'Alamat tidak ditemukan';
         }
+    }
+    public function batalPesanan($id)
+    {
+        $pesanan = Pesanan::findOrFail($id);
+
+        if (in_array($pesanan->status, ['menunggu pembayaran', 'menunggu diproses'])) {
+            $pesanan->status = 'batal';
+            $pesanan->save();
+
+            return redirect()->route('riwayat.pesanan')->with('success', 'Pesanan berhasil dibatalkan.');
+        }
+
+        return redirect()->back()->with('error', 'Pesanan tidak dapat dibatalkan.');
     }
 
 }

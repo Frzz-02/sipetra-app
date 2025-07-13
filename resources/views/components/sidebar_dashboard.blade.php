@@ -1,4 +1,4 @@
-<ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #bb9587; z-index: 1030; height: 100vh;">
+<ul class="navbar-nav sidebar sidebar-dark accordion d-none d-lg-block" id="accordionSidebar" style="background-color: #bb9587; z-index: 1030; height: 100vh;">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard_hewan') }}">
@@ -27,6 +27,12 @@
         <a class="nav-link" href="{{ route('riwayat.pesanan') }}">
             <i class="fas fa-fw fa-history"></i>
             <span>Riwayat Pesanan</span>
+        </a>
+    </li>
+    <li class="nav-item {{ Request::routeIs('cari_layanan') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('cari_layanan') }}">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cari Layanan</span>
         </a>
     </li>
 
