@@ -1,8 +1,29 @@
 services:
   - type: web
-    name: sipetra            # terserah, huruf kecil
+    name: sipetra-laravel
     env: docker
     plan: free
-    dockerfilePath: ./Dockerfile
-    buildCommand: ""                 # Dockerfile sudah handle build
-    startCommand: ""   
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://sipetra.onrender.com
+      - key: APP_KEY
+        sync: false  # kamu isi nanti
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: crossover.proxy.rlwy.net
+      - key: DB_PORT
+        value: 59441
+      - key: DB_DATABASE
+        value: railway
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        sync: false  # kamu isi nanti
+      - key: SESSION_DRIVER
+        value: file
