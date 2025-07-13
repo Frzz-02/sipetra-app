@@ -102,7 +102,6 @@
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('assets/dashboard_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..."  crossorigin="anonymous"></script>
 
     <!-- Page level plugins -->
     <script src="{{ asset('assets/dashboard_assets/vendor/chart.js/Chart.min.js') }}"></script>

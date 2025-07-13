@@ -31,7 +31,7 @@
 
     <!-- openrouteservice -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
 
@@ -94,8 +94,8 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('assets/dashboard_assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/dashboard_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Tambahkan ini jika kamu ingin pakai CDN Bootstrap 4 (karena SB Admin 2 butuh Bootstrap 4.x) -->
+
 
 
     <!-- Core plugin JavaScript-->
@@ -109,6 +109,7 @@
     <script src="{{ asset('assets/dashboard_assets/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/dashboard_assets/js/demo/chart-pie-demo.js') }}"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
    <script>
   document.addEventListener("DOMContentLoaded", function () {
     const toggleBtn = document.getElementById("sidebarToggleTop");

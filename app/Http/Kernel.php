@@ -53,7 +53,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'penyedia' => \App\Http\Middleware\PenyediaMiddleware::class,
-        'user' => \App\Http\Middleware\usermiddleware::class,
+        'user' => \App\Http\Middleware\UserMiddleware::class,
     ];
 
 }
