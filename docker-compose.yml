@@ -1,0 +1,37 @@
+services:
+    app:
+        build: .
+        volumes:
+            - ./app:/srv/app
+
+    migrate:
+        image: app
+        depends_on:
+            - app
+        entrypoint: >
+            sh -c "
+              until php artisan migrate --force; do
+                echo 'Waiting database. UwU';
+                sleep 2;
+              done
+            "
+
+    caddy:
+        image: caddy:latest
+        depends_on:
+            - app
+        volumes:
+            - ./app:/srv/app
+            - ./Caddyfile:/etc/caddy/Caddyfile
+            - caddy_data:/data
+            - caddy_config:/config
+        ports:
+            - "80:80"
+        networks:
+            - appnet
+
+networks:
+    appnet:
+volumes:
+    caddy_data:
+    caddy_config:

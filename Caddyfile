@@ -1,0 +1,12 @@
+:80 {
+  root * /srv/app/public
+  encode gzip
+
+  php_fastcgi php-fpm:9000 {
+    root /srv/app/public
+    index index.php
+  }
+
+  try_files {path} {path}/ /index.php?{query}
+  file_server
+}
