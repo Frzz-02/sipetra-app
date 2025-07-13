@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Layanan;
 use App\Models\Pesanan;
 use App\Models\Penyedia_layanan;
+use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 class menejemenPesananController extends Controller
 {
     public function index()
@@ -80,6 +83,53 @@ class menejemenPesananController extends Controller
 
         return view('page.Penyedia_layanan.pesanan_selesai', compact('pesanan'));
     }
+    public function uploadFoto(Request $request)
+    {
+        $request->validate([
+            'foto_profil' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        // Hapus foto lama jika ada
+        if ($user->foto_profil && Storage::disk('public')->exists('foto_profil/' . $user->foto_profil)) {
+            Storage::disk('public')->delete('foto_profil/' . $user->foto_profil);
+        }
+
+        // Simpan foto baru
+        $file = $request->file('foto_profil');
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('foto_profil', $filename, 'public');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $user->update([
+            'foto_profil' => $filename,
+        ]);
+
+        return redirect()->back()->with('success', 'Foto profil berhasil diunggah.');
+    }
+
+    public function updateField(Request $request)
+    {
+        $request->validate([
+            'field' => 'required|string|in:username,email,no_telephone,alamat',
+            'value' => 'required|string|max:255',
+        ]);
+
+        $user = Auth::user();
+        $field = $request->input('field');
+        $value = $request->input('value');
+         /** @var \App\Models\User $user */
+        $user->$field = $value;
+        $user->save();
+
+        return response()->json(['success' => true, 'new_value' => $value]);
+    }
+    public function indexx()
+{
+    return view('page.Penyedia_layanan.profil_penyedia');
+}
 
 
 }

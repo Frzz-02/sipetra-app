@@ -43,14 +43,13 @@
         left: 0;
         height: 100vh;
         z-index: 1040;
-        background-color: #bb9587;
+        background-color: #bb9587 !important;
+    background-image: none !important;
+    transform: translateZ(0); /* Memaksa GPU repaint */
+    will-change: transform;
     }
 }
-.sidebar .collapse-item.active {
-    font-weight: 600; /* Membuat tulisan lebih tebal */
-    background-color: transparent !important; /* Warna tetap seperti item normal */
-    color: #000; /* Opsional: ubah warna teks jika ingin */
-}
+
 
 
 

@@ -62,27 +62,27 @@
        <!-- Kiri: Galeri Foto seperti Shopee -->
        <div class="col-md-5 mb-4 mb-md-0 equal-height">
            <!-- Gambar Utama dengan Tombol Hapus -->
-         <div class="position-relative border rounded shadow-sm mb-2 bg-white" style="height: 450px; overflow: hidden;">
+            <div class="position-relative border rounded shadow-sm mb-2 bg-white" style="height: 450px; overflow: hidden;">
 
-            @if($penyedia->fotos->first())
-            <form action="{{ route('penyedia.fotoHapus', $penyedia->fotos->first()->id) }}" method="POST"
-                class="position-absolute start-0 bottom-0 w-100"
-                style="height: 50px; background: rgba(0, 0, 0, 0.5); z-index: 10;">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                    class="btn text-white w-100 h-100 d-flex justify-content-center align-items-center"
-                    style="background: transparent; border: none; font-size: 14px;">
-                    <i class="fas fa-trash-alt me-2"></i> Hapus Gambar
-                </button>
-            </form>
-            @endif
-            <img id="mainImage"
-                src="{{ asset($penyedia->fotos->first()?->foto ?? 'img/placeholder.png') }}"
-                class="img-fluid w-100 h-100"
-                style="object-fit: cover;">
+                @if($penyedia->fotos->first())
+                <form action="{{ route('penyedia.fotoHapus', $penyedia->fotos->first()->id) }}" method="POST"
+                    class="position-absolute start-0 bottom-0 w-100"
+                    style="height: 50px; background: rgba(0, 0, 0, 0.5); z-index: 10;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="btn text-white w-100 h-100 d-flex justify-content-center align-items-center"
+                        style="background: transparent; border: none; font-size: 14px;">
+                        <i class="fas fa-trash-alt me-2"></i> Hapus Gambar
+                    </button>
+                </form>
+                @endif
+                <img id="mainImage"
+                    src="{{ asset($penyedia->fotos->first()?->foto ?? 'img/placeholder.png') }}"
+                    class="img-fluid w-100 h-100"
+                    style="object-fit: cover;">
 
-        </div>
+             </div>
 
             <!-- Input File Disembunyikan -->
             <input type="file" id="imageUploader" class="d-none" accept="image/*">
@@ -225,7 +225,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
     <!-- JavaScript Inline Edit -->
     <script>
@@ -408,5 +408,4 @@
 
 
 
-</div>
 @endsection

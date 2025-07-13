@@ -1,4 +1,4 @@
-<ul class="navbar-nav sidebar sidebar-dark accordion d-none d-lg-block" id="accordionSidebar" style="background-color: #bb9587; z-index: 1030; height: 100vh;">
+<ul class="navbar-nav sidebar sidebar-dark accordion d-none d-lg-block" id="accordionSidebar" style="background-color: #bb9587; z-index: 1000; height: 100vh;">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard_hewan') }}">
@@ -63,28 +63,17 @@
     </li>
 
 
-    <li class="nav-item {{ Request::routeIs('tampilantoko') ? 'active' : '' }}">
+    <li class="nav-item {{ Request::routeIs('tampilantoko*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('tampilantoko') }}">
             <i class="fas fa-fw fa-store"></i>
-            <span>menejemen Tampilan</span>
+            <span>toko</span>
         </a>
-         <div id="collapsePesanan" class="collapse {{ Request::routeIs('tampilantoko*') ? 'show' : '' }}">
-            <div class="py-2 collapse-inner rounded">
-                <a class="collapse-item {{ Request::routeIs('penyedia.ulasan') ? 'active' : '' }}"
-                href="{{ route('penyedia.ulasan') }}">
-                    Ulasan
-                </a>
-                </div>
-        </div>
     </li>
 
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+    <hr class="sidebar-divider d-md-block">
 
     <!-- Sidebar Toggler -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
 
 </ul>

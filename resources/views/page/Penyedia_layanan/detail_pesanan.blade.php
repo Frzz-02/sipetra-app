@@ -14,7 +14,7 @@
         <div class="card-body">
             <h5 class="mb-3">Informasi Pemesan</h5>
             <div class="d-flex align-items-center mb-3 flex-wrap">
-                <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil" class="rounded-circle me-3 mb-2" width="60" height="60">
+                <img src="{{ asset('storage/foto_profil/' . $user->foto_profil) }}" alt="Foto Profil" class="rounded-circle me-3 mr-4 mb-2" width="60" height="60">
                 <div style="min-width: 200px">
                     <p class="mb-0"><strong>{{ $user->username }}</strong></p>
                     <p class="mb-0">Email: {{ $user->email }}</p>
@@ -34,7 +34,9 @@
                     <div class="border p-2 mb-3 rounded">
                         @if($detail->hewan)
                         <div class="d-flex align-items-start flex-wrap flex-md-nowrap">
-                            <img src="{{ asset('assets/hewan/' . $detail->hewan->foto_hewan) }}" alt="Hewan" class="me-3 mb-2 rounded" width="80" height="80" loading="lazy">
+                            <img src="{{ asset('storage/foto_hewan/' . $detail->hewan->foto_hewan) }}"
+                            alt="Hewan" class="me-3 mb-2 rounded mr-4" width="80" height="80" loading="lazy">
+
                             <div style="min-width: 200px">
                                 <p class="mb-0"><strong>{{ $detail->hewan->nama_hewan }}</strong> ({{ $detail->hewan->jenis_hewan }})</p>
                                 <p class="mb-0">Umur: {{ $detail->hewan->umur ?? '-' }}</p>
@@ -147,60 +149,34 @@
         </div>
     </div>
     {{-- Tombol Aksi --}}
-  <div class="position-sticky bottom-0 bg-white py-3 px-3 shadow-lg d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="z-index: 1000;">
-        <a href="{{route('penyedia.dashboard')}}" class="btn btn-outline-secondary w-100 w-md-auto">← Kembali</a>
+    <div class="bottom-0 bg-white py-3 px-3 shadow-lg d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="z-index: 1000;">
+        <a href="{{ route('penyedia.dashboard') }}" class="btn btn-outline-secondary w-100 w-md-auto" style="max-width: 220px;">← Kembali</a>
 
         @if($pesanan->status !== 'selesai')
-        <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto">
+        <div class="d-flex flex-column flex-md-row flex-wrap gap-2 justify-content-md-end w-100 w-md-auto align-items-center">
             @if($pesanan->status === 'diproses')
-                <form action="{{ route('pesanan.selesai', $pesanan->id) }}" method="POST">
+                <form action="{{ route('pesanan.selesai', $pesanan->id) }}" method="POST" class="w-100 w-md-auto" style="max-width: 220px;">
                     @csrf
-                    <button type="submit" class="btn btn-success w-100 w-md-auto">
+                    <button type="submit" class="btn btn-success w-100 mt-2">
                         Selesaikan Pesanan
                     </button>
                 </form>
             @else
-                <form action="{{ route('pesanan.proses', $pesanan->id) }}" method="POST">
+                <form action="{{ route('pesanan.proses', $pesanan->id) }}" method="POST" class="w-100 w-md-auto" style="max-width: 220px;">
                     @csrf
-                    <button type="submit" class="btn btn-primary w-100 w-md-auto" style="background-color: #003366; border-color: #003366;">
+                    <button type="submit" class="btn btn-primary w-100 mt-2" style="background-color: #003366; border-color: #003366;">
                         Proses Pesanan
                     </button>
                 </form>
             @endif
 
-            <button type="button" class="btn btn-danger w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#modalBatal">
+            <button type="button" class="btn btn-danger w-100 w-md-auto mt-2" style="max-width: 220px;" data-bs-toggle="modal" data-bs-target="#modalBatal">
                 Batalkan Pesanan
             </button>
         </div>
         @endif
     </div>
 
-    <!-- Modal Pembatalan -->
-    <div class="modal fade" id="modalBatal" tabindex="-1" aria-labelledby="modalBatalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="{{ route('pesanan.batalkan', $pesanan->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="modalBatalLabel">Batalkan Pesanan</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="catatan_batal" class="form-label">Alasan Pembatalan</label>
-                        <textarea name="catatan_batal" id="catatan_batal" class="form-control" rows="4" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-danger">Konfirmasi Pembatalan</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    </div>
-</div>
 
 @if($tipe === 'antar jemput' && $lokasiAwal && $lokasiTujuan && $ruteGeoJson)
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />

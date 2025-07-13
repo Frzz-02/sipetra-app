@@ -22,17 +22,19 @@ class tambah_hewan_contloller extends Controller
             'foto' => 'required|image|max:2048',
         ]);
 
-      if ($request->hasFile('foto')) {
+        $filename = null;
+
+        if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('assets/hewan'), $filename);
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Simpan ke storage/app/public/foto_hewan
+            $file->storeAs('foto_hewan', $filename, 'public');
         }
-
-
 
         // Hitung umur dari tanggal lahir
         $tanggalLahir = Carbon::parse($request->tanggal_lahir);
-        $umur = $tanggalLahir->diffForHumans(null, true); // contoh: "2 tahun 3 bulan"
+        $umur = $tanggalLahir->diffForHumans(null, true);
 
         Hewan::create([
             'id_user' => Auth::id(),
@@ -60,45 +62,22 @@ class tambah_hewan_contloller extends Controller
         return view('page.User.edit_hewan', compact('hewan'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama_hewan' => 'required|string|max:100',
-            'jenis_hewan' => 'required|string|max:50',
-            'tanggal_lahir' => 'required|date',
-            'umur' => 'required|string',
-            'berat' => 'required|string',
-            'Jenis_kelamin' => 'required',
-            'deskripsi' => 'nullable|string',
-            'foto_hewan' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+    public function updateField(Request $request, $id)
+{
+    $hewan = Hewan::findOrFail($id);
+    $field = $request->input('field');
+    $value = $request->input('value');
 
-        $hewan = Hewan::where('id_user', Auth::id())->findOrFail($id);
-
-        $hewan->nama_hewan = $request->nama_hewan;
-        $hewan->jenis_hewan = $request->jenis_hewan;
-        $hewan->tanggal_lahir = $request->tanggal_lahir;
-        $hewan->umur = $request->umur;
-        $hewan->berat = $request->berat;
-        $hewan->jenis_kelamin = $request->Jenis_kelamin;
-        $hewan->deskripsi = $request->deskripsi;
-
-        if ($request->hasFile('foto_hewan')) {
-            // Hapus file lama jika ada
-            if ($hewan->foto_hewan && Storage::exists('public/assets/hewan/' . $hewan->foto_hewan)) {
-                Storage::delete('public/assets/hewan/' . $hewan->foto_hewan);
-            }
-
-            $foto = $request->file('foto_hewan');
-            $filename = time() . '_' . $foto->getClientOriginalName();
-            $foto->storeAs('public/assets/hewan', $filename);
-            $hewan->foto_hewan = $filename;
-        }
-
+    if (in_array($field, ['nama_hewan', 'jenis_hewan', 'berat', 'deskripsi'])) {
+        $hewan->$field = $value;
         $hewan->save();
 
-        return redirect()->route('hewan.show', $hewan->id)->with('success', 'Data hewan berhasil diperbarui.');
+        return response()->json(['success' => true, 'new_value' => $value]);
     }
+
+    return response()->json(['success' => false], 400);
+}
+
     public function destroy($id)
     {
         $hewan = Hewan::findOrFail($id);
@@ -118,5 +97,31 @@ class tambah_hewan_contloller extends Controller
 
         return redirect()->route('dashboard_hewan')->with('success', 'Data hewan berhasil dihapus.');
     }
+    public function uploadFoto(Request $request, $id)
+    {
+        $request->validate([
+            'foto_hewan' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $hewan = Hewan::findOrFail($id);
+
+        // Hapus foto lama jika ada
+        if ($hewan->foto_hewan && Storage::disk('public')->exists('foto_hewan/' . $hewan->foto_hewan)) {
+            Storage::disk('public')->delete('foto_hewan/' . $hewan->foto_hewan);
+        }
+
+        $file = $request->file('foto_hewan');
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+        // Simpan di storage/app/public/foto_hewan
+        $file->storeAs('foto_hewan', $filename, 'public');
+
+        $hewan->foto_hewan = $filename;
+        $hewan->save();
+
+        return redirect()->back()->with('success', 'Foto hewan berhasil diperbarui.');
+    }
+
+
 
 }

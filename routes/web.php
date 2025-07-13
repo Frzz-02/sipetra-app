@@ -52,8 +52,9 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::post('/hewan/tambah', [tambah_hewan_contloller::class, 'store'])->name('hewan.store')->middleware(['auth']);
     Route::get('/hewan/{id}', [tambah_hewan_contloller::class, 'show'])->name('hewan.show');
     Route::get('/hewan/{id}/edit', [tambah_hewan_contloller::class, 'edit'])->name('hewan.edit');
-    Route::put('/hewan/{id}', [tambah_hewan_contloller::class, 'update'])->name('hewan.update');
+    Route::post('/hewan/update-field/{id}', [tambah_hewan_contloller::class, 'updateField'])->name('hewan.updateField');
     Route::delete('/hewan/{id}', [tambah_hewan_contloller::class, 'destroy'])->name('hewan.destroy');
+    Route::post('/hewan/upload-foto/{id}', [tambah_hewan_contloller::class, 'uploadFoto'])->name('hewan.uploadFoto');
     Route::get('/riwayat-pesanan', [dashboard_user::class, 'riwayat'])->name('riwayat.pesanan');
     Route::get('penyedia/proses/{id_pesanan}', [dashboard_user::class, 'detailProsesPesanan'])->name('penyedia.proses.detail');
     Route::patch('/pesanan/{id}/batal', [dashboard_user::class, 'batalPesanan'])->name('pesanan.batal');
@@ -67,14 +68,15 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/midtrans/bayar/{id_pesanan}', [MidtransController::class, 'getSnapToken'])->name('midtrans.bayar');
     Route::get('/penyedia', [CariLayananController::class, 'search'])->name('search.penyedia');
     Route::get('/midtrans/callback', [MidtransController::class, 'callback']);
-    Route::middleware('auth')->group(function () {
+
         Route::get('/ulasan/{id_penyedia}', [ulasanController::class, 'create'])->name('ulasan.create');
         Route::post('/ulasan', [ulasanController::class, 'store'])->name('ulasan.store');
-    });
 
     Route::post('/pesanan/update-status/{id}', [PembayaranController::class, 'updateStatus'])
         ->name('pesanan.updateStatus');
     Route::get('/riwayat/{id}', [dashboard_user::class, 'riwayat_detail'])->name('pesanan.detail');
+    Route::post('/profil/upload-foto', [dashboard_user::class, 'updateFotoProfil'])->name('profil.uploadFoto');
+    Route::post('/profil/update-field', [dashboard_user::class, 'updateField'])->name('profil.updateField');
 });
 
 
@@ -101,7 +103,11 @@ Route::middleware(['auth', 'penyedia'])->group(function () {
     Route::get('/pesanan', [menejemenPesananController::class, 'index'])->name('pesanantoko');
     Route::get('/pesanan/menunggu', [menejemenPesananController::class, 'menunggu'])->name('pesanantoko.menunggu');
     Route::get('/pesanan/diproses', [menejemenPesananController::class, 'diproses'])->name('pesanantoko.diproses');
-    Route::get('v/selesai', [menejemenPesananController::class, 'selesai'])->name('pesanantoko.selesai');
+    Route::get('/selesai', [menejemenPesananController::class, 'selesai'])->name('pesanantoko.selesai');
+    Route::get('/penyedia/profil', [menejemenPesananController::class, 'indexx'])->name('profil.penyedia');
+    Route::post('/penyedia/profil/foto', [menejemenPesananController::class, 'uploadFoto'])->name('profil.uploadFoto');
+    Route::post('/penyedia/profil/update', [menejemenPesananController::class, 'updateField'])->name('profil.updateField');
+
     Route::get('/penyedia/{id}/lapor', [laporanController::class, 'create'])->name('laporan.create');
     Route::post('/penyedia/{id}/lapor', [laporanController::class, 'store'])->name('laporan.store');
 
@@ -127,6 +133,4 @@ Route::middleware(['auth', 'penyedia'])->group(function () {
     Route::post('/penyedia/{id}/inline-update', [dashboardPenyediaController::class, 'inlineUpdate'])->name('penyedia.inlineUpdate');
     Route::post('/penyedia/{id}/upload-foto', [dashboardPenyediaController::class, 'uploadFoto'])->name('penyedia.uploadFoto');
     Route::delete('/penyedia/foto/{id}', [dashboardPenyediaController::class, 'hapusFoto'])->name('penyedia.fotoHapus');
-    Route::get('/penyedia/ulasan', [dashboardPenyediaController::class, 'ulasan'])->name('penyedia.ulasan');
-
 });

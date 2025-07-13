@@ -68,7 +68,7 @@
 
                                     {{-- Gambar di kiri --}}
                                     <div class="col-auto d-flex justify-content-center">
-                                        <img src="{{ asset('assets/hewan/' . $pet->foto_hewan) }}"
+                                        <img src="{{ asset('storage/foto_hewan/' . $pet->foto_hewan) }}"
                                             alt="{{ $pet->foto_hewan }}"
                                             class="rounded-circle border border-dark"
                                             style="width: 48px; height: 48px; object-fit: cover;">

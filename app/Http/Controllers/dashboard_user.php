@@ -9,6 +9,9 @@ use App\Models\Hewan;
 use App\Models\Pesanan;
 use App\Models\Pesanan_detail;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
+
+
 
 class dashboard_user extends Controller
 {
@@ -160,6 +163,49 @@ class dashboard_user extends Controller
         }
 
         return redirect()->back()->with('error', 'Pesanan tidak dapat dibatalkan.');
+    }
+   public function updateFotoProfil(Request $request)
+    {
+        $request->validate([
+            'foto_profil' => 'required|image|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        // Hapus foto lama jika ada
+        if ($user->foto_profil && Storage::disk('public')->exists('foto_profil/' . $user->foto_profil)) {
+            Storage::disk('public')->delete('foto_profil/' . $user->foto_profil);
+        }
+
+        // Simpan foto baru
+        $filename = uniqid() . '.' . $request->file('foto_profil')->getClientOriginalExtension();
+        $request->file('foto_profil')->storeAs('foto_profil', $filename, 'public');
+        /** @var \App\Models\User $user */
+        // Update nama file ke database
+        $user->foto_profil = $filename;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Foto profil berhasil diperbarui.');
+    }
+
+    public function updateField(Request $request)
+    {
+        $request->validate([
+            'field' => 'required|in:username,email,no_telephone,alamat',
+            'value' => 'required|string|max:255'
+        ]);
+
+        $user = Auth::user();
+        $field = $request->input('field');
+        $value = $request->input('value');
+        /** @var \App\Models\User $user */
+        $user->$field = $value;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'new_value' => $value
+        ]);
     }
 
 }

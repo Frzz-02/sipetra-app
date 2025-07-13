@@ -1,7 +1,7 @@
 @extends('layout.layout_penyedia')
 
 @section('content2')
-<div class="py-4 " style="max-height: calc(100vh - 100px); overflow-y: scroll;">
+<div class="py-4 " style="max-height: calc(100vh - 100px); ">
     <h2 class="mb-4">Pesanan</h2>
 
     @if ($pesananPerLayanan)
