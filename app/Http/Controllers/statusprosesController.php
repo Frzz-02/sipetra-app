@@ -7,7 +7,7 @@ use App\Models\Sedang_proses;
 use App\Models\status_proses;
 use Illuminate\Support\Facades\DB;
 
-class StatusProsesController extends Controller
+class statusprosesController extends Controller
 {
     // Menampilkan form tambah status
     public function formTambah($id)

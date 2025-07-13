@@ -8,7 +8,7 @@ use App\Models\Layanan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class LayananController extends Controller
+class layanancontroller extends Controller
 {
     public function index()
     {

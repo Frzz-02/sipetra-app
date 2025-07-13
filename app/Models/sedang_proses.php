@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sedang_proses extends Model
+class sedang_proses extends Model
 {
     use HasFactory;
 

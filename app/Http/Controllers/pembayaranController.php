@@ -8,7 +8,7 @@ use App\Models\Pesanan_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PembayaranController extends Controller
+class pembayaranController extends Controller
 {
     public function lanjut($id_pesanan)
     {

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Auth, Http};
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-class PemesananController extends Controller
+class pemesananController extends Controller
 {
     /**
      * Menampilkan form pemesanan.

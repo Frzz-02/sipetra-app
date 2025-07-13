@@ -11,7 +11,7 @@ use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\ulasanController;
-use App\Http\Controllers\dashboardPenyediaController;
+use App\Http\Controllers\DashboardPenyediaController;
 use App\Http\Controllers\detailPesanan_penyediaJasa;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\prosesController;
@@ -41,14 +41,14 @@ route::get('/signupreg', function () {
 
 
 //role user
-Route::middleware(['auth', 'cekrole:user'])->group(function () {
+Route::middleware(['auth', 'user'])->group(function () {
     route::get('/tambahhewan', function () {
         return view('page.User.tambah-hewan');
     })->middleware(['auth'])->name('add_hewan');
     route::get('/profil', function () {
         return view('page.User.profil');
     })->middleware(['auth'])->name('profil_user');
-    route::get('/dashboard', [dashboard_user::class, 'showhewan'])->middleware(middleware: ['auth'])->name('dashboard_hewan');
+    route::get('/dashboard', [dashboard_user::class, 'showhewan'])->middleware(middleware: ['auth'])->name('dashboard_hewan')->middleware(['auth']);
     Route::post('/hewan/tambah', [tambah_hewan_contloller::class, 'store'])->name('hewan.store')->middleware(['auth']);
     Route::get('/hewan/{id}', [tambah_hewan_contloller::class, 'show'])->name('hewan.show');
     Route::get('/hewan/{id}/edit', [tambah_hewan_contloller::class, 'edit'])->name('hewan.edit');
@@ -88,7 +88,7 @@ Route::middleware(['auth', 'cekrole:user'])->group(function () {
 
 
 //-role penyedia
-Route::middleware(['auth', 'cekrole:penyedia_jasa'])->group(function () {
+Route::middleware(['auth', 'penyedia'])->group(function () {
     Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
     Route::get('/karyawan/tambah', [KaryawanController::class, 'create'])->name('karyawan.create');
     Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
@@ -115,7 +115,7 @@ Route::middleware(['auth', 'cekrole:penyedia_jasa'])->group(function () {
     Route::delete('/layanan/detail/{id}', [LayananController::class, 'destroyvariasi'])->name('detail_layanan.destroy');
     Route::put('/layanan/{id}/toggle-status', [LayananController::class, 'toggleStatus'])->name('layanan.toggleStatus');
 
-    Route::get('/dashboardpenyedia', [dashboardPenyediaController::class, 'index'])->name('penyedia.dashboard');
+    Route::get('/dashboardpenyedia', [DashboardPenyediaController::class, 'index'])->name('penyedia.dashboard');
     Route::get('/penyedia/pesanan/{id}', [detailPesanan_penyediaJasa::class, 'show'])->name('penyedia.pesanan.detail');
     Route::put('/pesanan/{id}/batalkan', [detailPesanan_penyediaJasa::class, 'batalkan'])->name('pesanan.batalkan');
     Route::get('tampilantoko', [dashboardPenyediaController::class, 'tampilantoko'])->name('tampilantoko');
@@ -128,4 +128,5 @@ Route::middleware(['auth', 'cekrole:penyedia_jasa'])->group(function () {
     Route::post('/penyedia/{id}/upload-foto', [dashboardPenyediaController::class, 'uploadFoto'])->name('penyedia.uploadFoto');
     Route::delete('/penyedia/foto/{id}', [dashboardPenyediaController::class, 'hapusFoto'])->name('penyedia.fotoHapus');
     Route::get('/penyedia/ulasan', [dashboardPenyediaController::class, 'ulasan'])->name('penyedia.ulasan');
+
 });

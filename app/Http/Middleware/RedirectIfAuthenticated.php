@@ -2,39 +2,24 @@
 
 namespace App\Http\Middleware;
 
+use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Redirect;
 
 class RedirectIfAuthenticated
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): \Symfony\Component\HttpFoundation\Response  $next
-     * @param  string|null  ...$guards
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, ...$guards): Response
+    public function handle(Request $request, Closure $next, string ...$guards): Response
     {
         $guards = empty($guards) ? [null] : $guards;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                // Kembalikan redirect berdasarkan role
-                $role = Auth::guard($guard)->user()->role;
-
-                if ($role === 'user') {
-                    return redirect('/dashboard');
-                } elseif ($role === 'penyedia_jasa') {
-                    return redirect()->route('penyedia.dashboard');
-                }
-
-                return redirect('/'); // fallback
-            }
-        }
 
         return $next($request);
     }

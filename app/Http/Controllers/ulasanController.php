@@ -6,7 +6,7 @@ use App\Models\Penyedia_layanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UlasanController extends Controller
+class ulasanController extends Controller
 {
     public function create($id_penyedia)
     {
