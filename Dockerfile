@@ -144,7 +144,7 @@ redirect_stderr=true
 stdout_logfile=/var/log/scheduler.log
 EOF
 
-COPY <<EOF /usr/local/bin/startup.sh
+RUN cat > /usr/local/bin/startup.sh << 'EOF'
 #!/bin/bash
 set -e
 
