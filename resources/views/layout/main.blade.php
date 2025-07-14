@@ -31,13 +31,13 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
      <!-- Custom fonts for this template-->
-    <link href="{{ secure_asset('assets/dashboard_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/dashboard_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template-->
-    <link href="{{ secure_asset('assets/dashboard_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ secure_asset('assets/dashboard_assets/css/sb-admin-2.csss') }}" rel="stylesheet">
+    <link href="{{ asset('assets/dashboard_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/dashboard_assets/css/sb-admin-2.css') }}" rel="stylesheet">
     <!-- Custom styles manual -->
-    <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/style.css') }}" rel="stylesheet"> --}}
 
 
     <style>
@@ -96,23 +96,23 @@
 
 
     <<!-- Bootstrap core JavaScript-->
-    <script src="{{ secure_asset('assets/dashboard_assets/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ secure_asset('assets/dashboard_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Tambahkan ini jika kamu ingin pakai CDN Bootstrap 4 (karena SB Admin 2 butuh Bootstrap 4.x) -->
 
 
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ secure_asset('assets/dashboard_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
     <!-- Page level plugins -->
-    <script src="{{ secure_asset('assets/dashboard_assets/js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/js/sb-admin-2.min.js') }}"></script>
 
 
     <!-- Page level custom scripts -->
-    <script src="{{ secure_asset('assets/dashboard_assets/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ secure_asset('assets/dashboard_assets/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/js/demo/chart-pie-demo.js') }}"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
    <script>
