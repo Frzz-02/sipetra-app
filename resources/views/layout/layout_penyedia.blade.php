@@ -100,11 +100,11 @@
     <script src="{{ asset('assets/dashboard_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ secure_asset('assets/dashboard_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
 
     <!-- Page level plugins -->
-    <script src="{{ secure_asset('assets/dashboard_assets/vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard_assets/vendor/chart.js/Chart.min.js') }}"></script>
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('assets/dashboard_assets/js/demo/chart-area-demo.js') }}"></script>
