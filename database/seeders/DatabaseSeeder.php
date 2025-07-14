@@ -21,15 +21,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        
-        User::create([
-            'email'         => 'feri@gmail.com',
-            'password'      => Hash::make('ferfer'),
-            'username'      => 'feri',
-            'no_telephone'  => '089688433133',
-            'role'          => 'user',
-        ]);
-
+        $this->call(UserSeeder::class);
+        $this->call(PenyediaLayananSeeder::class);
+        $this->call(LayananSeeder::class);
+        $this->call(LayananDetailSeeder::class);
         
     }
 }
