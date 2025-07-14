@@ -1,13 +1,16 @@
 @extends('layout.main')
 
-@section('content2')
+@section(
+    "content2"
+)
+
 <div class="py-4" style="
     max-height: calc(100vh - 100px);
     overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
 ">
-    <style>
+    {{-- <style>
         .container::-webkit-scrollbar {
             display: none;
         }
@@ -29,7 +32,7 @@
         .btn-bb9587:hover {
             background-color: #a87d73;
         }
-    </style>
+    </style> --}}
 
     <h4 class="mb-4 font-weight-bold text-bb9587 text-center text-md-left">Cari Penyedia Layanan</h4>
 
@@ -63,7 +66,7 @@
                                 class="rounded"
                                 style="width: 80px; height: 80px; object-fit: cover;">
                         @else
-                            <img src="{{ asset('img/placeholder.png') }}"
+                            <img src="{{ asset('assets/image/placeholder.png') }}"
                                 alt="Tidak ada foto"
                                 class="rounded"
                                 style="width: 80px; height: 80px; object-fit: cover;">
