@@ -13,7 +13,9 @@ class CariLayananController extends Controller
     public function index()
     {
         // Ambil semua penyedia layanan dari DB
-       $penyedia = Penyedia_layanan::with('fotos')->get();
+       $penyedia = Penyedia_layanan::with(['fotos', 'layanans'])
+        ->whereHas('layanans')
+        ->get();
 
         return view('page.User.cari_layanan', compact('penyedia'));
     }
