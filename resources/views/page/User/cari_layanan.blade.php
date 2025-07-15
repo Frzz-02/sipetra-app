@@ -93,24 +93,20 @@
                     </div>
                 </div>
                 <div class="my-2 scroll-hide">
+                    
+                    
                     @php
-                        function isColorDark($hexColor) {
-                            $hexColor = ltrim($hexColor, '#');
-                            $r = hexdec(substr($hexColor, 0, 2));
-                            $g = hexdec(substr($hexColor, 2, 2));
-                            $b = hexdec(substr($hexColor, 4, 2));
-                            $brightness = ($r * 299 + $g * 587 + $b * 114) / 1000;
-                            return $brightness < 128;
-                        }
-
                         $bgColor = $item->color_button ?? '#bb9587';
                         $textColor = isColorDark($bgColor) ? '#ffffff' : '#000000';
                     @endphp
+                    
                     @foreach ($item->layanans->where('status', 'tampilkan') as $layanan)
                         <span class="badge mb-1" style="background-color: {{ $bgColor }}; color: {{ $textColor }};">
                             {{ $layanan->nama_layanan }}
                         </span>
                     @endforeach
+
+                    
                 </div>
             </div>
         </div>
