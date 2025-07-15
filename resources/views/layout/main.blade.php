@@ -13,6 +13,7 @@
     rel="stylesheet">
 
 
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/image/sipetra.png') }}">
 
     <!-- Font Awesome -->
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" /> --}}
@@ -55,8 +56,6 @@
         background-color: #bb9587;
     }
 }
-
-
         </style>
 
 
@@ -66,7 +65,6 @@
 
       {{-- component sidebar --}}
       <x-sidebar_dashboard/>
-
 
 
       <!-- Content Wrapper -->
